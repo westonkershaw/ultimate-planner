@@ -1,4 +1,4 @@
-
+<title>Ultimate Planner 🚀
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 
