@@ -7,6 +7,7 @@ import CommandPalette from "./components/CommandPalette.jsx";
 const OnboardingWizard = React.lazy(() => import("./components/OnboardingWizard.jsx"));
 const WeeklyReview = React.lazy(() => import("./components/WeeklyReview.jsx"));
 import WeekWizard from "./components/planner/WeekWizard";
+import CommunityTab from "./components/community/CommunityTab";
 import BodyMetrics from "./components/BodyMetrics.jsx";
 import BodyMetricsTab, { BodyMetricsDashWidget } from "./components/BodyMetricsTab.jsx";
 import ProjectsTab from "./components/ProjectsTab.jsx";
@@ -20,6 +21,7 @@ import ReadingListTab, { ReadingListDashWidget } from "./components/ReadingListT
 import StudyModeTab, { StudyDashWidget } from "./components/StudyModeTab.jsx";
 import VisionBoardTab, { VisionBoardDashWidget } from "./components/VisionBoardTab.jsx";
 import TravelPlannerTab, { TravelDashWidget } from "./components/TravelPlannerTab.jsx";
+import ExploreTravelPlanner from "./components/explore/ExploreView";
 import SocialCardsTab from "./components/SocialCardsTab.jsx";
 import SleepTrackerTab, { SleepDashWidget } from "./components/SleepTrackerTab.jsx";
 const SleepTrends = React.lazy(() => import("./components/SleepTrends.jsx"));
@@ -11657,13 +11659,8 @@ Give me my 3-bullet coaching message for today.`;
         })
       ] }),
 
-      exploreSubTab === "travel" && renderTravel(),
-      exploreSubTab === "community" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 24px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 56, marginBottom: 16 }, children: "\u{1F465}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: "'Syne',serif", fontSize: 22, fontWeight: 800, color: "#f1f5f9", marginBottom: 8 }, children: "Community" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 14, color: "rgba(100,116,139,0.7)", maxWidth: 260, lineHeight: 1.6 }, children: "Connect with other planners, share goals, and celebrate wins together. Coming soon." }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 20, background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 20, padding: "6px 18px", fontSize: 12, fontWeight: 700, color: "#818cf8", fontFamily: "'DM Sans',sans-serif" }, children: "Coming Soon" })
-      ] }),
+      exploreSubTab === "travel" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExploreTravelPlanner, {}),
+      exploreSubTab === "community" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommunityTab, {}),
       exploreSubTab === "insights" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(InsightsDashboard, { data: data2, isPro: isPro, onUpgrade: goPro })
     ] });
     };
