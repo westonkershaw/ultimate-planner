@@ -10,3 +10,4 @@ export type * from './habit.types';
 export type * from './sleep.types';
 export type * from './mood.types';
 export type * from './reading.types';
+export type * from './networth.types';

@@ -48,3 +48,6 @@ export type { MoodStore } from './useMoodStore';
 
 export { useReadingStore, booksThisYear, goalProgressPct } from './useReadingStore';
 export type { ReadingStore } from './useReadingStore';
+
+export { useNetWorthStore, calcNetWorth, sumAssets, sumLiabilities } from './useNetWorthStore';
+export type { NetWorthStore } from './useNetWorthStore';
