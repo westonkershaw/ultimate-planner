@@ -1,1 +1,125 @@
 @import "tailwindcss";
+
+/* ── Design Tokens ─────────────────────────────────────────────────────────── */
+
+:root {
+  --color-surface:        #08090d;
+  --color-surface-raised: #0d0f17;
+  --color-surface-card:   rgba(15, 23, 42, 0.5);
+  --color-primary:        #6366f1;
+  --color-primary-hover:  #818cf8;
+  --color-primary-dim:    rgba(99, 102, 241, 0.15);
+  --color-border:         #1e293b;
+  --color-border-subtle:  rgba(255, 255, 255, 0.06);
+  --color-text:           #e2e8f0;
+  --color-text-muted:     #64748b;
+  --color-text-faint:     #334155;
+  --color-danger:         #f87171;
+  --color-danger-dim:     rgba(248, 113, 113, 0.15);
+  --color-success:        #34d399;
+  --color-success-dim:    rgba(52, 211, 153, 0.15);
+  --color-warning:        #fbbf24;
+  --color-warning-dim:    rgba(251, 191, 36, 0.15);
+  --radius-card:          12px;
+  --radius-btn:           10px;
+  --blur-glass:           blur(20px);
+  /* Theme colors (dark default) */
+  --bg: #070d1a;
+  --card: rgba(15,23,42,0.6);
+  --text: #f1f5f9;
+  --text-muted: rgba(148,163,184,0.6);
+  --border: rgba(51,65,85,0.4);
+}
+
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: rgba(226,232,240,0.8);
+  --color-surface: #f8fafc;
+  --color-surface-raised: #f1f5f9;
+  --color-surface-card: rgba(255, 255, 255, 0.9);
+  --color-border: #e2e8f0;
+  --color-border-subtle: rgba(0, 0, 0, 0.06);
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-text-faint: #94a3b8;
+}
+
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+#root {
+  height: 100%;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ── Font utilities ────────────────────────────────────────────────────────── */
+
+.font-syne {
+  font-family: 'Syne', 'Inter', system-ui, sans-serif;
+}
+
+/* ── Accessibility: placeholder contrast ───────────────────────────────────── */
+
+::placeholder {
+  color: rgba(148, 163, 184, 0.6) !important;
+}
+
+/* ── Input resets ──────────────────────────────────────────────────────────── */
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.4);
+  cursor: pointer;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.3;
+}
+input[type="range"] {
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+select option {
+  background: #0f1829;
+  color: #e2e8f0;
+}
+
+/* ── Glass card base ───────────────────────────────────────────────────────── */
+
+.glass {
+  background: var(--color-surface-card);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  border: 1px solid var(--color-border-subtle);
+}

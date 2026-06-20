@@ -27,3 +27,15 @@ export type { ExploreStore } from './useExploreStore';
 
 export { useCommunityStore } from './useCommunityStore';
 export type { CommunityStore } from './useCommunityStore';
+
+export { useLegacyDataStore, useLegacyData } from './useLegacyDataStore';
+export type { LegacyDataStore } from './useLegacyDataStore';
+
+export { useAuthStore } from './useAuthStore';
+export type { AuthStore } from './useAuthStore';
+
+export { useJournalStore, calcWritingStreak, calcLifetimeWords, todayKey } from './useJournalStore';
+export type { JournalStore } from './useJournalStore';
+
+export { useHabitStore, calcStreak as calcHabitStreak, isScheduledToday, dayName } from './useHabitStore';
+export type { HabitStore } from './useHabitStore';
