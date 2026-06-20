@@ -10,9 +10,9 @@ import ExploreView from './components/explore/ExploreView';
 import SettingsView from './components/settings/SettingsView';
 import JournalView from './components/journal/JournalView';
 import HabitsView from './components/habits/HabitsView';
+import SleepView from './components/sleep/SleepView';
 import {
   MoodHost,
-  SleepHost,
   ReadingHost,
   TravelHost,
   MealsHost,
@@ -90,7 +90,7 @@ function ViewContent({ view }: { view: ActiveView }) {
     case 'timeblock': return <TimeBlockHost />;
     case 'focus':     return <FocusHost />;
     // Health
-    case 'sleep':     return <SleepHost />;
+    case 'sleep':     return <SleepView />;
     case 'mood':      return <MoodHost />;
     case 'wellness':  return <WellnessHost />;
     case 'meals':     return <MealsHost />;

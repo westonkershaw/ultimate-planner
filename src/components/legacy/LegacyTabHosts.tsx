@@ -9,7 +9,6 @@ import { useLegacyDataStore } from '@/store';
 
 // Lazy-load to keep the main bundle slim — these are large legacy files.
 const MoodTrackerTab    = React.lazy(() => import('../MoodTrackerTab.jsx'));
-const SleepTrackerTab   = React.lazy(() => import('../SleepTrackerTab.jsx'));
 const ReadingListTab    = React.lazy(() => import('../ReadingListTab.jsx'));
 const TravelPlannerTab  = React.lazy(() => import('../TravelPlannerTab.jsx'));
 const MealPlannerTab    = React.lazy(() => import('../MealPlannerTab.jsx'));
@@ -65,11 +64,6 @@ export function MoodHost() {
       />
     </Host>
   );
-}
-
-export function SleepHost() {
-  const { data, onChange } = useLegacy();
-  return <Host><SleepTrackerTab data={data} onChange={onChange} /></Host>;
 }
 
 export function ReadingHost() {

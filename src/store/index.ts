@@ -39,3 +39,6 @@ export type { JournalStore } from './useJournalStore';
 
 export { useHabitStore, calcStreak as calcHabitStreak, isScheduledToday, dayName } from './useHabitStore';
 export type { HabitStore } from './useHabitStore';
+
+export { useSleepStore, durationHours, calcAvgHours, calcAvgQuality } from './useSleepStore';
+export type { SleepStore } from './useSleepStore';
