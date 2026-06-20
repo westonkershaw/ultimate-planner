@@ -11,8 +11,8 @@ import SettingsView from './components/settings/SettingsView';
 import JournalView from './components/journal/JournalView';
 import HabitsView from './components/habits/HabitsView';
 import SleepView from './components/sleep/SleepView';
+import MoodView from './components/mood/MoodView';
 import {
-  MoodHost,
   ReadingHost,
   TravelHost,
   MealsHost,
@@ -91,7 +91,7 @@ function ViewContent({ view }: { view: ActiveView }) {
     case 'focus':     return <FocusHost />;
     // Health
     case 'sleep':     return <SleepView />;
-    case 'mood':      return <MoodHost />;
+    case 'mood':      return <MoodView />;
     case 'wellness':  return <WellnessHost />;
     case 'meals':     return <MealsHost />;
     case 'body':      return <BodyHost />;

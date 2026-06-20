@@ -8,3 +8,4 @@ export type * from './goal.types';
 export type * from './journal.types';
 export type * from './habit.types';
 export type * from './sleep.types';
+export type * from './mood.types';

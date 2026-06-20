@@ -42,3 +42,6 @@ export type { HabitStore } from './useHabitStore';
 
 export { useSleepStore, durationHours, calcAvgHours, calcAvgQuality } from './useSleepStore';
 export type { SleepStore } from './useSleepStore';
+
+export { useMoodStore, calcMoodStreak, calcMoodAvg } from './useMoodStore';
+export type { MoodStore } from './useMoodStore';
