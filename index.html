@@ -1,16 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ultimate Planner — Grow in Every Dimension</title>
-    <meta name="description" content="Track goals, build habits, and level up every area of your life.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#070d1a" />
+    <meta name="description" content="Ultimate Life Planner — plan your best life. Goals, habits, health, and finance in one beautifully designed app." />
+    <meta property="og:title" content="Ultimate Life Planner ✦" />
+    <meta property="og:description" content="Plan your best life. Goals, habits, health, and finance in one beautifully designed app." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://ultimate-planner-alpha.vercel.app/icons/icon-1024.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ultimate Life Planner ✦" />
+    <meta name="twitter:description" content="Plan your best life. Goals, habits, health, and finance in one beautifully designed app." />
+    <meta name="twitter:image" content="https://ultimate-planner-alpha.vercel.app/icons/icon-1024.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <title>Ultimate Life Planner ✦</title>
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800&family=Syne:wght@600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800&family=Syne:wght@600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { height: 100%; overflow: hidden; }
+      body { height: 100%; background: #070d1a; color: #e2e8f0; font-family: -apple-system, 'Inter', 'SF Pro Text', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overscroll-behavior: none; font-size: 14px; line-height: 1.5; }
+      #root { height: 100%; display: flex; flex-direction: column; }
+      input, select, textarea, button { font-family: inherit; }
+      button { user-select: none; -webkit-tap-highlight-color: transparent; }
+    </style>
+    <!-- Google Identity Services — needed for Sign-In + Calendar OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      // Unregister stale service workers on every load
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(r) { r.unregister(); });
+        });
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+  <div style="min-height:100vh;background:#07090d;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+    <div style="font-size:40px;">✦</div>
+    <div style="width:120px;height:3px;background:rgba(99,102,241,0.2);border-radius:99px;overflow:hidden;">
+      <div style="height:100%;width:40%;background:#6366f1;border-radius:99px;animation:pulse 1.2s ease-in-out infinite alternate;"></div>
+    </div>
+    <style>@keyframes pulse{from{transform:translateX(-100%)}to{transform:translateX(300%)}}</style>
+  </div>
+</div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

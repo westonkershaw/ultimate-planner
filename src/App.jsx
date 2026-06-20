@@ -20,6 +20,7 @@ import { bootstrapNotifications, getPrefs, savePrefs, sendNotification } from ".
 import ReadingListTab, { ReadingListDashWidget } from "./components/ReadingListTab.jsx";
 import StudyModeTab, { StudyDashWidget } from "./components/StudyModeTab.jsx";
 import VisionBoardTab, { VisionBoardDashWidget } from "./components/VisionBoardTab.jsx";
+import GoalsTabV2 from "./components/GoalsTabV2.jsx";
 import TravelPlannerTab, { TravelDashWidget } from "./components/TravelPlannerTab.jsx";
 import ExploreTravelPlanner from "./components/explore/ExploreView";
 import SocialCardsTab from "./components/SocialCardsTab.jsx";
@@ -46,10 +47,34 @@ import AppleAuthButton from "./components/AppleAuthButton.jsx";
 import ProfilePhotoEditor from "./components/ProfilePhotoEditor.jsx";
 import CalendarEditModal from "./components/CalendarEditModal.jsx";
 import { getExerciseIllustration } from "./utils/exerciseIllustrations.js";
+import { Home, CalendarDays, Sprout, BookOpen, Heart, DollarSign, Sparkles, Bot, User, Star } from "lucide-react";
+import { getProgress as _gpGoal, migrateGoals as _migrateGoalsFn } from "./utils/goalEngine";
 
 // Shim esbuild-compiled runtime references to proper React imports
 const import_jsx_runtime = { jsx: _jsx_fn, jsxs: _jsxs_fn, Fragment: _Fragment_fn };
 const import_react2 = { default: React };
+
+// ── Goal-shape shims (read both legacy yearlyGoals/financialGoals and migrated d.goals) ──
+const _oView = (d) => (d?.goals?.length ? d.goals.filter((g) => g.kind === "outcome") : (d?.yearlyGoals || []));
+const _nView = (d) => (d?.goals?.length ? d.goals.filter((g) => g.kind === "numeric") : (d?.financialGoals || []));
+const _gp = (g) => _gpGoal(g);
+const _ms = (g) => g.milestones || g.steps || [];
+const _dep = (g) => (g.numeric ? g.numeric.entries : null) || g.deposits || [];
+const _ws = (g) => g.weekSteps || (g.weeklyFocus && g.weeklyFocus.length ? g.weeklyFocus[g.weeklyFocus.length - 1].action : "") || "";
+const _dl = (g) => g.deadline || g.target || "";
+const _cur = (g) => (g.numeric ? g.numeric.current : g.saved) || 0;
+// One-shot backfill: builds d.goals from legacy arrays on first load. Idempotent
+// (an existing array — including []) is preserved, so a v2 user who deletes
+// every goal does not get a re-migration on reload.
+const _attachGoals = (d) => {
+  if (!d || Array.isArray(d.goals)) return d;
+  try {
+    return { ...d, goals: _migrateGoalsFn(d.yearlyGoals, d.financialGoals) };
+  } catch (e) {
+    console.warn("[goals] migration failed; leaving legacy in place:", e);
+    return { ...d, goals: [] };
+  }
+};
 
 // ── ICS / iCal parser ────────────────────────────────────────────────────────
 function parseICS(text) {
@@ -195,6 +220,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     }
     return opts;
   })();
+  var TAB_LUCIDE = { dashboard: Home, plan: CalendarDays, grow: Sprout, journal: BookOpen, health: Heart, finance: DollarSign, explore: Sparkles, coach: Bot, profile: User, upgrade: Star };
   var DEFAULT_TABS = [
     { id: "dashboard", label: "Home", icon: "\u{1F3E0}" },
     { id: "plan", label: "My Week", icon: "\u{1F4C5}" },
@@ -263,21 +289,21 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     // ── GETTING STARTED (all bronze, super easy) ──────────────────────────────
     { id: "first_login", tier: "bronze", icon: "\u{1F331}", title: "First Step", desc: "Created your account and logged in for the first time.", check: (d) => true },
     { id: "first_ki", tier: "bronze", icon: "\u{1F4CA}", title: "Tracker", desc: "Added your first Key Indicator.", check: (d) => _hasAnyKIActivity(d) },
-    { id: "first_goal", tier: "bronze", icon: "\u{1F3AF}", title: "Dreamer", desc: "Set your first yearly life goal.", check: (d) => (d.yearlyGoals || []).length >= 1 },
+    { id: "first_goal", tier: "bronze", icon: "\u{1F3AF}", title: "Dreamer", desc: "Set your first yearly life goal.", check: (d) => _oView(d).length >= 1 },
     { id: "first_task", tier: "bronze", icon: "\u2705", title: "Getting Things Done", desc: "Added your first task to your weekly plan.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).length > 0) },
     { id: "first_reflection", tier: "bronze", icon: "\u{1FA9E}", title: "Self-Aware", desc: "Completed your first weekly reflection.", check: (d) => (d.reflections || []).length >= 1 },
-    { id: "first_fin_goal", tier: "bronze", icon: "\u{1F4B5}", title: "Money Minded", desc: "Created your first financial goal.", check: (d) => (d.financialGoals || []).length >= 1 },
-    { id: "first_milestone", tier: "bronze", icon: "\u{1FA9C}", title: "Step by Step", desc: "Added a milestone to one of your yearly goals.", check: (d) => (d.yearlyGoals || []).some((g) => (g.steps || []).length >= 1) },
-    { id: "first_deposit", tier: "bronze", icon: "\u{1FA99}", title: "First Deposit", desc: "Made your first deposit toward a financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.deposits || []).length >= 1) },
+    { id: "first_fin_goal", tier: "bronze", icon: "\u{1F4B5}", title: "Money Minded", desc: "Created your first financial goal.", check: (d) => _nView(d).length >= 1 },
+    { id: "first_milestone", tier: "bronze", icon: "\u{1FA9C}", title: "Step by Step", desc: "Added a milestone to one of your yearly goals.", check: (d) => _oView(d).some((g) => _ms(g).length >= 1) },
+    { id: "first_deposit", tier: "bronze", icon: "\u{1FA99}", title: "First Deposit", desc: "Made your first deposit toward a financial goal.", check: (d) => _nView(d).some((g) => _dep(g).length >= 1) },
     { id: "first_day_notes", tier: "bronze", icon: "\u{1F4DD}", title: "Note Taker", desc: "Wrote notes in the day notes section.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.notes || "").length > 5) },
-    { id: "first_week_step", tier: "bronze", icon: "\u{1F45F}", title: "This Week's Move", desc: "Set a 'this week's step' on one of your yearly goals.", check: (d) => (d.yearlyGoals || []).some((g) => (g.weekSteps || "").length > 0) },
+    { id: "first_week_step", tier: "bronze", icon: "\u{1F45F}", title: "This Week's Move", desc: "Set a 'this week's step' on one of your yearly goals.", check: (d) => _oView(d).some((g) => _ws(g).length > 0) },
     { id: "five_tasks", tier: "bronze", icon: "\u{1F4CB}", title: "To-Do Warrior", desc: "Added 5 tasks total across your weekly plan.", check: (d) => DAYS.reduce((a, day) => a + (d.weekDays[day]?.tasks || []).length, 0) >= 5 },
     { id: "three_kis", tier: "bronze", icon: "\u{1F4C8}", title: "Data Driven", desc: "Created 3 or more Key Indicators.", check: (d) => _hasAnyKIActivity(d) && (d.kis || []).length >= 3 },
-    { id: "two_goals", tier: "bronze", icon: "\u{1F3C1}", title: "Goal Setter", desc: "Set 2 or more yearly goals.", check: (d) => (d.yearlyGoals || []).length >= 2 },
-    { id: "two_fin_goals", tier: "bronze", icon: "\u{1F3F7}\uFE0F", title: "Budget Planner", desc: "Created 2 financial goals.", check: (d) => (d.financialGoals || []).length >= 2 },
+    { id: "two_goals", tier: "bronze", icon: "\u{1F3C1}", title: "Goal Setter", desc: "Set 2 or more yearly goals.", check: (d) => _oView(d).length >= 2 },
+    { id: "two_fin_goals", tier: "bronze", icon: "\u{1F3F7}\uFE0F", title: "Budget Planner", desc: "Created 2 financial goals.", check: (d) => _nView(d).length >= 2 },
     { id: "full_week_planned", tier: "bronze", icon: "\u{1F5D3}\uFE0F", title: "Planner Mode", desc: "Added at least one task to every day of the week.", check: (d) => DAYS.every((day) => (d.weekDays[day]?.tasks || []).length >= 1) },
     { id: "complete_task", tier: "bronze", icon: "\u2611\uFE0F", title: "Done!", desc: "Marked your first task as complete.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).some((t) => t.done)) },
-    { id: "goal_10", tier: "bronze", icon: "\u{1F33F}", title: "Off the Starting Line", desc: "Reached 10% on any yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.progress >= 10) },
+    { id: "goal_10", tier: "bronze", icon: "\u{1F33F}", title: "Off the Starting Line", desc: "Reached 10% on any yearly goal.", check: (d) => _oView(d).some((g) => _gp(g) >= 10) },
     // ── KEY INDICATORS ────────────────────────────────────────────────────────
     { id: "ki_log_day", tier: "bronze", icon: "\u{1F4C5}", title: "Daily Logger", desc: "Logged a Key Indicator for the first time.", check: (d) => (d.kis || []).some((k2) => Object.values(k2.dailyLogs || {}).some((v) => v > 0)) },
     { id: "ki_full_week", tier: "bronze", icon: "\u{1F5D2}\uFE0F", title: "Full Coverage", desc: "Logged at least one Key Indicator every day of the week.", check: (d) => (d.kis || []).some((k2) => DAYS.every((day) => ((k2.dailyLogs || {})[day] || 0) > 0)) },
@@ -293,57 +319,57 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     { id: "ki_8streak", tier: "gold", icon: "\u{1F3C6}", title: "Unstoppable", desc: "Eight weeks in a row above 70% on your indicators.", check: (d, s) => (s.kiStreak || 0) >= 8 },
     { id: "ki_12streak", tier: "platinum", icon: "\u269C\uFE0F", title: "Iron Discipline", desc: "Twelve weeks in a row above 70% \u2014 a full quarter.", check: (d, s) => (s.kiStreak || 0) >= 12 },
     // ── GOALS ─────────────────────────────────────────────────────────────────
-    { id: "goal_25", tier: "bronze", icon: "\u{1F33E}", title: "Making Progress", desc: "Reached 25% on any yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.progress >= 25) },
-    { id: "goal_50", tier: "silver", icon: "\u{1F333}", title: "Halfway There", desc: "Reached 50% on any yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.progress >= 50) },
-    { id: "goal_75", tier: "silver", icon: "\u{1F3D4}\uFE0F", title: "Almost There", desc: "Reached 75% on any yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.progress >= 75) },
-    { id: "goal_100", tier: "gold", icon: "\u{1F3C5}", title: "Goal Crusher", desc: "Completed a yearly goal at 100%.", check: (d) => (d.yearlyGoals || []).some((g) => g.progress >= 100) },
-    { id: "goals_2done", tier: "gold", icon: "\u{1F947}", title: "Double Down", desc: "Completed 2 or more yearly goals.", check: (d) => (d.yearlyGoals || []).filter((g) => g.progress >= 100).length >= 2 },
-    { id: "goals_3done", tier: "platinum", icon: "\u{1F451}", title: "Champion", desc: "Completed 3 or more yearly goals.", check: (d) => (d.yearlyGoals || []).filter((g) => g.progress >= 100).length >= 3 },
-    { id: "goals_5set", tier: "silver", icon: "\u{1F5FA}\uFE0F", title: "Visionary", desc: "Set 5 or more yearly goals.", check: (d) => (d.yearlyGoals || []).length >= 5 },
-    { id: "goals_10set", tier: "gold", icon: "\u{1F310}", title: "Big Picture Thinker", desc: "Set 10 or more yearly goals.", check: (d) => (d.yearlyGoals || []).length >= 10 },
-    { id: "milestone_5", tier: "bronze", icon: "\u{1F4CC}", title: "Milestone Maker", desc: "Added 5 milestones across your goals.", check: (d) => (d.yearlyGoals || []).reduce((a, g) => a + (g.steps || []).length, 0) >= 5 },
-    { id: "milestone_done", tier: "silver", icon: "\u2714\uFE0F", title: "Milestone Crusher", desc: "Completed (checked off) your first milestone step.", check: (d) => (d.yearlyGoals || []).some((g) => (g.steps || []).some((s) => s.done)) },
-    { id: "milestones_10done", tier: "gold", icon: "\u{1F3D7}\uFE0F", title: "Builder", desc: "Completed 10 milestone steps across all goals.", check: (d) => (d.yearlyGoals || []).reduce((a, g) => a + (g.steps || []).filter((s) => s.done).length, 0) >= 10 },
+    { id: "goal_25", tier: "bronze", icon: "\u{1F33E}", title: "Making Progress", desc: "Reached 25% on any yearly goal.", check: (d) => _oView(d).some((g) => _gp(g) >= 25) },
+    { id: "goal_50", tier: "silver", icon: "\u{1F333}", title: "Halfway There", desc: "Reached 50% on any yearly goal.", check: (d) => _oView(d).some((g) => _gp(g) >= 50) },
+    { id: "goal_75", tier: "silver", icon: "\u{1F3D4}\uFE0F", title: "Almost There", desc: "Reached 75% on any yearly goal.", check: (d) => _oView(d).some((g) => _gp(g) >= 75) },
+    { id: "goal_100", tier: "gold", icon: "\u{1F3C5}", title: "Goal Crusher", desc: "Completed a yearly goal at 100%.", check: (d) => _oView(d).some((g) => _gp(g) >= 100) },
+    { id: "goals_2done", tier: "gold", icon: "\u{1F947}", title: "Double Down", desc: "Completed 2 or more yearly goals.", check: (d) => _oView(d).filter((g) => _gp(g) >= 100).length >= 2 },
+    { id: "goals_3done", tier: "platinum", icon: "\u{1F451}", title: "Champion", desc: "Completed 3 or more yearly goals.", check: (d) => _oView(d).filter((g) => _gp(g) >= 100).length >= 3 },
+    { id: "goals_5set", tier: "silver", icon: "\u{1F5FA}\uFE0F", title: "Visionary", desc: "Set 5 or more yearly goals.", check: (d) => _oView(d).length >= 5 },
+    { id: "goals_10set", tier: "gold", icon: "\u{1F310}", title: "Big Picture Thinker", desc: "Set 10 or more yearly goals.", check: (d) => _oView(d).length >= 10 },
+    { id: "milestone_5", tier: "bronze", icon: "\u{1F4CC}", title: "Milestone Maker", desc: "Added 5 milestones across your goals.", check: (d) => _oView(d).reduce((a, g) => a + _ms(g).length, 0) >= 5 },
+    { id: "milestone_done", tier: "silver", icon: "\u2714\uFE0F", title: "Milestone Crusher", desc: "Completed (checked off) your first milestone step.", check: (d) => _oView(d).some((g) => _ms(g).some((s) => s.done)) },
+    { id: "milestones_10done", tier: "gold", icon: "\u{1F3D7}\uFE0F", title: "Builder", desc: "Completed 10 milestone steps across all goals.", check: (d) => _oView(d).reduce((a, g) => a + _ms(g).filter((s) => s.done).length, 0) >= 10 },
     { id: "weekly_step_5", tier: "silver", icon: "\u{1F6B6}", title: "Week by Week", desc: "Set 'this week's step' on 5 different occasions.", check: (d, s) => (s.weekStepsSet || 0) >= 5 },
     // ── INTELLECTUAL ──────────────────────────────────────────────────────────
     { id: "intel_ki", tier: "bronze", icon: "\u{1F9E0}", title: "Knowledge Seeker", desc: "Added an Intellectual Key Indicator.", check: (d) => _hasAnyKIActivity(d) && (d.kis || []).some((k2) => k2.category === "intellectual") },
-    { id: "intel_goal", tier: "bronze", icon: "\u{1F4DA}", title: "Lifelong Learner", desc: "Created an Intellectual yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.category === "intellectual") },
+    { id: "intel_goal", tier: "bronze", icon: "\u{1F4DA}", title: "Lifelong Learner", desc: "Created an Intellectual yearly goal.", check: (d) => _oView(d).some((g) => g.category === "intellectual") },
     { id: "intel_task", tier: "bronze", icon: "\u{1F58A}\uFE0F", title: "Brain Time", desc: "Scheduled an Intellectual task in your weekly plan.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).some((t) => t.category === "intellectual")) },
     { id: "intel_ki_streak", tier: "silver", icon: "\u{1F52C}", title: "Deep Thinker", desc: "Hit your Intellectual indicator goal 3 weeks running.", check: (d, s) => (s.intelStreak || 0) >= 3 },
     // ── SOCIAL ────────────────────────────────────────────────────────────────
     { id: "social_ki", tier: "bronze", icon: "\u{1F91D}", title: "People Person", desc: "Added a Social Key Indicator.", check: (d) => _hasAnyKIActivity(d) && (d.kis || []).some((k2) => k2.category === "social") },
-    { id: "social_goal", tier: "bronze", icon: "\u{1F4AC}", title: "Community Builder", desc: "Created a Social yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.category === "social") },
+    { id: "social_goal", tier: "bronze", icon: "\u{1F4AC}", title: "Community Builder", desc: "Created a Social yearly goal.", check: (d) => _oView(d).some((g) => g.category === "social") },
     { id: "social_task", tier: "bronze", icon: "\u{1F5E3}\uFE0F", title: "Social Calendar", desc: "Scheduled a Social task in your weekly plan.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).some((t) => t.category === "social")) },
     { id: "social_ki_streak", tier: "silver", icon: "\u{1F31F}", title: "Connector", desc: "Hit your Social indicator goal 3 weeks running.", check: (d, s) => (s.socialStreak || 0) >= 3 },
     // ── PHYSICAL ──────────────────────────────────────────────────────────────
     { id: "phys_ki", tier: "bronze", icon: "\u{1F4AA}", title: "Body in Motion", desc: "Added a Physical Key Indicator.", check: (d) => _hasAnyKIActivity(d) && (d.kis || []).some((k2) => k2.category === "physical") },
-    { id: "phys_goal", tier: "bronze", icon: "\u{1F3C3}", title: "Fitness Focused", desc: "Created a Physical yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.category === "physical") },
+    { id: "phys_goal", tier: "bronze", icon: "\u{1F3C3}", title: "Fitness Focused", desc: "Created a Physical yearly goal.", check: (d) => _oView(d).some((g) => g.category === "physical") },
     { id: "phys_task", tier: "bronze", icon: "\u{1F3BD}", title: "Active Schedule", desc: "Scheduled a Physical task in your weekly plan.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).some((t) => t.category === "physical")) },
     { id: "phys_ki_streak", tier: "silver", icon: "\u{1F525}", title: "Athlete", desc: "Hit your Physical indicator goal 3 weeks running.", check: (d, s) => (s.physStreak || 0) >= 3 },
     { id: "phys_weekend", tier: "bronze", icon: "\u{1F305}", title: "Weekend Warrior", desc: "Logged a physical activity on both Saturday and Sunday.", check: (d) => (d.kis || []).some((k2) => k2.category === "physical" && ((k2.dailyLogs || {})["Saturday"] || 0) > 0 && ((k2.dailyLogs || {})["Sunday"] || 0) > 0) },
     // ── SPIRITUAL ─────────────────────────────────────────────────────────────
     { id: "spirit_ki", tier: "bronze", icon: "\u2728", title: "Inner Life", desc: "Added a Spiritual Key Indicator.", check: (d) => _hasAnyKIActivity(d) && (d.kis || []).some((k2) => k2.category === "spiritual") },
-    { id: "spirit_goal", tier: "bronze", icon: "\u{1F54A}\uFE0F", title: "Soul Goals", desc: "Created a Spiritual yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => g.category === "spiritual") },
+    { id: "spirit_goal", tier: "bronze", icon: "\u{1F54A}\uFE0F", title: "Soul Goals", desc: "Created a Spiritual yearly goal.", check: (d) => _oView(d).some((g) => g.category === "spiritual") },
     { id: "spirit_task", tier: "bronze", icon: "\u{1F64F}", title: "Sacred Space", desc: "Scheduled a Spiritual task in your weekly plan.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).some((t) => t.category === "spiritual")) },
     { id: "spirit_ki_streak", tier: "silver", icon: "\u{1F319}", title: "Devoted", desc: "Hit your Spiritual indicator goal 3 weeks running.", check: (d, s) => (s.spiritStreak || 0) >= 3 },
     { id: "spirit_morning", tier: "bronze", icon: "\u2600\uFE0F", title: "Morning Ritual", desc: "Scheduled a Spiritual task at 7 AM or earlier.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).some((t) => t.category === "spiritual" && (t.time || "").includes("AM") && parseInt(t.time) <= 7)) },
     // ── FINANCIAL ─────────────────────────────────────────────────────────────
-    { id: "fin_first_deposit", tier: "bronze", icon: "\u{1FA99}", title: "Penny Saved", desc: "Made your very first deposit toward any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.deposits || []).length >= 1) },
-    { id: "fin_3deposits", tier: "bronze", icon: "\u{1F4B0}", title: "Saving Habit", desc: "Made 3 deposits across your financial goals.", check: (d) => (d.financialGoals || []).reduce((a, g) => a + (g.deposits || []).length, 0) >= 3 },
-    { id: "fin_10deposits", tier: "silver", icon: "\u{1F3E7}", title: "Consistent Saver", desc: "Made 10 deposits across your financial goals.", check: (d) => (d.financialGoals || []).reduce((a, g) => a + (g.deposits || []).length, 0) >= 10 },
-    { id: "fin_save_100", tier: "bronze", icon: "\u{1F4B5}", title: "First Hundred", desc: "Saved $100 toward any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.saved || 0) >= 100) },
-    { id: "fin_save_500", tier: "bronze", icon: "\u{1F4B4}", title: "Half a Grand", desc: "Saved $500 toward any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.saved || 0) >= 500) },
-    { id: "fin_save_1k", tier: "silver", icon: "\u{1F4B3}", title: "Saver", desc: "Saved $1,000 toward any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.saved || 0) >= 1e3) },
-    { id: "fin_save_5k", tier: "silver", icon: "\u{1F4B6}", title: "Five Figures Club", desc: "Saved $5,000 toward any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.saved || 0) >= 5e3) },
-    { id: "fin_save_10k", tier: "gold", icon: "\u{1F3E6}", title: "Wealth Builder", desc: "Saved $10,000 toward any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.saved || 0) >= 1e4) },
-    { id: "fin_goal_50pct", tier: "bronze", icon: "\u{1F4CA}", title: "Halfway Funded", desc: "Reached 50% on any financial goal.", check: (d) => (d.financialGoals || []).some((g) => g.targetAmount > 0 && (g.saved || 0) / g.targetAmount >= 0.5) },
-    { id: "fin_goal_done", tier: "gold", icon: "\u{1F911}", title: "Paid In Full", desc: "Fully funded a financial goal.", check: (d) => (d.financialGoals || []).some((g) => g.targetAmount > 0 && (g.saved || 0) >= g.targetAmount) },
-    { id: "fin_2done", tier: "gold", icon: "\u{1F4AF}", title: "Double Funded", desc: "Fully funded 2 financial goals.", check: (d) => (d.financialGoals || []).filter((g) => g.targetAmount > 0 && (g.saved || 0) >= g.targetAmount).length >= 2 },
-    { id: "fin_3done", tier: "platinum", icon: "\u{1F4B8}", title: "Financially Free", desc: "Fully funded 3 or more financial goals.", check: (d) => (d.financialGoals || []).filter((g) => g.targetAmount > 0 && (g.saved || 0) >= g.targetAmount).length >= 3 },
-    { id: "fin_5goals", tier: "silver", icon: "\u{1F4C8}", title: "Portfolio Builder", desc: "Created 5 or more financial goals.", check: (d) => (d.financialGoals || []).length >= 5 },
-    { id: "fin_emergency", tier: "silver", icon: "\u{1F6E1}\uFE0F", title: "Safety Net", desc: "Created an Emergency Fund financial goal.", check: (d) => (d.financialGoals || []).some((g) => g.category === "emergency") },
-    { id: "fin_invest", tier: "silver", icon: "\u{1F4C9}", title: "Investor", desc: "Created an Investment financial goal.", check: (d) => (d.financialGoals || []).some((g) => g.category === "investment") },
-    { id: "fin_debt", tier: "silver", icon: "\u2702\uFE0F", title: "Debt Slayer", desc: "Created a Debt Payoff financial goal.", check: (d) => (d.financialGoals || []).some((g) => g.category === "debt") },
+    { id: "fin_first_deposit", tier: "bronze", icon: "\u{1FA99}", title: "Penny Saved", desc: "Made your very first deposit toward any financial goal.", check: (d) => _nView(d).some((g) => _dep(g).length >= 1) },
+    { id: "fin_3deposits", tier: "bronze", icon: "\u{1F4B0}", title: "Saving Habit", desc: "Made 3 deposits across your financial goals.", check: (d) => _nView(d).reduce((a, g) => a + _dep(g).length, 0) >= 3 },
+    { id: "fin_10deposits", tier: "silver", icon: "\u{1F3E7}", title: "Consistent Saver", desc: "Made 10 deposits across your financial goals.", check: (d) => _nView(d).reduce((a, g) => a + _dep(g).length, 0) >= 10 },
+    { id: "fin_save_100", tier: "bronze", icon: "\u{1F4B5}", title: "First Hundred", desc: "Saved $100 toward any financial goal.", check: (d) => _nView(d).some((g) => _cur(g) >= 100) },
+    { id: "fin_save_500", tier: "bronze", icon: "\u{1F4B4}", title: "Half a Grand", desc: "Saved $500 toward any financial goal.", check: (d) => _nView(d).some((g) => _cur(g) >= 500) },
+    { id: "fin_save_1k", tier: "silver", icon: "\u{1F4B3}", title: "Saver", desc: "Saved $1,000 toward any financial goal.", check: (d) => _nView(d).some((g) => _cur(g) >= 1e3) },
+    { id: "fin_save_5k", tier: "silver", icon: "\u{1F4B6}", title: "Five Figures Club", desc: "Saved $5,000 toward any financial goal.", check: (d) => _nView(d).some((g) => _cur(g) >= 5e3) },
+    { id: "fin_save_10k", tier: "gold", icon: "\u{1F3E6}", title: "Wealth Builder", desc: "Saved $10,000 toward any financial goal.", check: (d) => _nView(d).some((g) => _cur(g) >= 1e4) },
+    { id: "fin_goal_50pct", tier: "bronze", icon: "\u{1F4CA}", title: "Halfway Funded", desc: "Reached 50% on any financial goal.", check: (d) => _nView(d).some((g) => _gp(g) >= 50) },
+    { id: "fin_goal_done", tier: "gold", icon: "\u{1F911}", title: "Paid In Full", desc: "Fully funded a financial goal.", check: (d) => _nView(d).some((g) => _gp(g) >= 100) },
+    { id: "fin_2done", tier: "gold", icon: "\u{1F4AF}", title: "Double Funded", desc: "Fully funded 2 financial goals.", check: (d) => _nView(d).filter((g) => _gp(g) >= 100).length >= 2 },
+    { id: "fin_3done", tier: "platinum", icon: "\u{1F4B8}", title: "Financially Free", desc: "Fully funded 3 or more financial goals.", check: (d) => _nView(d).filter((g) => _gp(g) >= 100).length >= 3 },
+    { id: "fin_5goals", tier: "silver", icon: "\u{1F4C8}", title: "Portfolio Builder", desc: "Created 5 or more financial goals.", check: (d) => _nView(d).length >= 5 },
+    { id: "fin_emergency", tier: "silver", icon: "\u{1F6E1}\uFE0F", title: "Safety Net", desc: "Created an Emergency Fund financial goal.", check: (d) => _nView(d).some((g) => g.category === "emergency") },
+    { id: "fin_invest", tier: "silver", icon: "\u{1F4C9}", title: "Investor", desc: "Created an Investment financial goal.", check: (d) => _nView(d).some((g) => g.category === "investment") },
+    { id: "fin_debt", tier: "silver", icon: "\u2702\uFE0F", title: "Debt Slayer", desc: "Created a Debt Payoff financial goal.", check: (d) => _nView(d).some((g) => g.category === "debt") },
     // ── JOURNAL STREAKS ───────────────────────────────────────────────────────
     { id: "journal_first", tier: "bronze", icon: "\u{1F4D3}", title: "Dear Diary", desc: "Wrote your first journal entry.", check: (d) => (d.journals || []).length >= 1 },
     { id: "journal_3day", tier: "bronze", icon: "\u{1F525}", title: "First Spark", desc: "Maintained a 3-day journaling streak.", check: (d) => { const js = d.journals || []; if (js.length < 3) return false; const dates = new Set(js.map(e => e.date)); const now = new Date(); for (let streak = 0, i = 0; i < 365; i++) { const dd = new Date(now); dd.setDate(dd.getDate() - i); if (dates.has(dd.toLocaleDateString('en-CA'))) { streak++; if (streak >= 3) return true; } else { streak = 0; } } return false; } },
@@ -395,7 +421,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     { id: "cal_sync", tier: "silver", icon: "\u{1F5D3}\uFE0F", title: "Synced Up", desc: "Connected and synced with Google Calendar.", check: (d) => d.calendarConnected === true },
     // ── ALL-AROUND / MASTERY ──────────────────────────────────────────────────
     { id: "all_cats_ki", tier: "silver", icon: "\u{1F9EC}", title: "Five Dimensions", desc: "Have at least one Key Indicator in all 5 life categories.", check: (d) => _hasAnyKIActivity(d) && CATS.every((c) => (d.kis || []).some((k2) => k2.category === c.id)) },
-    { id: "all_cats_goals", tier: "gold", icon: "\u{1F308}", title: "Renaissance Person", desc: "Have at least one yearly goal in all 5 life categories.", check: (d) => CATS.every((c) => (d.yearlyGoals || []).some((g) => g.category === c.id)) },
+    { id: "all_cats_goals", tier: "gold", icon: "\u{1F308}", title: "Renaissance Person", desc: "Have at least one yearly goal in all 5 life categories.", check: (d) => CATS.every((c) => _oView(d).some((g) => g.category === c.id)) },
     { id: "grand_slam", tier: "platinum", icon: "\u{1F31F}", title: "Life Architect", desc: "Hit 100% on all indicators, completed a goal, and wrote a reflection in one week.", check: (d, s) => (s.grandSlam || 0) >= 1 },
     { id: "hundred_club", tier: "platinum", icon: "\u{1F4AF}", title: "100 Club", desc: "Completed 100 tasks total across all weeks.", check: (d) => DAYS.reduce((a, day) => a + (d.weekDays[day]?.tasks || []).filter((t) => t.done).length, 0) >= 100 },
     { id: "dedicated", tier: "gold", icon: "\u{1F396}\uFE0F", title: "Dedicated", desc: "Used the app for at least 4 weeks (4+ reflections).", check: (d) => (d.reflections || []).length >= 4 },
@@ -403,15 +429,15 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     { id: "medal_collector", tier: "gold", icon: "\u{1F5C2}\uFE0F", title: "Medal Collector", desc: "Earned 15 or more medals.", check: (d) => (d.earnedAchievements || []).length >= 15 },
     { id: "just_started", tier: "bronze", icon: "\u{1F389}", title: "Welcome!", desc: "Earned your first 5 medals.", check: (d) => (d.earnedAchievements || []).length >= 5 },
     // ── EASY QUICK WINS (immediately achievable actions) ──────────────────────
-    { id: "profile_complete", tier: "bronze", icon: "\u{1F464}", title: "All Set Up", desc: "Have at least one Key Indicator, one goal, and one task all at the same time.", check: (d) => (d.kis || []).length >= 1 && (d.yearlyGoals || []).length >= 1 && DAYS.some((day) => (d.weekDays[day]?.tasks || []).length > 0) },
-    { id: "goal_described", tier: "bronze", icon: "\u270D\uFE0F", title: "Why It Matters", desc: "Added a description to any yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => (g.description || "").length > 10) },
-    { id: "fin_goal_noted", tier: "bronze", icon: "\u{1F5D2}\uFE0F", title: "Money Memo", desc: "Added notes to a financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.notes || "").length > 5) },
-    { id: "fin_deadline", tier: "bronze", icon: "\u{1F4C6}", title: "On a Deadline", desc: "Set a target date on any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.deadline || "").length > 0) },
-    { id: "goal_deadline", tier: "bronze", icon: "\u{1F5D3}\uFE0F", title: "Race the Clock", desc: "Set a target date on any yearly goal.", check: (d) => (d.yearlyGoals || []).some((g) => (g.target || "").length > 0) },
+    { id: "profile_complete", tier: "bronze", icon: "\u{1F464}", title: "All Set Up", desc: "Have at least one Key Indicator, one goal, and one task all at the same time.", check: (d) => (d.kis || []).length >= 1 && _oView(d).length >= 1 && DAYS.some((day) => (d.weekDays[day]?.tasks || []).length > 0) },
+    { id: "goal_described", tier: "bronze", icon: "\u270D\uFE0F", title: "Why It Matters", desc: "Added a description to any yearly goal.", check: (d) => _oView(d).some((g) => (g.description || "").length > 10) },
+    { id: "fin_goal_noted", tier: "bronze", icon: "\u{1F5D2}\uFE0F", title: "Money Memo", desc: "Added notes to a financial goal.", check: (d) => _nView(d).some((g) => (g.notes || "").length > 5) },
+    { id: "fin_deadline", tier: "bronze", icon: "\u{1F4C6}", title: "On a Deadline", desc: "Set a target date on any financial goal.", check: (d) => _nView(d).some((g) => (g.deadline || "").length > 0) },
+    { id: "goal_deadline", tier: "bronze", icon: "\u{1F5D3}\uFE0F", title: "Race the Clock", desc: "Set a target date on any yearly goal.", check: (d) => _oView(d).some((g) => _dl(g).length > 0) },
     { id: "task_with_notes", tier: "bronze", icon: "\u{1F4CE}", title: "Extra Detail", desc: "Added notes to a weekly task.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).some((t) => (t.notes || "").length > 0)) },
     { id: "ten_tasks_planned", tier: "bronze", icon: "\u{1F5C3}\uFE0F", title: "Ten on the List", desc: "Have 10 or more tasks planned across your week.", check: (d) => DAYS.reduce((a, day) => a + (d.weekDays[day]?.tasks || []).length, 0) >= 10 },
     { id: "three_categories", tier: "bronze", icon: "\u{1F3AD}", title: "Well-Rounded", desc: "Have tasks in at least 3 different life categories.", check: (d) => new Set(DAYS.flatMap((day) => (d.weekDays[day]?.tasks || []).map((t) => t.category))).size >= 3 },
-    { id: "five_milestones", tier: "bronze", icon: "\u{1F5FA}\uFE0F", title: "Roadmap Ready", desc: "Added 5 or more milestones to a single goal.", check: (d) => (d.yearlyGoals || []).some((g) => (g.steps || []).length >= 5) },
+    { id: "five_milestones", tier: "bronze", icon: "\u{1F5FA}\uFE0F", title: "Roadmap Ready", desc: "Added 5 or more milestones to a single goal.", check: (d) => _oView(d).some((g) => _ms(g).length >= 5) },
     { id: "reflect_wentwell", tier: "bronze", icon: "\u{1F31F}", title: "Count Your Wins", desc: "Filled in 'What Went Well' in your first reflection.", check: (d) => (d.reflections || []).some((r) => (r.wentWell || "").length > 5) },
     { id: "monday_task", tier: "bronze", icon: "\u{1F304}", title: "Strong Start", desc: "Added a task on Monday.", check: (d) => (d.weekDays["Monday"]?.tasks || []).length >= 1 },
     { id: "friday_task", tier: "bronze", icon: "\u{1F38A}", title: "Finish Strong", desc: "Added a task on Friday.", check: (d) => (d.weekDays["Friday"]?.tasks || []).length >= 1 },
@@ -419,17 +445,17 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     { id: "ki_goal_20", tier: "bronze", icon: "\u{1F516}", title: "Ambitious Tracker", desc: "Set a weekly indicator goal of 20 or more.", check: (d) => _hasAnyKIActivity(d) && (d.kis || []).some((k2) => k2.weeklyGoal >= 20) },
     { id: "two_reflections", tier: "bronze", icon: "\u{1FAB4}", title: "Checking In", desc: "Saved 2 weekly reflections.", check: (d) => (d.reflections || []).length >= 2 },
     // ── PROGRESS MILESTONES ────────────────────────────────────────────────────
-    { id: "fin_25pct", tier: "bronze", icon: "\u{1F4B9}", title: "Building Momentum", desc: "Reached 25% on any financial goal.", check: (d) => (d.financialGoals || []).some((g) => g.targetAmount > 0 && (g.saved || 0) / g.targetAmount >= 0.25) },
-    { id: "fin_75pct", tier: "silver", icon: "\u{1F3C1}", title: "Almost Funded", desc: "Reached 75% on any financial goal.", check: (d) => (d.financialGoals || []).some((g) => g.targetAmount > 0 && (g.saved || 0) / g.targetAmount >= 0.75) },
-    { id: "fin_save_250", tier: "bronze", icon: "\u{1F4B0}", title: "Getting Started", desc: "Saved $250 toward any financial goal.", check: (d) => (d.financialGoals || []).some((g) => (g.saved || 0) >= 250) },
-    { id: "fin_save_2500", tier: "silver", icon: "\u{1F3E7}", title: "Quarter Way to 10K", desc: "Saved $2,500 across your financial goals.", check: (d) => (d.financialGoals || []).reduce((a, g) => a + (g.saved || 0), 0) >= 2500 },
-    { id: "total_saved_1k", tier: "silver", icon: "\u{1F3E6}", title: "Thousand Dollar Club", desc: "Saved $1,000 total across all financial goals combined.", check: (d) => (d.financialGoals || []).reduce((a, g) => a + (g.saved || 0), 0) >= 1e3 },
-    { id: "goal_added_step", tier: "bronze", icon: "\u{1F463}", title: "Next Action", desc: "Added a 'this week's step' to a goal that's under 50%.", check: (d) => (d.yearlyGoals || []).some((g) => g.progress < 50 && (g.weekSteps || "").length > 0) },
+    { id: "fin_25pct", tier: "bronze", icon: "\u{1F4B9}", title: "Building Momentum", desc: "Reached 25% on any financial goal.", check: (d) => _nView(d).some((g) => _gp(g) >= 25) },
+    { id: "fin_75pct", tier: "silver", icon: "\u{1F3C1}", title: "Almost Funded", desc: "Reached 75% on any financial goal.", check: (d) => _nView(d).some((g) => _gp(g) >= 75) },
+    { id: "fin_save_250", tier: "bronze", icon: "\u{1F4B0}", title: "Getting Started", desc: "Saved $250 toward any financial goal.", check: (d) => _nView(d).some((g) => _cur(g) >= 250) },
+    { id: "fin_save_2500", tier: "silver", icon: "\u{1F3E7}", title: "Quarter Way to 10K", desc: "Saved $2,500 across your financial goals.", check: (d) => _nView(d).reduce((a, g) => a + _cur(g), 0) >= 2500 },
+    { id: "total_saved_1k", tier: "silver", icon: "\u{1F3E6}", title: "Thousand Dollar Club", desc: "Saved $1,000 total across all financial goals combined.", check: (d) => _nView(d).reduce((a, g) => a + _cur(g), 0) >= 1e3 },
+    { id: "goal_added_step", tier: "bronze", icon: "\u{1F463}", title: "Next Action", desc: "Added a 'this week's step' to a goal that's under 50%.", check: (d) => _oView(d).some((g) => _gp(g) < 50 && _ws(g).length > 0) },
     { id: "three_done_tasks", tier: "bronze", icon: "\u2705", title: "Triple Check", desc: "Completed 3 tasks in a single day.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).filter((t) => t.done).length >= 3) },
     { id: "five_done_tasks", tier: "silver", icon: "\u{1F320}", title: "Power Day", desc: "Completed 5 tasks in a single day.", check: (d) => DAYS.some((day) => (d.weekDays[day]?.tasks || []).filter((t) => t.done).length >= 5) },
     { id: "goals_half_done", tier: "silver", icon: "\u{1F33B}", title: "Halfway Champion", desc: "Have more than half of your yearly goals at 50%+.", check: (d) => {
-      const g = d.yearlyGoals || [];
-      return g.length >= 2 && g.filter((x) => x.progress >= 50).length > g.length / 2;
+      const g = _oView(d);
+      return g.length >= 2 && g.filter((x) => _gp(x) >= 50).length > g.length / 2;
     } },
     // ── CONSISTENCY REWARDS ────────────────────────────────────────────────────
     { id: "reflect_3", tier: "bronze", icon: "\u{1F4D2}", title: "Building the Habit", desc: "Saved 3 weekly reflections.", check: (d) => (d.reflections || []).length >= 3 },
@@ -443,7 +469,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     } },
     { id: "ki_all_logged", tier: "bronze", icon: "\u{1F4CB}", title: "Full Scorecard", desc: "Logged a value for every Key Indicator you have at least once.", check: (d) => (d.kis || []).length > 0 && (d.kis || []).every((k2) => Object.values(k2.dailyLogs || {}).some((v) => v > 0)) },
     { id: "deposit_weekly", tier: "silver", icon: "\u{1F4C5}", title: "Weekly Saver", desc: "Made at least one deposit every week for 3 weeks (3+ deposits on different dates).", check: (d) => {
-      const dates = new Set((d.financialGoals || []).flatMap((g) => (g.deposits || []).map((dep) => dep.date)));
+      const dates = new Set(_nView(d).flatMap((g) => _dep(g).map((dep) => dep.date)));
       return dates.size >= 3;
     } },
     { id: "reflect_rate5", tier: "bronze", icon: "\u2B50", title: "Honest Reviewer", desc: "Saved a reflection with any rating.", check: (d) => (d.reflections || []).length >= 1 },
@@ -451,10 +477,10 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     { id: "three_ki_goals_met", tier: "silver", icon: "\u{1F531}", title: "Triple Target", desc: "Hit the weekly goal on 3 Key Indicators in the same week.", check: (d) => (d.kis || []).filter((k2) => Object.values(k2.dailyLogs || {}).reduce((a, b) => a + (parseFloat(b) || 0), 0) >= k2.weeklyGoal).length >= 3 },
     // ── FUN / PERSONALITY ─────────────────────────────────────────────────────
     { id: "planner_fanatic", tier: "silver", icon: "\u{1F5C2}\uFE0F", title: "Planner Fanatic", desc: "Have 20 or more tasks planned across your week.", check: (d) => DAYS.reduce((a, day) => a + (d.weekDays[day]?.tasks || []).length, 0) >= 20 },
-    { id: "goal_rich", tier: "gold", icon: "\u{1F48E}", title: "Goal Rich", desc: "Have 8 or more yearly goals created.", check: (d) => (d.yearlyGoals || []).length >= 8 },
+    { id: "goal_rich", tier: "gold", icon: "\u{1F48E}", title: "Goal Rich", desc: "Have 8 or more yearly goals created.", check: (d) => _oView(d).length >= 8 },
     { id: "ki_obsessed", tier: "gold", icon: "\u{1F4E1}", title: "Indicator Obsessed", desc: "Created 8 or more Key Indicators.", check: (d) => _hasAnyKIActivity(d) && (d.kis || []).length >= 8 },
     { id: "notes_writer", tier: "silver", icon: "\u{1F58B}\uFE0F", title: "Wordsmith", desc: "Have day notes on 5 or more days.", check: (d) => DAYS.filter((day) => (d.weekDays[day]?.notes || "").length > 10).length >= 5 },
-    { id: "finance_diverse", tier: "gold", icon: "\u{1F9FA}", title: "Diversified", desc: "Have financial goals in 4 different categories.", check: (d) => new Set((d.financialGoals || []).map((g) => g.category)).size >= 4 },
+    { id: "finance_diverse", tier: "gold", icon: "\u{1F9FA}", title: "Diversified", desc: "Have financial goals in 4 different categories.", check: (d) => new Set(_nView(d).map((g) => g.category)).size >= 4 },
     { id: "all_tasks_done_week", tier: "gold", icon: "\u{1F396}\uFE0F", title: "Zero Backlog", desc: "Completed every single planned task for the week.", check: (d) => {
       const all = DAYS.flatMap((day) => d.weekDays[day]?.tasks || []);
       return all.length >= 5 && all.every((t) => t.done);
@@ -471,7 +497,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     { id: "pro_planner", tier: "emerald", icon: "\u{1F5FA}\uFE0F", title: "Pro Planner", desc: "Used the Pro weekly planning wizard as a Pro member.", check: (d, s, u) => u?.isPro && (s.proWizardUsed || 0) >= 1 },
     { id: "pro_ai_coach", tier: "emerald", icon: "\u{1F916}", title: "AI-Coached", desc: "Sent your first message to the AI Coach as a Pro member.", check: (d, s, u) => u?.isPro && (d.aiCoachUsed || false) },
     { id: "pro_cal_sync", tier: "emerald", icon: "\u{1F517}", title: "Calendar Synced", desc: "Synced your plan to Google Calendar as a Pro member.", check: (d, s, u) => u?.isPro && d.calendarConnected },
-    { id: "milestone_gate_1", tier: "silver", icon: "\u{1F6AA}", title: "Gated Progress", desc: "Completed a milestone that unlocked goal progress (Pro).", check: (d) => (d.yearlyGoals || []).some((g) => g.milestonesRequired && (g.steps || []).some((s) => s.done)) },
+    { id: "milestone_gate_1", tier: "silver", icon: "\u{1F6AA}", title: "Gated Progress", desc: "Completed a milestone that unlocked goal progress (Pro).", check: (d) => _oView(d).some((g) => g.milestonesRequired && _ms(g).some((s) => s.done)) },
     { id: "calorie_calc_used", tier: "bronze", icon: "\u{1F957}", title: "Nutrition Navigator", desc: "Used the calorie calculator on a Physical goal.", check: (d, s) => (s.calorieCalcUsed || 0) >= 1 }
   ];
   var TIER_COLORS = {
@@ -605,7 +631,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
           if (!parsed.weekDays[d]) parsed.weekDays[d] = { tasks: [], events: [], notes: "", dayNote: "" };
         });
       }
-      return parsed;
+      return _attachGoals(parsed);
     } catch {
       return null;
     }
@@ -616,11 +642,12 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     try {
       const { data: data2, error } = await sb.from("planner_data").select("data").eq("user_id", id).single();
       if (!error && data2?.data) {
+        const migrated = _attachGoals(data2.data);
         try {
-          localStorage.setItem(`${STORE_KEY}_${id}`, JSON.stringify(data2.data));
+          localStorage.setItem(`${STORE_KEY}_${id}`, JSON.stringify(migrated));
         } catch (e) {
         }
-        return data2.data;
+        return migrated;
       }
     } catch (e) {
       console.warn("[Storage] Cloud load failed, using localStorage:", e);
@@ -861,6 +888,58 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
         return false;
       }
     }).map((a) => a.id);
+  }
+  function getAchievementProgress(id, d, s) {
+    if (!d) return null;
+    const goals = d.yearlyGoals || [];
+    const kis = d.kis || [];
+    const finGoals = d.financialGoals || [];
+    const journals = d.journals || [];
+    const reflections = d.reflections || [];
+    const totalTasks = DAYS.reduce((a, day) => a + (d.weekDays?.[day]?.tasks || []).length, 0);
+    const daysPlanned = DAYS.filter(day => (d.weekDays?.[day]?.tasks || []).length >= 1).length;
+    const totalMilestones = goals.reduce((a, g) => a + (g.steps || []).length, 0);
+    const doneMilestones = goals.reduce((a, g) => a + (g.steps || []).filter(x => x.done).length, 0);
+    const totalDeposits = finGoals.reduce((a, g) => a + (g.deposits || []).length, 0);
+    const maxSaved = finGoals.reduce((m, g) => Math.max(m, g.saved || 0), 0);
+    const bestGoalProg = goals.reduce((m, g) => Math.max(m, g.progress || 0), 0);
+    const doneGoals = goals.filter(g => g.progress >= 100).length;
+    const doneFin = finGoals.filter(g => g.targetAmount > 0 && (g.saved || 0) >= g.targetAmount).length;
+    const wordCount = journals.reduce((t, e) => t + (e.text || "").split(/\s+/).filter(Boolean).length, 0);
+    const jStreak = (() => { if (!journals.length) return 0; const ds = new Set(journals.map(e => e.date)); const now = new Date(); let st = 0; for (let i = 0; i < 400; i++) { const dd = new Date(now); dd.setDate(dd.getDate() - i); if (ds.has(dd.toLocaleDateString("en-CA"))) st++; else if (st > 0) break; } return st; })();
+    const earnedLen = (d.earnedAchievements || []).length;
+    const st = s || {};
+    const P = {
+      first_ki: [_userActiveKIs(d).length, 1], first_goal: [goals.length, 1], first_task: [totalTasks, 1],
+      first_reflection: [reflections.length, 1], first_fin_goal: [finGoals.length, 1], first_milestone: [totalMilestones, 1],
+      first_deposit: [totalDeposits, 1], five_tasks: [totalTasks, 5], three_kis: [kis.length, 3],
+      two_goals: [goals.length, 2], two_fin_goals: [finGoals.length, 2],
+      full_week_planned: [daysPlanned, 7], goal_10: [Math.min(bestGoalProg, 10), 10],
+      ki_5_indicators: [kis.length, 5],
+      ki_2streak: [st.kiStreak || 0, 2], ki_3streak: [st.kiStreak || 0, 3], ki_5streak: [st.kiStreak || 0, 5],
+      ki_8streak: [st.kiStreak || 0, 8], ki_12streak: [st.kiStreak || 0, 12],
+      goal_25: [Math.min(bestGoalProg, 25), 25], goal_50: [Math.min(bestGoalProg, 50), 50],
+      goal_75: [Math.min(bestGoalProg, 75), 75], goal_100: [Math.min(bestGoalProg, 100), 100],
+      goals_2done: [doneGoals, 2], goals_3done: [doneGoals, 3], goals_5set: [goals.length, 5], goals_10set: [goals.length, 10],
+      milestone_5: [totalMilestones, 5], milestones_10done: [doneMilestones, 10], weekly_step_5: [st.weekStepsSet || 0, 5],
+      fin_3deposits: [totalDeposits, 3], fin_10deposits: [totalDeposits, 10],
+      fin_save_100: [Math.min(maxSaved, 100), 100], fin_save_500: [Math.min(maxSaved, 500), 500],
+      fin_save_1k: [Math.min(maxSaved, 1e3), 1e3], fin_save_5k: [Math.min(maxSaved, 5e3), 5e3], fin_save_10k: [Math.min(maxSaved, 1e4), 1e4],
+      fin_goal_done: [doneFin, 1], fin_2done: [doneFin, 2], fin_3done: [doneFin, 3], fin_5goals: [finGoals.length, 5],
+      journal_first: [journals.length, 1], journal_10entries: [journals.length, 10],
+      journal_50entries: [journals.length, 50], journal_100entries: [journals.length, 100],
+      journal_3day: [jStreak, 3], journal_7day: [jStreak, 7], journal_14day: [jStreak, 14],
+      journal_30day: [jStreak, 30], journal_60day: [jStreak, 60], journal_90day: [jStreak, 90],
+      journal_180day: [jStreak, 180], journal_365day: [jStreak, 365],
+      journal_5k_words: [wordCount, 5e3], journal_25k_words: [wordCount, 2.5e4], journal_50k_words: [wordCount, 5e4],
+      reflect_2: [reflections.length, 2], reflect_5: [reflections.length, 5],
+      intel_ki_streak: [st.intelStreak || 0, 3], social_ki_streak: [st.socialStreak || 0, 3],
+      phys_ki_streak: [st.physStreak || 0, 3], spirit_ki_streak: [st.spiritStreak || 0, 3],
+      just_started: [earnedLen, 5], medal_collector: [earnedLen, 15], overachiever: [earnedLen, 25],
+    };
+    const entry = P[id];
+    if (!entry) return null;
+    return { current: Math.min(entry[0], entry[1]), target: entry[1], raw: entry[0] };
   }
   function Ring({ pct, size = 72, stroke = 6, color = "#4f9cf9" }) {
     const r = (size - stroke) / 2, circ = 2 * Math.PI * r, dash = circ * Math.min(pct / 100, 1);
@@ -1104,7 +1183,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
       *:focus-visible{outline:2px solid rgba(99,102,241,0.7)!important;outline-offset:2px!important}
       input[type=number]::-webkit-inner-spin-button{opacity:0.4}
       input[type=range]{accent-color:#6366f1}
-      .tab-content{animation:fadeSlideIn 0.28s cubic-bezier(.16,1,.3,1)}
+      .tab-content{}
 
       /* \u2500\u2500 Responsive breakpoints \u2500\u2500 */
       @media(max-width:640px){
@@ -1264,7 +1343,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
       .copy-flash{animation:copyFlash 0.3s ease}
       .weight-entry{animation:weightUp 0.25s cubic-bezier(.34,1.56,.64,1)}
       @keyframes tabFadeIn{from{opacity:0;transform:translateY(8px) scale(0.99)}to{opacity:1;transform:none}}
-      .tab-content{animation:tabFadeIn 0.22s cubic-bezier(.34,1.56,.64,1)}
+      .tab-content{}
       @keyframes badgePop{0%{transform:scale(0) rotate(-15deg)}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
       @keyframes slideInLeft{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
       @keyframes slideInRight{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
@@ -1409,7 +1488,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
           ] }) : "\u2709\uFE0F Send Reset Link"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", marginTop: 16, fontSize: 11, color: "rgba(255,255,255,0.25)" }, children: "Link expires in 1 hour \xB7 Check your spam folder" })
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", marginTop: 16, fontSize: 11, color: "rgba(255,255,255,0.4)" }, children: "Link expires in 1 hour \xB7 Check your spam folder" })
     ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "16px 0" }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 72, animation: "envelopeFloat 2.5s ease-in-out infinite", display: "inline-block", marginBottom: 8 }, children: "\u2709\uFE0F" }),
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 56, height: 56, borderRadius: "50%", background: "rgba(52,201,138,0.12)", border: "2px solid rgba(52,201,138,0.4)", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center", animation: "successRing 0.5s cubic-bezier(.34,1.56,.64,1)" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M5 13l4 4L19 7", stroke: "#34c98a", strokeWidth: "2.5", strokeLinecap: "round", strokeLinejoin: "round", strokeDasharray: "60", strokeDashoffset: "0", style: { animation: "checkDraw 0.4s ease 0.2s both" } }) }) }),
@@ -1452,7 +1531,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
       return Array.from({ length: 16 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
     };
-    const genBackupCodes = () => Array.from({ length: parseInt(data2.waterGoal) || 8 }, () => Math.random().toString(36).slice(2, 10).toUpperCase());
+    const genBackupCodes = () => Array.from({ length: 8 }, () => Math.random().toString(36).slice(2, 10).toUpperCase());
     const handleDigit = (val, i, digArr, setDigArr) => {
       if (!/^\d?$/.test(val)) return;
       const next = [...digArr];
@@ -1683,15 +1762,17 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
       }
     });
   }
-  function MedalCard({ achievement, earned }) {
+  function MedalCard({ achievement, earned, progress }) {
     const tc2 = TIER_COLORS[achievement.tier];
+    const pct = progress && progress.target > 0 ? Math.min(progress.current / progress.target * 100, 100) : 0;
+    const fmtNum = (n) => n >= 1e4 ? `${(n / 1e3).toFixed(n >= 1e5 ? 0 : 1)}k` : n.toLocaleString();
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: {
       background: earned ? tc2.bg : "rgba(255,255,255,0.02)",
       border: `1px solid ${earned ? tc2.border : "rgba(255,255,255,0.07)"}`,
       borderRadius: 14,
       padding: "14px 16px",
       boxShadow: earned ? `0 0 22px ${tc2.glow}, 0 4px 16px rgba(0,0,0,0.3)` : "none",
-      opacity: earned ? 1 : 0.45,
+      opacity: earned ? 1 : 0.55,
       transition: "all 0.3s ease",
       position: "relative",
       overflow: "hidden"
@@ -1714,7 +1795,18 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
               padding: "1px 5px"
             }, children: achievement.tier })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", lineHeight: 1.5 }, children: achievement.desc })
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", lineHeight: 1.5 }, children: achievement.desc }),
+          !earned && progress && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 6 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 3 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 10, color: pct > 0 ? tc2.text : "rgba(255,255,255,0.3)", fontWeight: 600 }, children: [
+                fmtNum(progress.raw != null ? progress.raw : progress.current), " / ", fmtNum(progress.target)
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "rgba(255,255,255,0.25)" }, children: `${Math.round(pct)}%` })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: 3, background: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" }, children:
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", width: `${pct}%`, background: `linear-gradient(90deg,${tc2.border},${tc2.text})`, borderRadius: 3, transition: "width 0.6s ease" } })
+            })
+          ] })
         ] }),
         earned && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 20, height: 20, borderRadius: "50%", background: tc2.border, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, flexShrink: 0 }, children: "\u2713" })
       ] })
@@ -2225,7 +2317,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
         ].map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(17,24,39,0.6)", borderRadius: 10, padding: "12px 10px", textAlign: "center", border: "1px solid rgba(51,65,85,0.35)" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 20, fontWeight: 800, color: s.color, fontFamily: "'Syne',serif" }, children: s.value }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "rgba(255,255,255,0.4)", marginTop: 3 }, children: s.label }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "rgba(255,255,255,0.25)" }, children: s.unit })
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "rgba(255,255,255,0.4)" }, children: s.unit })
         ] }, s.label)) }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(79,156,249,0.06)", borderRadius: 12, padding: "14px 16px", marginBottom: 16, border: "1px solid rgba(79,156,249,0.15)" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#4f9cf9", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }, children: "Recommended Daily Macros" }),
@@ -2241,7 +2333,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#34c98a", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }, children: "Sample Foods to Eat" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }, children: foods.map((f, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, color: "rgba(255,255,255,0.7)", padding: "5px 8px", background: "rgba(15,23,42,0.5)", borderRadius: 7 }, children: f }, i)) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 12, fontSize: 11, color: "rgba(255,255,255,0.25)", fontStyle: "italic" }, children: "* Based on Mifflin-St Jeor formula. Consult a physician or registered dietitian for personalized advice." })
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 12, fontSize: 11, color: "rgba(255,255,255,0.4)", fontStyle: "italic" }, children: "* Based on Mifflin-St Jeor formula. Consult a physician or registered dietitian for personalized advice." })
       ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "20px 0", color: "rgba(100,116,139,0.7)", fontSize: 13 }, children: "Fill in your details above to see your calorie plan." })
     ] }) });
   }
@@ -2268,7 +2360,9 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
 
   function _useAppStateImpl() {
     const [authUser, setAuthUserRaw] = useState(() => loadAuth());
-    const [data2, setDataRaw] = useState(() => authUser ? loadData(authUser.id) || mkDefault() : null);
+    const authUserRef = useRef(authUser);
+    useEffect(() => { authUserRef.current = authUser; }, [authUser]);
+    const [data2, setDataRaw] = useState(() => authUser ? loadData(authUser.id) || _attachGoals(mkDefault()) : null);
     useEffect(() => {
       _restoreCloudSession((user) => {
         setAuthUserRaw(user);
@@ -2280,20 +2374,20 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
         return;
       }
       if (authUser.id === "guest") {
-        const cached = loadData("guest") || mkDefault();
+        const cached = loadData("guest") || _attachGoals(mkDefault());
         setDataRaw(cached);
         setTimeout(() => setAnimInRaw(true), 80);
         return; // no cloud, no subscription
       }
-      const cached = loadData(authUser.id) || mkDefault();
+      const cached = loadData(authUser.id) || _attachGoals(mkDefault());
       setDataRaw(cached);
       setTimeout(() => setAnimInRaw(true), 80);
       loadDataCloud(authUser.id).then((cloudData) => {
-        if (cloudData) setDataRaw((prev) => ({ ...prev || mkDefault(), ...cloudData }));
+        if (cloudData) setDataRaw((prev) => _attachGoals({ ...prev || mkDefault(), ...cloudData }));
       }).catch(() => {
       });
       const unsub = _subscribeToData(authUser.id, (remoteData) => {
-        setDataRaw((prev) => ({ ...prev || mkDefault(), ...remoteData }));
+        setDataRaw((prev) => _attachGoals({ ...prev || mkDefault(), ...remoteData }));
       });
       return unsub;
     }, [authUser?.id]);
@@ -2478,8 +2572,9 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     // ── RevenueCat WebView bridge ─────────────────────────────────────────
     useEffect(() => {
       window.__rcBridge = (msg) => {
+        const currentUser = authUserRef.current;
         if (msg.type === 'PURCHASE_SUCCESS' && msg.isPro) {
-          const u = { ...authUser, isPro: true };
+          const u = { ...currentUser, isPro: true };
           saveAuth(u);
           setAuthUserRaw(u);
           try {
@@ -2493,7 +2588,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
           addToast2('🎉 Welcome to Pro! All features unlocked.', '✅');
         }
         if (msg.type === 'RESTORE_SUCCESS' && msg.isPro) {
-          const u = { ...authUser, isPro: true };
+          const u = { ...currentUser, isPro: true };
           saveAuth(u);
           setAuthUserRaw(u);
           try {
@@ -2504,7 +2599,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
           addToast2('✅ Pro access restored!', '✅');
         }
         if (msg.type === 'PRO_STATUS' && msg.isPro) {
-          const u = { ...authUser, isPro: true };
+          const u = { ...currentUser, isPro: true };
           saveAuth(u);
           setAuthUserRaw(u);
           upd2((p) => ({ ...p, isPro: true }));
@@ -2598,17 +2693,17 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
       if (!data2) return 0;
       const ks = (data2.kis || []).filter((k2) => k2.category === catId);
       if (!ks.length) return 0;
-      return Math.round(ks.reduce((a, k2) => a + Math.min(kiTotal(k2) / k2.weeklyGoal, 1), 0) / ks.length * 100);
+      return Math.round(ks.reduce((a, k2) => a + Math.min(kiTotal(k2) / (k2.weeklyGoal || 1), 1), 0) / ks.length * 100);
     }, [data2]);
     const overallPct = useCallback(() => {
       if (!data2 || !(data2.kis || []).length) return 0;
-      return Math.round((data2.kis || []).reduce((a, k2) => a + Math.min(kiTotal(k2) / k2.weeklyGoal, 1), 0) / (data2.kis || []).length * 100);
+      return Math.round((data2.kis || []).reduce((a, k2) => a + Math.min(kiTotal(k2) / (k2.weeklyGoal || 1), 1), 0) / (data2.kis || []).length * 100);
     }, [data2]);
     const selDay = data2?.selectedDay || "Monday";
     const [animInRaw, setAnimInRaw] = useState(false);
     const [toasts, setToastsRaw] = useState([]);
     const addToast2 = (msg, icon = "\u2728") => setToastsRaw((t) => [...t, { id: uid(), icon, title: msg }].slice(-5));
-    const prevEarned = useRef([]);
+    const prevEarned = useRef(null);
     const chatEndRef = useRef(null);
     const autoSaveTimer = useRef(null);
     const syncStatusTimer = useRef(null);
@@ -2753,7 +2848,9 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
         return DEFAULT_TABS.map((t) => t.id);
       }
     });
-    const [chatMessages, setChatMessages] = useState([]);
+    const [chatMessages, setChatMessages] = useState(() => {
+      try { const s = localStorage.getItem("up_coach_chat"); return s ? JSON.parse(s) : []; } catch { return []; }
+    });
     const [chatInput, setChatInput] = useState("");
     const [chatLoading, setChatLoading] = useState(false);
     const [coachLoading, setCoachLoading] = useState(false);
@@ -2819,11 +2916,10 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
       const scrollTop = Math.max(0, (now.getHours() - 1) * 96); // SH*2=96 per hour (SH=48)
       setTimeout(() => { el.scrollTop = scrollTop; }, 100);
     }, [weeklySubTab]);
-    // Skeleton loading: mark data as ready after 500ms on first mount
+    // Mark data as loaded once we have valid data (no artificial delay)
     useEffect(() => {
-      const t = setTimeout(() => setDataLoaded(true), 500);
-      return () => clearTimeout(t);
-    }, []);
+      if (data2 && !dataLoaded) setDataLoaded(true);
+    }, [data2]);
     const [goalCatFilter, setGoalCatFilter] = useState("all");
     const [goalSort, setGoalSort] = useState("added"); // "added" | "progress-asc" | "progress-desc" | "az"
     const [goalMilestoneAiLoading, setGoalMilestoneAiLoading] = useState(null);
@@ -2852,6 +2948,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     useEffect(() => { localStorage.setItem('up_last_tab', tab); }, [tab]);
     useEffect(() => { localStorage.setItem('up_last_plan_sub_tab', planSubTab); }, [planSubTab]);
     useEffect(() => { localStorage.setItem('up_last_weekly_sub_tab', weeklySubTab); }, [weeklySubTab]);
+    useEffect(() => { try { localStorage.setItem('up_coach_chat', JSON.stringify(chatMessages.slice(-50))); } catch {} }, [chatMessages]);
     return {
       authUser,
       setAuthUser,
@@ -3371,7 +3468,6 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     "Overhead Dumbbell Extension": _exImg("Overhead Dumbbell Extension"),
     "Close-Grip Bench Press": _exImg("Close-Grip Bench Press"),
     "Dumbbell Kickback": _exImg("Dumbbell Kickback"),
-    "Diamond Push-Up": _exImg("Diamond Push-Up"),
     "Machine Dip": _exImg("Machine Dip"),
     // LEGS
     "Barbell Squat": _exImg("Barbell Squat"),
@@ -3389,7 +3485,6 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     "Calf Raise": _exImg("Calf Raise"),
     "Seated Calf Raise": _exImg("Seated Calf Raise"),
     "Step-Up": _exImg("Step-Up"),
-    "Sumo Deadlift": _exImg("Sumo Deadlift"),
     "Box Jump": _exImg("Box Jump"),
     "Jump Squat": _exImg("Jump Squat"),
     // CORE
@@ -3445,7 +3540,7 @@ function GcalSetupModal({ data, upd, addToast, connectGoogleCalendar, S }) {
     cardio: _exImg("Running"),
     fullbody: _exImg("Clean and Press")
   };
-  var getExImg = (name, category) => EXERCISE_IMG[name] || _exImg(name) || getExerciseIllustration(name) || CAT_IMG[category] || CAT_IMG.fullbody;
+  var getExImg = (name, category) => getExerciseIllustration(name) || EXERCISE_IMG[name] || _exImg(name) || CAT_IMG[category] || CAT_IMG.fullbody;
   var ALL_EXERCISES = Object.entries(EXERCISE_LIBRARY).flatMap(([cat, exs]) => exs.map((e) => ({ ...e, category: cat })));
   var WORKOUT_TEMPLATES_DEFAULT = [
     { id: "push", name: "Push Day", emoji: "\u{1F4AA}", desc: "Chest, Shoulders & Triceps", color: "#4f9cf9", exercises: [
@@ -4709,7 +4804,7 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
                 ] }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "rgba(100,116,139,0.7)", marginTop: 2 }, children: m.note })
               ] }, m.l)) }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 10, fontSize: 10, color: "rgba(255,255,255,0.25)", fontStyle: "italic" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 10, fontSize: 10, color: "rgba(255,255,255,0.4)", fontStyle: "italic" }, children: [
                 "Protein: ",
                 proteinG * 4,
                 " cal \xB7 Carbs: ",
@@ -4732,7 +4827,7 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
             ] })
           ] });
         })(),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.25)", fontStyle: "italic", marginTop: 4 }, children: "* Estimates based on Mifflin-St Jeor formula. Consult a dietitian for personalized advice." }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", fontStyle: "italic", marginTop: 4 }, children: "* Estimates based on Mifflin-St Jeor formula. Consult a dietitian for personalized advice." }),
         (data2.weightHistory || []).length > 1 && (() => {
           const wh = (data2.weightHistory || []).slice(0, 14).reverse();
           const weights = wh.map((e) => e.weight);
@@ -5163,7 +5258,7 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
               "/ ",
               parseInt(data2.waterGoal) || 8
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.25)", marginTop: 2 }, children: "glasses" })
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 2 }, children: "glasses" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 4, marginBottom: 8 }, children: Array.from({ length: 8 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "button",
@@ -5528,7 +5623,7 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
       setSession((s) => {
         const exs = [...(s.exercises || [])];
         const sets = [...(exs[exIdx]?.sets || [])];
-        sets[setIdx] = { ...sets[setIdx], [field]: isNaN(parseInt(val)) ? val : parseInt(val) };
+        sets[setIdx] = { ...sets[setIdx], [field]: isNaN(parseFloat(val)) ? val : parseFloat(val) };
         exs[exIdx] = { ...exs[exIdx], sets };
         return { ...s, exercises: exs };
       });
@@ -5836,7 +5931,7 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "#f97b4f", fontSize: 18, fontWeight: 700, flexShrink: 0 }, children: "\u2192" })
           ] }, i);
         }) }),
-        !exReplaceSearch && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "10px 0 2px", fontSize: 11, color: "rgba(255,255,255,0.25)" }, children: [
+        !exReplaceSearch && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "10px 0 2px", fontSize: 11, color: "rgba(255,255,255,0.4)" }, children: [
           "Showing ",
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "rgba(148,163,184,0.8)", fontWeight: 600 }, children: (session.exercises || [])[currentEx]?.category || "all" }),
           " exercises \xB7 Type to search all 120+"
@@ -6076,7 +6171,7 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
                   e.preventDefault();
                   updateExSet(exIdx, sIdx, "reps", (s.reps || 10) + 1);
                 }, style: sb, children: "+" }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "rgba(255,255,255,0.25)" }, children: "reps" })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "rgba(255,255,255,0.4)" }, children: "reps" })
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 3 }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onPointerDown: (e) => {
@@ -6088,7 +6183,7 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
                   e.preventDefault();
                   updateExSet(exIdx, sIdx, "weight", (s.weight || 0) + 5);
                 }, style: sb, children: "+" }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "rgba(255,255,255,0.25)" }, children: "lb" })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "rgba(255,255,255,0.4)" }, children: "lb" })
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                 "button",
@@ -6297,7 +6392,9 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
 
     const notifications = useMemo(() => {
       const items = [];
-      const now = Date.now();
+      // Use start-of-day as stable base so timestamps don't drift on every re-render
+      const dayStart = new Date(); dayStart.setHours(0, 0, 0, 0);
+      const baseTs = dayStart.getTime();
 
       // Workout streak notification
       const wh = appData?.workoutHistory || [];
@@ -6309,13 +6406,13 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
           if (daySet.has(`${cur.getFullYear()}-${cur.getMonth()}-${cur.getDate()}`)) { streak++; } else if (i > 0) break;
           cur.setDate(cur.getDate() - 1);
         }
-        if (streak >= 3) items.push({ id: "streak", icon: "\uD83D\uDD25", text: `You're on a ${streak}-day streak! Keep it up`, ts: now - 60000, tab: "health" });
+        if (streak >= 3) items.push({ id: "streak", icon: "\uD83D\uDD25", text: `You're on a ${streak}-day streak! Keep it up`, ts: baseTs + 4, tab: "health" });
       }
 
       // Tasks due today
       const todayName = DAYS[((new Date()).getDay() + 6) % 7];
       const todayPending = (appData?.weekDays?.[todayName]?.tasks || []).filter((t) => !t.done);
-      if (todayPending.length > 0) items.push({ id: "tasks", icon: "\u2705", text: `${todayPending.length} task${todayPending.length > 1 ? "s" : ""} due today`, ts: now - 120000, tab: "plan" });
+      if (todayPending.length > 0) items.push({ id: "tasks", icon: "\u2705", text: `${todayPending.length} task${todayPending.length > 1 ? "s" : ""} due today`, ts: baseTs + 3, tab: "plan" });
 
       // Budget: under this week
       const txs = appData?.transactions || [];
@@ -6323,18 +6420,18 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
       const weekSpend = txs.filter((t) => t.type === "expense" && new Date(t.date) >= wkStart).reduce((a, t) => a + Math.abs(t.amount || 0), 0);
       const weeklyBudgetTotal = (appData?.budgets?.categories || []).reduce((a, c) => a + (c.budget || 0), 0) / 4.33;
       if (weeklyBudgetTotal > 0 && weekSpend < weeklyBudgetTotal) {
-        items.push({ id: "budget", icon: "\uD83D\uDCB0", text: `You're $${Math.round(weeklyBudgetTotal - weekSpend)} under budget this week`, ts: now - 180000, tab: "finance" });
+        items.push({ id: "budget", icon: "\uD83D\uDCB0", text: `You're $${Math.round(weeklyBudgetTotal - weekSpend)} under budget this week`, ts: baseTs + 2, tab: "finance" });
       }
 
       // Journal not logged today
       const todayStr = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}-${String(new Date().getDate()).padStart(2, "0")}`;
       const journaledToday = (appData?.journals || []).some((j) => (j.date || j.createdAt || "").startsWith(todayStr));
-      if (!journaledToday) items.push({ id: "journal", icon: "\uD83D\uDCDA", text: "You haven't logged your journal today", ts: now - 240000, tab: "journal" });
+      if (!journaledToday) items.push({ id: "journal", icon: "\uD83D\uDCDA", text: "You haven't logged your journal today", ts: baseTs + 1, tab: "journal" });
 
       // Habits not logged today
       const kisArr = appData?.kis || [];
       if (kisArr.length > 0 && !kisArr.some((k) => ((k.dailyLogs || {})[todayName] || 0) > 0)) {
-        items.push({ id: "habits", icon: "\uD83C\uDF31", text: "No habits logged today \u2014 keep the streak alive!", ts: now - 300000, tab: "grow" });
+        items.push({ id: "habits", icon: "\uD83C\uDF31", text: "No habits logged today \u2014 keep the streak alive!", ts: baseTs, tab: "grow" });
       }
 
       return items;
@@ -6909,8 +7006,25 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
     };
     // Tabs that display the "What's New" red dot badge
     const _NEW_FEATURE_TABS = ['plan', 'health', 'finance', 'grow'];
-    // Helper — navigate + mark tab as seen
-    const _navToTab = (tabId) => { setTab(tabId); _markTabSeen(tabId); };
+    // Helper — navigate + mark tab as seen + update URL
+    const _validTabIds = DEFAULT_TABS.map(t => t.id);
+    const _navToTab = (tabId) => {
+      setTab(tabId); _markTabSeen(tabId);
+      const el = document.querySelector("main.scroll-fade"); if (el) el.scrollTop = 0;
+      document.title = (DEFAULT_TABS.find(t => t.id === tabId)?.label || "Home") + " — Ultimate Life Planner";
+      if (window.location.hash !== "#" + tabId) window.history.pushState({ tab: tabId }, "", "#" + tabId);
+    };
+    // Restore tab from URL hash on mount + handle browser back/forward
+    useEffect(() => {
+      const hashTab = window.location.hash.replace("#", "");
+      if (hashTab && _validTabIds.includes(hashTab) && hashTab !== tab) setTab(hashTab);
+      const onPop = (e) => {
+        const t = e.state?.tab || window.location.hash.replace("#", "");
+        if (t && _validTabIds.includes(t)) setTab(t);
+      };
+      window.addEventListener("popstate", onPop);
+      return () => window.removeEventListener("popstate", onPop);
+    }, []);
     const [showWeeklyReview, setShowWeeklyReview] = useState(() => {
       // Use user's preferred review day (0=Sun,1=Mon,...,6=Sat), default Sunday=0
       const prefDay = parseInt(localStorage.getItem('up_review_day') || '0');
@@ -7337,17 +7451,20 @@ Use real USDA nutrition data. Be precise about portions if mentioned; otherwise 
     useEffect(() => {
       if (!data2) return;
       const earned2 = evalAchievements(data2, data2.achievementStats, authUser);
+      // On first load, seed prevEarned without firing toasts
+      if (prevEarned.current === null) {
+        prevEarned.current = earned2;
+        // Still persist any newly computed achievements, but no toasts
+        if (earned2.length > 0) upd2((p) => ({ ...p, earnedAchievements: earned2 }));
+        return;
+      }
       const newOnes = earned2.filter((id) => !prevEarned.current.includes(id));
       if (newOnes.length > 0) {
-        newOnes.forEach((id) => {
-          const a = ACHIEVEMENTS.find((x) => x.id === id);
-          if (a) {
-            setToasts((t) => [...t, { id: uid(), icon: a.icon, title: a.title, achievementId: a.id }]);
-            if (!(data2.earnedAchievements || []).includes(id)) {
-              addToast2(`🏅 Achievement: ${a.title}`, "🏆");
-            }
-          }
-        });
+        // Show at most 1 achievement toast at a time, queue the rest
+        const a = ACHIEVEMENTS.find((x) => x.id === newOnes[0]);
+        if (a) {
+          setToasts((t) => [...t, { id: uid(), icon: a.icon, title: a.title, achievementId: a.id }]);
+        }
         upd2((p) => ({ ...p, earnedAchievements: earned2 }));
       }
       prevEarned.current = earned2;
@@ -8303,7 +8420,7 @@ Provide a complete negotiation strategy in this JSON format:
       ] });
       return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
         motion.div,
-        { className: "dash-fade-in", initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.32, ease: [0.34, 1.56, 0.64, 1] }, children: [
+        { initial: false, animate: { opacity: 1 }, children: [
         data2._isDemoMode && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(251,191,36,0.12)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 10, padding: "10px 16px", marginBottom: 16, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 13, color: "#fbbf24", flex: 1, fontFamily: "'DM Sans',sans-serif" }, children: "\uD83D\uDC4B You\u2019re viewing sample data. Clear it to start fresh \u2192" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => { upd2((prev) => ({ ...prev, yearlyGoals: [], financialGoals: [], weekDays: Object.fromEntries(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].map((d) => [d, { tasks: [], events: [], notes: "", dayNote: "" }])), kis: prev.kis.map((k) => ({ ...k, dailyLogs: {} })), _isDemoMode: false })); addToast2("Demo data cleared. Ready to build your own plan!", "\u2728"); }, style: { background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#fbbf24", padding: "5px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }, children: "Clear demo" })
@@ -8903,31 +9020,52 @@ Give me my 3-bullet coaching message for today.`;
         /* ── Today section ── */
         _sectionHeader("Today"),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: 10, marginBottom: 16 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "card-hover card-3d", style: { ...S2.card, display: "flex", alignItems: "center", gap: 16, cursor: "pointer" }, onClick: () => { setTab("grow"); setGrowSubTab("habits"); }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ring, { pct: overallPct(), size: 64, stroke: 5, color: "#4f9cf9" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 2, letterSpacing: "0.5px", textTransform: "uppercase" }, children: "Weekly Progress" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 24, fontWeight: 800, color: "#f1f5f9", animation: "countUp 0.4s cubic-bezier(.34,1.56,.64,1)" }, children: [
-                overallPct(),
-                "%"
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.25)" }, children: [
-                (data2.kis || []).length,
-                " indicator",
-                (data2.kis || []).length !== 1 ? "s" : ""
-              ] })
-            ] })
-          ] }),
-          CATS.map((cat) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "card-hover card-3d", style: { ...S2.card, borderLeft: `3px solid ${cat.color}`, padding: "16px 18px", cursor: "pointer" }, onClick: () => { setTab("grow"); setGrowSubTab("habits"); }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 7 }, children: [
+          (() => {
+            const _oP = overallPct();
+            const _hasKIs = (data2.kis || []).length > 0;
+            return _oP === 0 && !_hasKIs ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "card-hover card-3d", style: { ...S2.card, display: "flex", alignItems: "center", gap: 16, cursor: "pointer" }, onClick: () => { setTab("grow"); setGrowSubTab("habits"); }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 64, height: 64, borderRadius: "50%", border: "4px solid rgba(79,156,249,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }, children: "\u{1F4CA}" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, marginBottom: 2 }, children: cat.icon }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.8)" }, children: cat.label })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, fontWeight: 700, color: "#4f9cf9", marginBottom: 3 }, children: "Add your first tracker" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", lineHeight: 1.5 }, children: "Set up habits and indicators to see your weekly progress here." }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(79,156,249,0.7)", marginTop: 4, fontWeight: 600 }, children: "Get started \u2192" })
+              ] })
+            ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "card-hover card-3d", style: { ...S2.card, display: "flex", alignItems: "center", gap: 16, cursor: "pointer" }, onClick: () => { setTab("grow"); setGrowSubTab("habits"); }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ring, { pct: _oP, size: 64, stroke: 5, color: "#4f9cf9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 2, letterSpacing: "0.5px", textTransform: "uppercase" }, children: "Weekly Progress" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 24, fontWeight: 800, color: "#f1f5f9", animation: "countUp 0.4s cubic-bezier(.34,1.56,.64,1)" }, children: [
+                  _oP,
+                  "%"
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.4)" }, children: [
+                  (data2.kis || []).length,
+                  " indicator",
+                  (data2.kis || []).length !== 1 ? "s" : ""
+                ] })
+              ] })
+            ] });
+          })(),
+          CATS.map((cat) => {
+            const _cp = cat.id === "financial" ? finPct : catPct(cat.id);
+            const _hasCatKIs = cat.id === "financial" ? finGoals.length > 0 : (data2.kis || []).some((k) => k.category === cat.id);
+            const _isEmpty = _cp === 0 && !_hasCatKIs;
+            const _ctaLabels = { intellectual: "Track learning", social: "Track connections", physical: "Track fitness", spiritual: "Track mindfulness", financial: "Set a savings goal" };
+            return _isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "card-hover card-3d", style: { ...S2.card, borderLeft: `3px solid ${cat.color}33`, padding: "16px 18px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", minHeight: 80 }, onClick: () => { cat.id === "financial" ? (setTab("finance")) : (setTab("grow"), setGrowSubTab("habits")); }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 22, marginBottom: 6, opacity: 0.5 }, children: cat.icon }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, fontWeight: 700, color: cat.color, opacity: 0.8, marginBottom: 2 }, children: _ctaLabels[cat.id] || "Get Started" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "rgba(255,255,255,0.3)" }, children: "Tap to begin \u2192" })
+            ] }, cat.id) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "card-hover card-3d", style: { ...S2.card, borderLeft: `3px solid ${cat.color}`, padding: "16px 18px", cursor: "pointer" }, onClick: () => { cat.id === "financial" ? (setTab("finance")) : (setTab("grow"), setGrowSubTab("habits")); }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 7 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, marginBottom: 2 }, children: cat.icon }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.8)" }, children: cat.label })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 20, fontWeight: 800, color: cat.color, animation: "countUp 0.5s ease" }, children: `${_cp}%` })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 20, fontWeight: 800, color: cat.color, animation: "countUp 0.5s ease" }, children: cat.id === "financial" ? `${finPct}%` : catPct(cat.id) + "%" })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, { pct: cat.id === "financial" ? finPct : catPct(cat.id), color: cat.color })
-          ] }, cat.id)),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, { pct: _cp, color: cat.color })
+            ] }, cat.id);
+          }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "pro-card-hover", style: { ...S2.card, borderLeft: "3px solid #fbbf24", padding: "16px 18px", cursor: "pointer" }, onClick: () => {
             setTab("profile");
             setProfileSubTab("achievements");
@@ -9144,7 +9282,7 @@ Give me my 3-bullet coaching message for today.`;
                 setWeeklySubTab("tasks");
               }, style: { background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 6, color: "#f87171", padding: "6px 12px", cursor: "pointer", fontSize: 12, fontFamily: "'DM Sans',sans-serif", flexShrink: 0, fontWeight: 700 }, children: "Go \u2192" })
             ] }, i)),
-            overdue.length > 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.25)", textAlign: "center", marginTop: 4 }, children: [
+            overdue.length > 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.4)", textAlign: "center", marginTop: 4 }, children: [
               "+",
               overdue.length - 3,
               " more"
@@ -9248,7 +9386,7 @@ Give me my 3-bullet coaching message for today.`;
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(100,116,139,0.85)", marginBottom: 4 }, children: day.slice(0, 3).toUpperCase() }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "rgba(71,85,105,0.9)", marginBottom: 6 }, children: dayDate(i).toLocaleDateString("en", { month: "short", day: "numeric" }) }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 20, fontWeight: 700, color: tasks.length ? "#fff" : "rgba(255,255,255,0.15)" }, children: tasks.length }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "rgba(255,255,255,0.25)", marginBottom: 4 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "rgba(255,255,255,0.4)", marginBottom: 4 }, children: [
                     done,
                     "/",
                     tasks.length
@@ -9461,7 +9599,7 @@ Give me my 3-bullet coaching message for today.`;
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S2.card, marginBottom: 14, background: "rgba(251,191,36,0.03)", border: "1px solid rgba(251,191,36,0.15)" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: 6, background: "rgba(15,23,42,0.8)", borderRadius: 20, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", width: `${_computeFinScore(sts, fgs, subscriptions, accounts, monthlySubCost)}%`, background: "linear-gradient(90deg,#f87171,#fbbf24,#34c98a)", backgroundSize: "300% 100%", backgroundPosition: `${100 - _computeFinScore(sts, fgs, subscriptions, accounts, monthlySubCost)}% 0`, borderRadius: 20, transition: "width 0.8s cubic-bezier(.34,1.56,.64,1)" } }) }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", marginTop: 6, fontSize: 9, color: "rgba(255,255,255,0.25)" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", marginTop: 6, fontSize: 9, color: "rgba(255,255,255,0.4)" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Needs Work" }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Fair" }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Good" }),
@@ -9476,7 +9614,7 @@ Give me my 3-bullet coaching message for today.`;
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowBankConnect(true), style: { background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 9, color: "#6ee7b7", padding: "6px 12px", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }, children: "\u{1F517} Link Bank" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowAddAccount(true), style: { background: "rgba(79,156,249,0.1)", border: "1px solid rgba(79,156,249,0.3)", borderRadius: 9, color: "#4f9cf9", padding: "6px 12px", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }, children: "+ Manual" })
           ] }),
-          accounts.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.25)", fontSize: 12 }, children: [
+          accounts.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.4)", fontSize: 12 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 36, marginBottom: 8 }, children: "\u{1F3E6}" }),
             "Link your bank or add accounts manually to see your balance dashboard"
           ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 8 }, children: [
@@ -9934,7 +10072,7 @@ Give me my 3-bullet coaching message for today.`;
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S2.card, marginBottom: 16 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: "'Syne',serif", fontSize: 14, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }, children: "\u{1F4D0} Formula Breakdown" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.25)", marginBottom: 14 }, children: data2.safeToSpend?.lastUpdated ? `Last updated ${new Date(data2.safeToSpend.lastUpdated).toLocaleDateString("en", { month: "short", day: "numeric" })}` : "" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.4)", marginBottom: 14 }, children: data2.safeToSpend?.lastUpdated ? `Last updated ${new Date(data2.safeToSpend.lastUpdated).toLocaleDateString("en", { month: "short", day: "numeric" })}` : "" }),
             [
               { label: "Current Balance", val: sts.balance, color: "#34c98a", sign: "+", icon: "\u{1F3E6}", field: "manualBalance", hint: "From linked accounts or enter manually" },
               { label: "Monthly Subscriptions", val: sts.subCost30, color: "#f97b4f", sign: "\u2212", icon: "\u{1F501}", hint: `${subscriptions.filter((s) => s.active).length} active subs auto-calculated` },
@@ -10299,7 +10437,7 @@ Give me my 3-bullet coaching message for today.`;
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(100,116,139,0.6)", marginBottom: 0 }, children: debtMethod === "avalanche" ? "Avalanche: pay highest APR first — saves the most interest" : "Snowball: pay lowest balance first — builds momentum" })
           ] }),
-          (data2.debts || []).length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "30px 0", color: "rgba(255,255,255,0.25)", fontSize: 13 }, children: [
+          (data2.debts || []).length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "30px 0", color: "rgba(255,255,255,0.4)", fontSize: 13 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 10 }, children: "\u{1F4B3}" }),
             "Add your debts above to calculate payoff timelines"
           ] }) : (() => {
@@ -10389,6 +10527,8 @@ Give me my 3-bullet coaching message for today.`;
       const byTier = (t) => ACHIEVEMENTS.filter((a) => a.tier === t);
       const earnedByTier = (t) => earned.filter((id) => ACHIEVEMENTS.find((a) => a.id === id)?.tier === t).length;
       const earnedCount = earned.length;
+      const achStats = data2.achievementStats || {};
+      const achProg = (id) => earned.includes(id) ? null : getAchievementProgress(id, data2, achStats);
       const GROUPS = [
         { label: "\u{1F680} Getting Started", ids: ["first_login", "first_ki", "first_goal", "first_task", "first_reflection", "first_fin_goal", "first_milestone", "first_deposit", "first_day_notes", "first_week_step", "complete_task", "profile_complete", "just_started"] },
         { label: "\u{1F4CA} Key Indicators", ids: ["ki_log_day", "ki_full_week", "ki_hit_goal", "ki_3logs", "ki_all_logged", "ki_goal_20", "three_kis", "ki_5_indicators", "ki_all_met", "two_ki_goals_met", "three_ki_goals_met", "ki_week_50", "ki_week_80", "ki_perfect", "ki_2streak", "ki_3streak", "ki_5streak", "ki_8streak", "ki_12streak", "ki_obsessed"] },
@@ -10411,7 +10551,7 @@ Give me my 3-bullet coaching message for today.`;
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S2.card, textAlign: "center", background: "rgba(251,191,36,0.07)", borderColor: "rgba(251,191,36,0.2)" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 34, fontWeight: 800, color: "#fbbf24" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CountUp, { value: earnedCount, duration: 800 }) }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)" }, children: "Earned" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.25)", marginBottom: 6 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.4)", marginBottom: 6 }, children: [
               "of ",
               ACHIEVEMENTS.length,
               " medals"
@@ -10441,12 +10581,21 @@ Give me my 3-bullet coaching message for today.`;
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { margin: "0 0 14px", fontFamily: "'Syne',serif", fontSize: 15, fontWeight: 700, color: "#4f9cf9" }, children: "\u{1F3AF} Next Medals to Earn" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(210px,1fr))", gap: 10 }, children: nextUp.map((a) => {
             const tc2 = TIER_COLORS[a.tier];
+            const prog = achProg(a.id);
+            const pPct = prog && prog.target > 0 ? Math.min(prog.current / prog.target * 100, 100) : 0;
             return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10, background: "rgba(15,23,42,0.5)", borderRadius: 10, padding: "10px 13px", border: `1px solid ${tc2.border}55` }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 24, filter: "grayscale(0.4)", flexShrink: 0 }, children: a.icon }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minWidth: 0 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.8)", marginBottom: 2 }, children: a.title }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "rgba(100,116,139,0.85)", lineHeight: 1.4, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }, children: a.desc }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: tc2.text, textTransform: "uppercase", letterSpacing: "1px", marginTop: 4, fontWeight: 700 }, children: a.tier })
+                prog ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 5 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: 3, background: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden", marginBottom: 2 }, children:
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", width: `${pPct}%`, background: `linear-gradient(90deg,${tc2.border},${tc2.text})`, borderRadius: 3, transition: "width 0.6s ease" } })
+                  }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 9, color: pPct > 0 ? tc2.text : "rgba(255,255,255,0.3)", fontWeight: 600 }, children: [
+                    (prog.raw != null ? prog.raw : prog.current), "/", prog.target, " \u2022 ", Math.round(pPct), "%"
+                  ] })
+                ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: tc2.text, textTransform: "uppercase", letterSpacing: "1px", marginTop: 4, fontWeight: 700 }, children: a.tier })
               ] })
             ] }, a.id);
           }) })
@@ -10459,7 +10608,7 @@ Give me my 3-bullet coaching message for today.`;
         }) }),
         achFilter !== "all" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(272px,1fr))", gap: 11 }, children: ACHIEVEMENTS.filter(
           (a) => achFilter === "earned" ? earned.includes(a.id) : achFilter === "unearned" ? !earned.includes(a.id) : a.tier === achFilter
-        ).map((a) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MedalCard, { achievement: a, earned: earned.includes(a.id) }, a.id)) }) : (
+        ).map((a) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MedalCard, { achievement: a, earned: earned.includes(a.id), progress: achProg(a.id) }, a.id)) }) : (
           /* Grouped view when showing all */
           GROUPS.map((group) => {
             const groupAchs = ACHIEVEMENTS.filter((a) => group.ids.includes(a.id));
@@ -10476,7 +10625,7 @@ Give me my 3-bullet coaching message for today.`;
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: 1, height: 3, background: "rgba(15,23,42,0.8)", borderRadius: 3, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", width: `${groupAchs.length ? groupEarned / groupAchs.length * 100 : 0}%`, background: "linear-gradient(90deg,#fbbf24,#34c98a)", transition: "width 0.6s ease" } }) }),
                 groupEarned === groupAchs.length && groupAchs.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 12, color: "#34c98a", fontWeight: 700 }, children: "\u2713 Complete!" })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(265px,1fr))", gap: 10 }, children: groupAchs.map((a) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MedalCard, { achievement: a, earned: earned.includes(a.id) }, a.id)) })
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(265px,1fr))", gap: 10 }, children: groupAchs.map((a) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MedalCard, { achievement: a, earned: earned.includes(a.id), progress: achProg(a.id) }, a.id)) })
             ] }, group.label);
           })
         ),
@@ -11226,7 +11375,12 @@ Give me my 3-bullet coaching message for today.`;
             clearEdit();
           } }),
 
-          yearlyGoals.length === 0 && editMode !== "add-yearly" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "16px 0", color: "rgba(100,116,139,0.45)", fontSize: 13 }, children: "No yearly goals yet — set your big targets for the year" }),
+          yearlyGoals.length === 0 && editMode !== "add-yearly" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "28px 20px", background: "rgba(99,102,241,0.06)", border: "1px dashed rgba(99,102,241,0.25)", borderRadius: 14, marginBottom: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 36, marginBottom: 8 }, children: "\uD83C\uDFAF" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }, children: "Set your first yearly goal" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, color: "rgba(148,163,184,0.6)", marginBottom: 14, lineHeight: 1.5 }, children: "What do you want to achieve this year? Start with one big target and break it into monthly milestones." }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setEdit("add-yearly", null, { name: "", target: "", unit: "times", category: "", year: thisYear }), style: { background: "linear-gradient(135deg,#6366f1,#8b5cf6)", border: "none", borderRadius: 10, color: "#fff", padding: "10px 20px", cursor: "pointer", fontSize: 13, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", boxShadow: "0 2px 12px rgba(99,102,241,0.3)" }, children: "+ Add Your First Goal" })
+          ] }),
 
           yearlyGoals.map(yg => {
             const prog = yearlyGoalProgress(yg);
@@ -11309,7 +11463,7 @@ Give me my 3-bullet coaching message for today.`;
             clearEdit();
           } }),
 
-          monthGoals.length === 0 && editMode !== "add-monthly" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "16px 0", color: "rgba(100,116,139,0.45)", fontSize: 13 }, children: "No monthly goals for this month yet" }),
+          monthGoals.length === 0 && editMode !== "add-monthly" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "16px 0", color: "rgba(100,116,139,0.7)", fontSize: 13 }, children: "No monthly goals for this month yet" }),
 
           monthGoals.map(g => {
             const prog = g.kisId ? kiWeekTotal(g.kisId) : 0;
@@ -11405,7 +11559,7 @@ Give me my 3-bullet coaching message for today.`;
     ] });
     const renderGrow = () => {
       const _growPrimaryTabs = [
-        { id: "habits", label: "\uD83C\uDFAF Goals & KIs" },
+        { id: "habits", label: "\uD83C\uDFAF Goals & Trackers" },
         { id: "journal", label: "\u{1F4D3} Journal" },
         { id: "mood", label: "\u{1F60A} Mood" }
       ];
@@ -12872,7 +13026,7 @@ Give me my 3-bullet coaching message for today.`;
           weeklySubTab === "tasks" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 24 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: 1, flex: 1, background: "rgba(15,23,42,0.8)" } }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.25)", letterSpacing: "2px", textTransform: "uppercase" }, children: "Google Calendar Sync" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: "2px", textTransform: "uppercase" }, children: "Google Calendar Sync" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: 1, flex: 1, background: "rgba(15,23,42,0.8)" } })
             ] }),
             !isPro ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lock, { onUpgrade: goPro, msg: "Google Calendar Live Sync is a Pro feature. Upgrade to sync all your weekly tasks, events, and goal steps in real time." }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
@@ -12904,7 +13058,7 @@ Give me my 3-bullet coaching message for today.`;
                   }, style: { ...S2.btn("rgba(255,255,255,0.07)"), fontSize: 11, padding: "5px 12px" }, children: "Select All" }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setCalSel({}), style: { ...S2.btn("rgba(255,255,255,0.05)"), fontSize: 11, padding: "5px 12px" }, children: "Clear" })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { maxHeight: 280, overflowY: "auto" }, children: (calFilter === "all" ? exportItems : exportItems.filter((i) => i.type === calFilter)).length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.25)", fontSize: 12, fontStyle: "italic" }, children: "No items. Add tasks, events, or goal steps first." }) : (calFilter === "all" ? exportItems : exportItems.filter((i) => i.type === calFilter)).map((item) => {
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { maxHeight: 280, overflowY: "auto" }, children: (calFilter === "all" ? exportItems : exportItems.filter((i) => i.type === calFilter)).length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.4)", fontSize: 12, fontStyle: "italic" }, children: "No items. Add tasks, events, or goal steps first." }) : (calFilter === "all" ? exportItems : exportItems.filter((i) => i.type === calFilter)).map((item) => {
                   const isSynced = (data2.calendarEvents || []).some((s) => s.id === item.id);
                   return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { onClick: () => setCalSel((p) => ({ ...p, [item.id]: !p[item.id] })), style: { display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 10, cursor: "pointer", marginBottom: 5, background: calSel[item.id] ? "rgba(79,156,249,0.1)" : "rgba(255,255,255,0.03)", border: `1px solid ${calSel[item.id] ? "rgba(79,156,249,0.4)" : "rgba(15,23,42,0.8)"}`, transition: "all 0.15s" }, children: [
                     /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 15, height: 15, borderRadius: 4, flexShrink: 0, border: `2px solid ${calSel[item.id] ? "#4f9cf9" : "rgba(255,255,255,0.2)"}`, background: calSel[item.id] ? "#4f9cf9" : "transparent", display: "flex", alignItems: "center", justifyContent: "center" }, children: calSel[item.id] && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "#000", fontSize: 9 }, children: "\u2713" }) }),
@@ -12966,7 +13120,9 @@ Give me my 3-bullet coaching message for today.`;
             return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginBottom: 12 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", { value: dayNote, onChange: (e) => upd2((p) => ({ ...p, weekDays: { ...p.weekDays, [selDay]: { ...(p.weekDays?.[selDay] || {}), dayNote: e.target.value } } })), placeholder: `\u{1F4DD} Notes for ${selDay}\u2026`, rows: 2, style: { width: "100%", background: "rgba(17,24,39,0.6)", border: "1px solid rgba(51,65,85,0.4)", borderRadius: 10, color: "rgba(255,255,255,0.7)", padding: "9px 12px", fontSize: 12, fontFamily: "'DM Sans',sans-serif", outline: "none", resize: "none", lineHeight: 1.6, boxSizing: "border-box" } }) });
           })(),
           weeklySubTab === "meals" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MealsSection, { data: data2, upd: upd2, selDay, isPro, goPro, addToast: addToast2, newMeal, setNewMeal, mealAiLoading, setMealAiLoading, authUser, setShowSettings }),
-          weeklySubTab === "goals" && renderYearly(),
+          weeklySubTab === "goals" && (localStorage.getItem("up_goals_v2") === "1"
+            ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GoalsTabV2, { data: data2, upd: upd2, addToast: addToast2 })
+            : renderYearly()),
           weeklySubTab === "financial" && renderFinancial(),
           weeklySubTab === "reflection" && renderReflection(),
           weeklySubTab === "routines" && renderRoutines(),
@@ -13274,7 +13430,7 @@ Give me my 3-bullet coaching message for today.`;
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 18, color: "rgba(100,116,139,0.7)" }, children: "/10" })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "range", min: "1", max: "10", value: ref.rating ?? 7, onChange: (e) => setRef("rating", parseInt(e.target.value)), style: { width: "100%", accentColor: "#4f9cf9" } }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.25)", marginTop: 4 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 4 }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Tough" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Amazing" })
             ] })
@@ -13552,7 +13708,7 @@ Give me my 3-bullet coaching message for today.`;
                 ] })
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(15,23,42,0.8)", borderRadius: 20, height: 8, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", width: `${pct}%`, background: `linear-gradient(90deg,#fbbf24,#34c98a)`, borderRadius: 20, transition: "width 0.6s ease" } }) }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.25)", marginTop: 3 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 3 }, children: [
                 Math.round(pct),
                 "% funded",
                 g.deadline ? ` \xB7 Due ${new Date(g.deadline).toLocaleDateString()}` : "",
@@ -14025,10 +14181,10 @@ Give me my 3-bullet coaching message for today.`;
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, color: "rgba(100,116,139,0.85)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: 10 }, children: "How was your week overall?" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 8 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 52, fontWeight: 800, color: (ref.rating ?? 7) >= 8 ? "#34c98a" : (ref.rating ?? 7) >= 5 ? "#4f9cf9" : "#f97b4f" }, children: ref.rating ?? 7 }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 20, color: "rgba(255,255,255,0.25)" }, children: "/10" })
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 20, color: "rgba(255,255,255,0.4)" }, children: "/10" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "range", min: "1", max: "10", value: ref.rating ?? 7, onChange: (e) => setRef("rating", parseInt(e.target.value)), style: { width: "80%", accentColor: "#4f9cf9", maxWidth: 320 } }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.25)", marginTop: 4, maxWidth: 320, margin: "4px auto 0" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 4, maxWidth: 320, margin: "4px auto 0" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "1 \u2014 Tough week" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "10 \u2014 Amazing!" })
           ] })
@@ -14128,7 +14284,7 @@ Give me my 3-bullet coaching message for today.`;
           )
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 6, marginBottom: 18, borderBottom: "1px solid rgba(51,65,85,0.4)", paddingBottom: 0 }, children: [
-          [["templates", "\u{1F4CB} Templates"], ["library", "\u{1F3CB}\uFE0F Library"], ["history", "\u{1F4C8} History"], ["body", "\u{1F4CA} Body"]].map(([id, label]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          [["templates", "\u{1F4CB} Templates"], ["library", "\u{1F3CB}\uFE0F Library"], ["history", "\u{1F4C8} History"], ["body", "\u{1F3CB}\uFE0F 1RM & PRs"]].map(([id, label]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "button",
             {
               onClick: () => setWorkoutSectionTab(id),
@@ -14253,8 +14409,10 @@ Give me my 3-bullet coaching message for today.`;
             const exImg = getExImg(ex.name, ex.category);
             const accentColor = EX_CAT_COLORS[ex.category] || "#f97b4f";
             return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(17,24,39,0.5)", border: "1px solid rgba(51,65,85,0.35)", borderRadius: 12, overflow: "hidden", fontSize: 13, color: "#e2e8f0", display: "flex", flexDirection: "column" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: "100%", height: 120, overflow: "hidden", position: "relative", background: `${accentColor}12` }, children:
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: exImg, alt: ex.name, loading: "lazy", style: { width: "100%", height: "100%", objectFit: "cover", display: "block" }, onError: (ev) => { ev.target.style.display = "none"; ev.target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32">${EX_CAT_EMOJI[ex.category] || "⚡"}</div>`; } })
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: "100%", height: 120, overflow: "hidden", position: "relative", background: `${accentColor}12`, display: "flex", alignItems: "center", justifyContent: "center" }, children:
+                exImg && exImg.startsWith("data:") ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: exImg, alt: ex.name, style: { width: "100%", height: "100%", objectFit: "contain", display: "block" } })
+                : exImg ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: exImg, alt: ex.name, loading: "lazy", style: { width: "100%", height: "100%", objectFit: "cover", display: "block" }, onError: (ev) => { ev.target.style.display = "none"; } })
+                : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 36, opacity: 0.6 }, children: EX_CAT_EMOJI[ex.category] || "\u26A1" })
               }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "10px 14px", display: "flex", flexDirection: "column", gap: 4 }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontWeight: 600 }, children: ex.name }),
@@ -14476,7 +14634,7 @@ GUIDELINES:
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 16, marginBottom: 14 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { onClick: () => setShowProfilePhotoEditor(true), style: { width: 80, height: 80, borderRadius: "50%", background: prof.avatarColor || AVATAR_COLORS[0], display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, flexShrink: 0, border: "3px solid rgba(99,102,241,0.4)", boxShadow: "0 4px 20px rgba(0,0,0,0.4)", overflow: "hidden", position: "relative", cursor: "pointer" }, children: prof.avatarUrl ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: prof.avatarUrl, alt: "avatar", style: { width: "100%", height: "100%", objectFit: "cover" } }) : (prof.avatar || prof.firstName?.charAt(0) || "\u2726") }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontFamily: "'Syne',serif", fontSize: 20, fontWeight: 900, color: "#f1f5f9", lineHeight: 1.1 }, children: [prof.firstName || "Your", " ", prof.lastName || "Name"] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontFamily: "'Syne',serif", fontSize: 20, fontWeight: 900, color: "#f1f5f9", lineHeight: 1.1 }, children: [prof.firstName || authUser?.firstName || "Your", " ", prof.lastName || authUser?.lastName || "Name"] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 3 }, children: prof.city || "Add your city" }),
               isPro && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { background: "linear-gradient(135deg,#fbbf24,#f59e0b)", borderRadius: 20, padding: "2px 8px", fontSize: 10, fontWeight: 800, color: "#000", marginTop: 4, display: "inline-block" }, children: "\u2605 PRO" })
             ] })
@@ -14960,7 +15118,7 @@ GUIDELINES:
               item.duration,
               "m"
             ] }),
-            item.notes && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.25)", maxWidth: 100, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, title: item.notes, children: item.notes }),
+            item.notes && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, color: "rgba(255,255,255,0.4)", maxWidth: 100, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, title: item.notes, children: item.notes }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => delRoutineItem(type, item.id), "aria-label": "Delete", style: { background: "transparent", border: "none", color: "rgba(255,255,255,0.15)", cursor: "pointer", fontSize: 15, padding: "0 4px" }, children: "\xD7" })
           ] }, item.id)) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(255,255,255,0.02)", borderRadius: 12, padding: "14px 16px", border: "1px solid rgba(255,255,255,0.06)" }, children: [
@@ -15237,7 +15395,7 @@ GUIDELINES:
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: "'Syne',serif", fontSize: 14, fontWeight: 700, color: "#f1f5f9" }, children: "\u{1F4C5} Focus Blocks" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowAddBlock(true), style: { ...S2.btn("#6366f1"), padding: "6px 14px", fontSize: 12 }, children: "+ Add Block" })
           ] }),
-          (data2.focusSchedule || focusSchedule || []).length === 0 && !showAddBlock ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "24px 0", color: "rgba(255,255,255,0.25)" }, children: [
+          (data2.focusSchedule || focusSchedule || []).length === 0 && !showAddBlock ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "24px 0", color: "rgba(255,255,255,0.4)" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 32, marginBottom: 8 }, children: "\u{1F4C5}" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, fontWeight: 600, marginBottom: 4 }, children: "No scheduled blocks yet" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11 }, children: 'Add recurring focus blocks \u2014 e.g. "No social media 9-11am weekdays"' })
@@ -15334,7 +15492,7 @@ GUIDELINES:
                 ] })
               ] }, i);
             }) })
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "40px 0", color: "rgba(255,255,255,0.25)" }, children: [
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "40px 0", color: "rgba(255,255,255,0.4)" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 48, marginBottom: 12 }, children: "\u{1F4CA}" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: "Complete your first focus session to see stats here" })
           ] })
@@ -15934,14 +16092,14 @@ GUIDELINES:
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Syne',serif", fontSize: 10, fontWeight: 600, color: "rgba(148,163,184,0.5)", letterSpacing: "0.04em" }, children: "Planner" })
                 ] })
               ] }),
-          !sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setSidebarCollapsed(true), title: "Collapse sidebar", style: { background: "transparent", border: "none", color: "rgba(148,163,184,0.5)", cursor: "pointer", fontSize: 14, padding: "4px", flexShrink: 0 }, children: "\u00AB" })
+          !sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setSidebarCollapsed(true), title: "Collapse sidebar", "aria-label": "Collapse sidebar", style: { background: "transparent", border: "none", color: "rgba(148,163,184,0.6)", cursor: "pointer", fontSize: 14, padding: "4px", flexShrink: 0 }, children: "\u00AB" })
         ] }),
         !sidebarCollapsed && isPro && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { margin: "8px 12px 0" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { background: "linear-gradient(135deg,#fbbf24,#f59e0b)", borderRadius: 20, padding: "3px 10px", fontSize: 10, fontWeight: 800, color: "#000" }, children: "PRO" }) }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { role: "menu", "aria-label": "Main navigation", style: { flex: 1, overflowY: "auto", overflowX: "hidden", padding: "8px 8px", scrollbarWidth: "none" }, children: TABS.filter((t) => !t.hidden && !(t.id === "upgrade" && !_userHasEngaged)).map((t) => {
           const _showNewDot = _isNewInstall && _NEW_FEATURE_TABS.includes(t.id) && !_whatsNewSeenTabs[t.id] && tab !== t.id;
           return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { role: "menuitem", tabIndex: tab === t.id ? 0 : -1, onClick: () => _navToTab(t.id), onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); _navToTab(t.id); } else if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); const btns = Array.from(e.currentTarget.closest("[role='menu']").querySelectorAll("[role='menuitem']")); const idx = btns.indexOf(e.currentTarget); const next = btns[(idx + (e.key === "ArrowDown" ? 1 : -1) + btns.length) % btns.length]; if (next) { next.tabIndex = 0; next.focus(); e.currentTarget.tabIndex = -1; } } }, "aria-current": tab === t.id ? "page" : undefined, title: sidebarCollapsed ? t.label : undefined, style: { position: "relative", display: "flex", alignItems: "center", gap: sidebarCollapsed ? 0 : 10, justifyContent: sidebarCollapsed ? "center" : "flex-start", padding: sidebarCollapsed ? "10px 0" : "10px 12px", borderRadius: 10, border: "none", borderLeft: "2px solid " + (tab === t.id ? "#6366f1" : "transparent"), background: tab === t.id ? "rgba(99,102,241,0.1)" : "transparent", color: tab === t.id ? "#6366f1" : "rgba(255,255,255,0.5)", cursor: "pointer", fontSize: 13, fontWeight: tab === t.id ? 600 : 400, width: "100%", textAlign: "left", transition: "all 0.12s", whiteSpace: "nowrap", overflow: "hidden", marginBottom: 1 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: sidebarCollapsed ? 18 : 15, lineHeight: 1, flexShrink: 0, position: "relative" }, children: [
-              TAB_ICONS[t.id] || t.icon,
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { lineHeight: 1, flexShrink: 0, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }, children: [
+              TAB_LUCIDE[t.id] ? React.createElement(TAB_LUCIDE[t.id], { size: sidebarCollapsed ? 20 : 17, strokeWidth: tab === t.id ? 2.2 : 1.8 }) : (TAB_ICONS[t.id] || t.icon),
               _showNewDot && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { position: "absolute", top: -3, right: -5, width: 8, height: 8, borderRadius: "50%", background: "#ef4444", border: "1.5px solid rgba(10,10,15,0.98)" } })
             ] }),
             !sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { flex: 1, overflow: "hidden", textOverflow: "ellipsis" }, children: t.label })
@@ -15953,12 +16111,12 @@ GUIDELINES:
           !sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowFeedback(true), title: "Share your thoughts with the developer", style: { width: "100%", background: "rgba(30,41,59,0.6)", border: "1px solid rgba(51,65,85,0.5)", borderRadius: 10, color: "rgba(148,163,184,0.7)", padding: "7px 12px", cursor: "pointer", fontSize: 12, fontWeight: 500, marginBottom: 6, fontFamily: "'Inter',system-ui,sans-serif", textAlign: "left", display: "flex", alignItems: "center", gap: 6, transition: "background 0.15s, color 0.15s" }, onMouseEnter: (e) => { e.currentTarget.style.background = "rgba(51,65,85,0.6)"; e.currentTarget.style.color = "#f1f5f9"; }, onMouseLeave: (e) => { e.currentTarget.style.background = "rgba(30,41,59,0.6)"; e.currentTarget.style.color = "rgba(148,163,184,0.7)"; }, children: ["\uD83D\uDCAC Feedback"] }),
           sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowFeedback(true), title: "Share your thoughts with the developer", style: { width: "100%", background: "rgba(30,41,59,0.6)", border: "1px solid rgba(51,65,85,0.5)", borderRadius: 10, color: "rgba(148,163,184,0.7)", padding: "7px 0", cursor: "pointer", fontSize: 14, fontWeight: 500, marginBottom: 6, transition: "background 0.15s, color 0.15s", display: "flex", alignItems: "center", justifyContent: "center" }, onMouseEnter: (e) => { e.currentTarget.style.background = "rgba(51,65,85,0.6)"; e.currentTarget.style.color = "#f1f5f9"; }, onMouseLeave: (e) => { e.currentTarget.style.background = "rgba(30,41,59,0.6)"; e.currentTarget.style.color = "rgba(148,163,184,0.7)"; }, children: "\uD83D\uDCAC" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: sidebarCollapsed ? "6px 0" : "6px 4px", justifyContent: sidebarCollapsed ? "center" : "flex-start" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { onClick: () => setTab("profile"), style: { width: 28, height: 28, borderRadius: "50%", background: _prof.avatarColor || "linear-gradient(135deg,#6366f1,#818cf8)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", cursor: "pointer", flexShrink: 0 }, children: _prof.avatar || _userInitial }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setTab("profile"), "aria-label": "Go to profile", style: { width: 28, height: 28, borderRadius: "50%", background: _prof.avatarColor || "linear-gradient(135deg,#6366f1,#818cf8)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", cursor: "pointer", flexShrink: 0, border: "none", padding: 0 }, children: _prof.avatar || _userInitial }),
             !sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 12, color: "rgba(255,255,255,0.6)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: _firstName })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 4, marginTop: 4, justifyContent: sidebarCollapsed ? "center" : "flex-start" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowSettings(true), title: "Settings", style: { background: "transparent", border: "none", color: "rgba(148,163,184,0.5)", cursor: "pointer", fontSize: 15, padding: "4px 6px", borderRadius: 6 }, children: "\u2699" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => { try { clearAuth(); } catch(e){} try { Object.keys(localStorage).filter(k => k.startsWith('sb-') || k === 'up_auth_v4').forEach(k => localStorage.removeItem(k)); } catch(e){} logout(); setTimeout(() => window.location.replace('/'), 100); }, title: "Sign out", style: { background: "transparent", border: "none", color: "rgba(148,163,184,0.5)", cursor: "pointer", fontSize: 12, padding: "4px 6px", borderRadius: 6, whiteSpace: "nowrap" }, children: sidebarCollapsed ? "\u2192" : "Sign out" })
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowSettings(true), title: "Settings", "aria-label": "Open settings", style: { background: "transparent", border: "none", color: "rgba(148,163,184,0.6)", cursor: "pointer", fontSize: 15, padding: "4px 6px", borderRadius: 6 }, children: "\u2699" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => { try { clearAuth(); } catch(e){} try { Object.keys(localStorage).filter(k => k.startsWith('sb-') || k === 'up_auth_v4').forEach(k => localStorage.removeItem(k)); } catch(e){} logout(); setTimeout(() => window.location.replace('/'), 100); }, title: "Sign out", "aria-label": "Sign out", style: { background: "transparent", border: "none", color: "rgba(148,163,184,0.6)", cursor: "pointer", fontSize: 12, padding: "4px 6px", borderRadius: 6, whiteSpace: "nowrap" }, children: sidebarCollapsed ? "\u2192" : "Sign out" })
           ] })
         ] })
       ] }),
@@ -15990,8 +16148,8 @@ GUIDELINES:
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { onClick: () => setTab("profile"), style: { width: 32, height: 32, borderRadius: "50%", background: _prof.avatarColor || "linear-gradient(135deg,#6366f1,#818cf8)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#fff", cursor: "pointer", flexShrink: 0 }, children: _prof.avatar || _userInitial })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden" }, children: [
-          /* @__PURE__ */ React.createElement(AnimatePresence, { mode: "wait" },
-          /* @__PURE__ */ React.createElement(motion.main, { key: tab, className: "scroll-fade", initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -8 }, transition: prefersReducedMotion ? { duration: 0 } : { type: "spring", stiffness: 400, damping: 30 }, style: { flex: 1, overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch", background: "var(--bg)", height: "100%" } }, /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { maxWidth: 900, margin: "0 auto", padding: isMobileLayout ? "14px 12px 0" : "24px 28px 0", width: "100%", boxSizing: "border-box" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "tabFadeIn", style: { paddingBottom: isMobileLayout ? "calc(74px + env(safe-area-inset-bottom,0px))" : 24 }, children: (() => {
+          /* @__PURE__ */ React.createElement(AnimatePresence, { mode: "wait", initial: false },
+          /* @__PURE__ */ React.createElement(motion.main, { key: tab, className: "scroll-fade", initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.15, ease: "easeInOut" }, style: { flex: 1, overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch", background: "var(--bg)", height: "100%" } }, /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { maxWidth: 900, margin: "0 auto", padding: isMobileLayout ? "14px 12px 0" : "24px 28px 0", width: "100%", boxSizing: "border-box" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { paddingBottom: isMobileLayout ? "calc(74px + env(safe-area-inset-bottom,0px))" : 24 }, children: (() => {
             try {
               const renders = {
                 dashboard: renderDashboard,
@@ -16037,8 +16195,8 @@ GUIDELINES:
               const isActive = tab === tid;
               const _mobileNewDot = _isNewInstall && _NEW_FEATURE_TABS.includes(t.id) && !_whatsNewSeenTabs[t.id] && !isActive;
               return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => _navToTab(t.id), style: { flex: 1, background: "transparent", border: "none", cursor: "pointer", padding: "9px 6px 8px", display: "flex", flexDirection: "column", alignItems: "center", gap: 2, transition: "all 0.15s ease", position: "relative", color: isActive ? "#6366f1" : "rgba(255,255,255,0.4)" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 19, lineHeight: 1, display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 28, borderRadius: 8, background: isActive ? "rgba(99,102,241,0.15)" : "transparent", transition: "background 0.15s", position: "relative" }, children: [
-                  t.icon,
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { lineHeight: 1, display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 28, borderRadius: 8, background: isActive ? "rgba(99,102,241,0.15)" : "transparent", transition: "background 0.15s", position: "relative" }, children: [
+                  TAB_LUCIDE[tid] ? React.createElement(TAB_LUCIDE[tid], { size: 21, strokeWidth: isActive ? 2.2 : 1.7 }) : t.icon,
                   _mobileNewDot && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { position: "absolute", top: 2, right: 2, width: 8, height: 8, borderRadius: "50%", background: "#ef4444", border: "1.5px solid rgba(10,10,15,0.98)", pointerEvents: "none" } })
                 ] }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, fontWeight: isActive ? 700 : 400, letterSpacing: "0.2px", whiteSpace: "nowrap" }, children: t.label }),
@@ -16059,8 +16217,8 @@ GUIDELINES:
                 const isActive = tab === t.id;
                 const _drawerNewDot = _isNewInstall && _NEW_FEATURE_TABS.includes(t.id) && !_whatsNewSeenTabs[t.id] && !isActive;
                 return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => { _navToTab(t.id); setShowMoreDrawer(false); }, style: { background: isActive ? "#6366f1" : "rgba(255,255,255,0.05)", border: isActive ? "none" : "1px solid rgba(255,255,255,0.07)", borderRadius: 12, padding: "14px 8px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: "pointer", transition: "background 0.15s", position: "relative" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 28, lineHeight: 1, position: "relative" }, children: [
-                    t.icon,
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { lineHeight: 1, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }, children: [
+                    TAB_LUCIDE[t.id] ? React.createElement(TAB_LUCIDE[t.id], { size: 26, strokeWidth: isActive ? 2.2 : 1.7 }) : t.icon,
                     t.id === "grow" && _habitsUnlogged > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { position: "absolute", top: -4, right: -8, width: 16, height: 16, borderRadius: "50%", background: "#f59e0b", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, color: "#000", lineHeight: 1 }, children: _habitsUnlogged }),
                     _drawerNewDot && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { position: "absolute", top: -3, right: -6, width: 8, height: 8, borderRadius: "50%", background: "#ef4444", border: "1.5px solid rgba(10,10,15,0.98)" } })
                   ] }),

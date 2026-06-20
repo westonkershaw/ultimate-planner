@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'coverage', '.vercel']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -23,7 +23,24 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]|^motion$|^AnimatePresence$', argsIgnorePattern: '^_' }],
+    },
+  },
+  // Node.js scripts — add CJS globals not in browser env
+  {
+    files: ['api/**/*.js', 'app-store-screenshots/**/*.js'],
+    languageOptions: {
+      parserOptions: {
+        sourceType: 'commonjs',
+      },
+      globals: {
+        require: 'readonly',
+        module: 'readonly',
+        exports: 'writable',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        process: 'readonly',
+      },
     },
   },
 ])
