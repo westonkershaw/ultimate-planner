@@ -12,8 +12,8 @@ import JournalView from './components/journal/JournalView';
 import HabitsView from './components/habits/HabitsView';
 import SleepView from './components/sleep/SleepView';
 import MoodView from './components/mood/MoodView';
+import ReadingView from './components/reading/ReadingView';
 import {
-  ReadingHost,
   TravelHost,
   MealsHost,
   NetWorthHost,
@@ -100,7 +100,7 @@ function ViewContent({ view }: { view: ActiveView }) {
     // Grow
     case 'habits':    return <HabitsView />;
     case 'journal':   return <JournalView />;
-    case 'reading':   return <ReadingHost />;
+    case 'reading':   return <ReadingView />;
     case 'study':     return <StudyHost />;
     case 'vision':    return <VisionHost />;
     case 'travel':    return <TravelHost />;

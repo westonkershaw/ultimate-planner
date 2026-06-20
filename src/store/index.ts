@@ -45,3 +45,6 @@ export type { SleepStore } from './useSleepStore';
 
 export { useMoodStore, calcMoodStreak, calcMoodAvg } from './useMoodStore';
 export type { MoodStore } from './useMoodStore';
+
+export { useReadingStore, booksThisYear, goalProgressPct } from './useReadingStore';
+export type { ReadingStore } from './useReadingStore';
