@@ -57,3 +57,6 @@ export type { TravelStore } from './useTravelStore';
 
 export { useMealsStore, dayTotals } from './useMealsStore';
 export type { MealsStore } from './useMealsStore';
+
+export { useVisionStore } from './useVisionStore';
+export type { VisionStore } from './useVisionStore';

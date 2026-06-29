@@ -13,3 +13,4 @@ export type * from './reading.types';
 export type * from './networth.types';
 export type * from './travel.types';
 export * from './meals.types';
+export type * from './vision.types';

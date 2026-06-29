@@ -16,8 +16,8 @@ import ReadingView from './components/reading/ReadingView';
 import NetWorthView from './components/networth/NetWorthView';
 import TravelView from './components/travel/TravelView';
 import MealsView from './components/meals/MealsView';
+import VisionView from './components/vision/VisionView';
 import {
-  VisionHost,
   StudyHost,
   WellnessHost,
   TimeBlockHost,
@@ -102,7 +102,7 @@ function ViewContent({ view }: { view: ActiveView }) {
     case 'journal':   return <JournalView />;
     case 'reading':   return <ReadingView />;
     case 'study':     return <StudyHost />;
-    case 'vision':    return <VisionHost />;
+    case 'vision':    return <VisionView />;
     case 'travel':    return <TravelView />;
     case 'social':    return <SocialHost />;
     case 'insights':  return <InsightsHost />;
