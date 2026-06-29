@@ -18,8 +18,8 @@ import TravelView from './components/travel/TravelView';
 import MealsView from './components/meals/MealsView';
 import VisionView from './components/vision/VisionView';
 import StudyView from './components/study/StudyView';
+import WellnessView from './components/wellness/WellnessView';
 import {
-  WellnessHost,
   TimeBlockHost,
   FocusHost,
   SocialHost,
@@ -92,7 +92,7 @@ function ViewContent({ view }: { view: ActiveView }) {
     // Health
     case 'sleep':     return <SleepView />;
     case 'mood':      return <MoodView />;
-    case 'wellness':  return <WellnessHost />;
+    case 'wellness':  return <WellnessView />;
     case 'meals':     return <MealsView />;
     case 'body':      return <BodyHost />;
     // Money

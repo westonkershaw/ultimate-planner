@@ -8,7 +8,6 @@ import { useLegacyDataStore } from '@/store';
 // can mount them without prop-drilling through the monolith.
 
 // Lazy-load to keep the main bundle slim — these are large legacy files.
-const WellnessTab       = React.lazy(() => import('../WellnessTab.jsx'));
 const TimeBlockingTab   = React.lazy(() => import('../TimeBlockingTab.jsx'));
 const FocusMode         = React.lazy(() => import('../FocusMode.jsx'));
 const SocialCardsTab    = React.lazy(() => import('../SocialCardsTab.jsx'));
@@ -44,11 +43,6 @@ function Host({ children }: { children: React.ReactNode }) {
 }
 
 // ── Standard `{ data, onChange }` tabs ───────────────────────────────────
-
-export function WellnessHost() {
-  const { data, onChange } = useLegacy();
-  return <Host><WellnessTab data={data} onChange={onChange} /></Host>;
-}
 
 export function TimeBlockHost() {
   const { data, onChange } = useLegacy();
