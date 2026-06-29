@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
-import { useAuthStore, useLegacyDataStore, useJournalStore, useHabitStore, useSleepStore, useMoodStore, useReadingStore, useNetWorthStore, useTravelStore } from '@/store';
+import { useAuthStore, useLegacyDataStore, useJournalStore, useHabitStore, useSleepStore, useMoodStore, useReadingStore, useNetWorthStore, useTravelStore, useMealsStore } from '@/store';
 import AuthScreen from './AuthScreen';
 
 interface AuthGateProps {
@@ -28,6 +28,7 @@ export default function AuthGate({ children }: AuthGateProps) {
     useReadingStore.getState().resetForUser(uid);
     useNetWorthStore.getState().resetForUser(uid);
     useTravelStore.getState().resetForUser(uid);
+    useMealsStore.getState().resetForUser(uid);
   }, [user?.id, reloadLegacyData]);
 
   if (hydrating) {

@@ -54,3 +54,6 @@ export type { NetWorthStore } from './useNetWorthStore';
 
 export { useTravelStore, spentOn, daysUntil } from './useTravelStore';
 export type { TravelStore } from './useTravelStore';
+
+export { useMealsStore, dayTotals } from './useMealsStore';
+export type { MealsStore } from './useMealsStore';

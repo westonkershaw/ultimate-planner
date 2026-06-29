@@ -15,8 +15,8 @@ import MoodView from './components/mood/MoodView';
 import ReadingView from './components/reading/ReadingView';
 import NetWorthView from './components/networth/NetWorthView';
 import TravelView from './components/travel/TravelView';
+import MealsView from './components/meals/MealsView';
 import {
-  MealsHost,
   VisionHost,
   StudyHost,
   WellnessHost,
@@ -93,7 +93,7 @@ function ViewContent({ view }: { view: ActiveView }) {
     case 'sleep':     return <SleepView />;
     case 'mood':      return <MoodView />;
     case 'wellness':  return <WellnessHost />;
-    case 'meals':     return <MealsHost />;
+    case 'meals':     return <MealsView />;
     case 'body':      return <BodyHost />;
     // Money
     case 'networth':  return <NetWorthView />;
