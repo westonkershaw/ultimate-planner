@@ -60,3 +60,6 @@ export type { MealsStore } from './useMealsStore';
 
 export { useVisionStore } from './useVisionStore';
 export type { VisionStore } from './useVisionStore';
+
+export { useStudyStore, calcStudyStreak } from './useStudyStore';
+export type { StudyStore } from './useStudyStore';
