@@ -63,20 +63,19 @@ const Modal = React.memo(function Modal({
             className={[
               'relative w-full',
               maxWidth,
-              'rounded-[12px]',
-              'bg-slate-900/95 backdrop-blur-xl',
-              'border border-slate-800',
-              'shadow-2xl shadow-black/50',
+              'rounded-panel',
+              'bg-surface-1',
+              'border border-border',
               'max-h-[90vh] overflow-auto',
             ].join(' ')}
-            style={{ boxShadow: '0 0 60px rgba(99,102,241,0.08), 0 25px 50px rgba(0,0,0,0.6)' }}
+            style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.45)' }}
           >
             {title && (
               <div className="flex items-center justify-between px-5 pt-5 pb-0">
-                <h2 className="font-semibold text-lg text-slate-100 tracking-tight">{title}</h2>
+                <h2 className="font-semibold text-lg text-fg tracking-tight">{title}</h2>
                 <button
                   onClick={onClose}
-                  className="text-slate-500 hover:text-slate-300 transition-colors p-1 rounded-lg hover:bg-white/5"
+                  className="text-fg-muted hover:text-fg transition-colors p-1 rounded-control hover:bg-surface-2"
                   aria-label="Close modal"
                 >
                   <X size={16} />

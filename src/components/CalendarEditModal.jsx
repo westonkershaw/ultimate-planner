@@ -88,7 +88,7 @@ export default function CalendarEditModal({ item, onSave, onDelete, onClose }) {
           border: "1px solid rgba(51,65,85,0.6)",
           borderRadius: 16, padding: 24,
           width: 380, maxWidth: "92vw",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(99,102,241,0.06)",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(45, 212, 191,0.06)",
           fontFamily: "'DM Sans', sans-serif",
         }}
       >
@@ -125,7 +125,7 @@ export default function CalendarEditModal({ item, onSave, onDelete, onClose }) {
           <button onClick={handleSave} disabled={!valid} style={{
             flex: 1, padding: "10px 0", borderRadius: 10, fontSize: 13, fontWeight: 700,
             cursor: valid ? "pointer" : "not-allowed",
-            background: valid ? "linear-gradient(135deg, #6366f1, #4f46e5)" : "rgba(99,102,241,0.2)",
+            background: valid ? "linear-gradient(135deg, #14b8a6, #0e9488)" : "rgba(45, 212, 191,0.2)",
             border: "none", color: "#fff", fontFamily: "'DM Sans', sans-serif",
             opacity: valid ? 1 : 0.5, transition: "all 0.15s",
           }}>Save Changes</button>

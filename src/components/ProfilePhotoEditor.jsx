@@ -38,7 +38,7 @@ export default function ProfilePhotoEditor({ currentPhoto, onSave, onClose }) {
 
   const S = {
     overlay: { position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(7,9,13,0.92)', backdropFilter: 'blur(20px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 },
-    card: { background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 20, padding: '28px 24px', maxWidth: 360, width: '100%' },
+    card: { background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(45, 212, 191,0.2)', borderRadius: 20, padding: '28px 24px', maxWidth: 360, width: '100%' },
     btn: (bg, color, border) => ({ background: bg, border: border || 'none', borderRadius: 12, padding: '11px 16px', color, fontFamily: "'DM Sans',sans-serif", fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', marginTop: 8 }),
   };
 
@@ -65,10 +65,10 @@ export default function ProfilePhotoEditor({ currentPhoto, onSave, onClose }) {
               <img
                 src={preview}
                 alt="Profile preview"
-                style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', border: '3px solid rgba(99,102,241,0.5)' }}
+                style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', border: '3px solid rgba(45, 212, 191,0.5)' }}
               />
             ) : (
-              <div style={{ width: 120, height: 120, borderRadius: '50%', background: 'rgba(99,102,241,0.15)', border: '3px dashed rgba(99,102,241,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>
+              <div style={{ width: 120, height: 120, borderRadius: '50%', background: 'rgba(45, 212, 191,0.15)', border: '3px dashed rgba(45, 212, 191,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>
                 👤
               </div>
             )}
@@ -85,7 +85,7 @@ export default function ProfilePhotoEditor({ currentPhoto, onSave, onClose }) {
         <input ref={cameraRef} type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={handleFile} />
         <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
-        <button style={S.btn('rgba(99,102,241,0.15)', '#818cf8', '1px solid rgba(99,102,241,0.3)')} onClick={() => cameraRef.current?.click()}>
+        <button style={S.btn('rgba(45, 212, 191,0.15)', '#2dd4bf', '1px solid rgba(45, 212, 191,0.3)')} onClick={() => cameraRef.current?.click()}>
           <Camera size={15} /> Take Photo
         </button>
         <button style={S.btn('rgba(15,23,42,0.8)', 'rgba(203,213,225,0.85)', '1px solid rgba(51,65,85,0.5)')} onClick={() => fileRef.current?.click()}>
@@ -107,7 +107,7 @@ export default function ProfilePhotoEditor({ currentPhoto, onSave, onClose }) {
           <button style={{ ...S.btn('transparent', 'rgba(100,116,139,0.6)', '1px solid rgba(51,65,85,0.4)'), flex: 1, marginTop: 0 }} onClick={onClose}>Cancel</button>
           <motion.button
             whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-            style={{ ...S.btn('linear-gradient(135deg,#6366f1,#8b5cf6)', '#fff', 'none'), flex: 2, marginTop: 0 }}
+            style={{ ...S.btn('linear-gradient(135deg,#14b8a6,#8b5cf6)', '#fff', 'none'), flex: 2, marginTop: 0 }}
             onClick={() => { onSave(preview); onClose(); }}
             disabled={loading}
           >

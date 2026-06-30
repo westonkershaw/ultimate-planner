@@ -40,17 +40,17 @@ function SortableExercise({ ex, index, onRemove, onUpdateSet, onAddSet, onRemove
           <div
             {...attributes}
             {...listeners}
-            className="cursor-grab active:cursor-grabbing text-slate-600 hover:text-slate-400 px-1 flex-shrink-0"
+            className="cursor-grab active:cursor-grabbing text-fg-faint hover:text-fg-muted px-1 flex-shrink-0"
           >
             ⠿
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold text-slate-200">{ex.name}</div>
-            <div className="text-[10px] text-slate-600 capitalize">{ex.equipment} · {ex.category}</div>
+            <div className="text-sm font-semibold text-fg-secondary">{ex.name}</div>
+            <div className="text-[10px] text-fg-faint capitalize">{ex.equipment} · {ex.category}</div>
           </div>
           <button
             onClick={() => onRemove(index)}
-            className="text-slate-600 hover:text-red-400 transition-colors text-sm"
+            className="text-fg-faint hover:text-red-400 transition-colors text-sm"
           >
             ✕
           </button>
@@ -58,7 +58,7 @@ function SortableExercise({ ex, index, onRemove, onUpdateSet, onAddSet, onRemove
 
         {/* Sets */}
         <div className="space-y-1.5">
-          <div className="grid grid-cols-[auto_1fr_1fr_auto] gap-2 text-[10px] text-slate-600 px-1 mb-1">
+          <div className="grid grid-cols-[auto_1fr_1fr_auto] gap-2 text-[10px] text-fg-faint px-1 mb-1">
             <span
               className="cursor-help"
               title="A set is one group of consecutive repetitions. e.g. 3 sets means you do the exercise 3 separate times with a rest in between."
@@ -81,24 +81,24 @@ function SortableExercise({ ex, index, onRemove, onUpdateSet, onAddSet, onRemove
           </div>
           {ex.sets.map((set, si) => (
             <div key={si} className="grid grid-cols-[auto_1fr_1fr_auto] gap-2 items-center">
-              <span className="text-xs text-slate-600 w-6 text-center font-mono">{si + 1}</span>
+              <span className="text-xs text-fg-faint w-6 text-center font-mono">{si + 1}</span>
               <input
                 type="number"
                 value={set.weight || ''}
                 onChange={(e) => onUpdateSet(index, si, 'weight', e.target.value)}
                 placeholder="0"
-                className="w-full rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-indigo-500/60"
+                className="w-full rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-fg-secondary outline-none focus:border-accent/60"
               />
               <input
                 type="number"
                 value={set.reps || ''}
                 onChange={(e) => onUpdateSet(index, si, 'reps', e.target.value)}
                 placeholder="8"
-                className="w-full rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-indigo-500/60"
+                className="w-full rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-fg-secondary outline-none focus:border-accent/60"
               />
               <button
                 onClick={() => onRemoveSet(index, si)}
-                className="text-slate-700 hover:text-red-400 transition-colors text-xs"
+                className="text-fg-faint hover:text-red-400 transition-colors text-xs"
                 disabled={ex.sets.length <= 1}
               >
                 ✕
@@ -107,7 +107,7 @@ function SortableExercise({ ex, index, onRemove, onUpdateSet, onAddSet, onRemove
           ))}
           <button
             onClick={() => onAddSet(index)}
-            className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors mt-1"
+            className="text-xs text-accent-text hover:text-accent-text transition-colors mt-1"
           >
             + Add Set
           </button>
@@ -210,7 +210,7 @@ const WorkoutBuilder = React.memo(function WorkoutBuilder({ editingRoutine, onCl
       {/* Exercises */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted">
             Exercises ({exercises.length})
           </span>
           <Button variant="ghost" size="sm" onClick={() => setShowLibrary(true)}>
@@ -220,7 +220,7 @@ const WorkoutBuilder = React.memo(function WorkoutBuilder({ editingRoutine, onCl
 
         {exercises.length === 0 && (
           <div
-            className="rounded-xl border border-dashed border-white/10 py-8 text-center text-slate-600 text-sm cursor-pointer hover:border-indigo-500/30 transition-colors"
+            className="rounded-xl border border-dashed border-white/10 py-8 text-center text-fg-faint text-sm cursor-pointer hover:border-accent/30 transition-colors"
             onClick={() => setShowLibrary(true)}
           >
             No exercises yet. Click to add from the library.

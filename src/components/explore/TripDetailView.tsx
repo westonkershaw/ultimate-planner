@@ -138,7 +138,7 @@ const TripDetailView = React.memo(function TripDetailView({ trip, onBack }: Trip
         </Button>
         <div className="flex-1 min-w-0">
           <input value={trip.name} onChange={(e) => update({ name: e.target.value })}
-            className="bg-transparent text-lg font-bold text-slate-100 outline-none w-full truncate"
+            className="bg-transparent text-lg font-bold text-fg outline-none w-full truncate"
             placeholder="Trip name..." />
         </div>
       </div>

@@ -733,11 +733,11 @@ export default function WeeklyReview({ data, onClose, onSaveReflection, upd, add
             style={{
               ...card,
               marginBottom: 20,
-              border:       "1px solid rgba(99,102,241,0.25)",
-              background:   "rgba(99,102,241,0.06)",
+              border:       "1px solid rgba(45, 212, 191,0.25)",
+              background:   "rgba(45, 212, 191,0.06)",
             }}
           >
-            <div style={{ ...label, color: "#818cf8" }}>Next Week Setup</div>
+            <div style={{ ...label, color: "#2dd4bf" }}>Next Week Setup</div>
             <p style={{ margin: "0 0 10px", fontSize: 13, color: "rgba(148,163,184,0.7)", fontFamily: "'DM Sans', sans-serif" }}>
               Set your #1 priority for next week
             </p>
@@ -749,7 +749,7 @@ export default function WeeklyReview({ data, onClose, onSaveReflection, upd, add
               aria-label="Next week's top priority"
               style={{
                 background:   "rgba(15,23,42,0.7)",
-                border:       "1.5px solid rgba(99,102,241,0.3)",
+                border:       "1.5px solid rgba(45, 212, 191,0.3)",
                 borderRadius: 10,
                 padding:      "11px 14px",
                 color:        "#f1f5f9",
@@ -764,10 +764,10 @@ export default function WeeklyReview({ data, onClose, onSaveReflection, upd, add
             <button
               onClick={handleSaveWeekPriority}
               style={{
-                background:   "rgba(99,102,241,0.2)",
-                border:       "1px solid rgba(99,102,241,0.4)",
+                background:   "rgba(45, 212, 191,0.2)",
+                border:       "1px solid rgba(45, 212, 191,0.4)",
                 borderRadius: 8,
-                color:        "#818cf8",
+                color:        "#2dd4bf",
                 padding:      "8px 16px",
                 fontSize:     13,
                 fontWeight:   700,
@@ -786,7 +786,7 @@ export default function WeeklyReview({ data, onClose, onSaveReflection, upd, add
               onClick={handleSave}
               style={{
                 flex:         1,
-                background:   "linear-gradient(135deg, #6366f1, #818cf8)",
+                background:   "linear-gradient(135deg, #14b8a6, #2dd4bf)",
                 border:       "none",
                 borderRadius: 12,
                 color:        "#fff",

@@ -48,33 +48,33 @@ export default function SettingsView() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <Settings size={18} className="text-indigo-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Settings</h1>
+        <Settings size={18} className="text-accent-text" />
+        <h1 className="font-syne text-lg font-bold text-fg">Settings</h1>
       </motion.div>
 
       <AccountSection />
 
-      <div className="pt-2 border-t border-slate-800/40">
+      <div className="pt-2 border-t border-border">
         <ThemeToggle />
       </div>
 
-      <div className="pt-2 border-t border-slate-800/40">
+      <div className="pt-2 border-t border-border">
         <NotificationsSection />
       </div>
 
-      <div className="pt-2 border-t border-slate-800/40">
+      <div className="pt-2 border-t border-border">
         <AISection />
       </div>
 
-      <div className="pt-2 border-t border-slate-800/40">
+      <div className="pt-2 border-t border-border">
         <BackupSettings />
       </div>
 
-      <div className="pt-2 border-t border-slate-800/40">
+      <div className="pt-2 border-t border-border">
         <SecuritySection />
       </div>
 
-      <div className="pt-2 border-t border-slate-800/40">
+      <div className="pt-2 border-t border-border">
         <DangerZone />
       </div>
     </div>

@@ -29,7 +29,7 @@ function TripCard({ trip, onSelect, onDelete }: { trip: Trip; onSelect: () => vo
   const spent = useMemo(() => spentOn(trip), [trip]);
   const pct = trip.budget > 0 ? Math.min(100, Math.round((spent / trip.budget) * 100)) : 0;
   const days = daysUntil(trip.startDate);
-  const cover = trip.coverColor ?? '#6366f1';
+  const cover = trip.coverColor ?? '#14b8a6';
   const over = spent > trip.budget && trip.budget > 0;
   return (
     <motion.li
@@ -37,9 +37,9 @@ function TripCard({ trip, onSelect, onDelete }: { trip: Trip; onSelect: () => vo
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -10 }}
-      className="rounded-xl border border-slate-800/40 bg-slate-900/30 overflow-hidden"
+      className="rounded-xl border border-border bg-surface-1 overflow-hidden"
     >
-      <button onClick={onSelect} className="w-full text-left p-4 flex items-start gap-3 hover:bg-slate-900/50 transition-colors">
+      <button onClick={onSelect} className="w-full text-left p-4 flex items-start gap-3 hover:bg-surface-1 transition-colors">
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
           style={{ background: `${cover}25`, border: `1px solid ${cover}55` }}
@@ -47,17 +47,17 @@ function TripCard({ trip, onSelect, onDelete }: { trip: Trip; onSelect: () => vo
           {trip.emoji ?? '✈️'}
         </div>
         <div className="flex-1 min-w-0 space-y-1">
-          <div className="text-sm font-semibold text-slate-100 truncate">{trip.name}</div>
-          <div className="text-[11px] text-slate-500 truncate">{trip.destination || '–'}</div>
-          <div className="flex items-center gap-3 text-[10px] text-slate-500 pt-0.5">
+          <div className="text-sm font-semibold text-fg truncate">{trip.name}</div>
+          <div className="text-[11px] text-fg-muted truncate">{trip.destination || '–'}</div>
+          <div className="flex items-center gap-3 text-[10px] text-fg-muted pt-0.5">
             <span>{fmtDate(trip.startDate)} → {fmtDate(trip.endDate)}</span>
-            {days !== null && days > 0 && <span className="text-indigo-300">in {days}d</span>}
+            {days !== null && days > 0 && <span className="text-accent-text">in {days}d</span>}
           </div>
         </div>
       </button>
       {trip.budget > 0 && (
         <div className="px-4 pb-3 space-y-1">
-          <div className="relative h-1.5 rounded-full bg-slate-800 overflow-hidden">
+          <div className="relative h-1.5 rounded-full bg-surface-2 overflow-hidden">
             <motion.div
               className={`absolute inset-y-0 left-0 ${over ? 'bg-rose-500' : 'bg-emerald-500'}`}
               initial={false}
@@ -66,13 +66,13 @@ function TripCard({ trip, onSelect, onDelete }: { trip: Trip; onSelect: () => vo
             />
           </div>
           <div className="flex items-center justify-between text-[10px]">
-            <span className={over ? 'text-rose-400' : 'text-slate-500'}>
+            <span className={over ? 'text-rose-400' : 'text-fg-muted'}>
               {fmt$(spent, trip.currency)} of {fmt$(trip.budget, trip.currency)}
             </span>
             <button
               onClick={(e) => { e.stopPropagation(); onDelete(); }}
               aria-label={`Delete ${trip.name}`}
-              className="text-slate-600 hover:text-rose-400 transition-colors p-0.5"
+              className="text-fg-faint hover:text-rose-400 transition-colors p-0.5"
             >
               <Trash2 size={11} />
             </button>
@@ -112,58 +112,58 @@ function NewTripForm({ onClose }: { onClose: () => void }) {
       exit={{ opacity: 0, height: 0 }}
       className="overflow-hidden"
     >
-      <div className="p-4 rounded-xl border border-indigo-500/25 bg-indigo-500/[0.04] space-y-3">
+      <div className="p-4 rounded-xl border border-accent/25 bg-accent/[0.04] space-y-3">
         <input
           autoFocus
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Trip name"
-          className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+          className="w-full bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg placeholder:text-fg-faint outline-none focus:border-accent/40"
         />
         <input
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
           placeholder="Destination"
-          className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+          className="w-full bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg placeholder:text-fg-faint outline-none focus:border-accent/40"
         />
         <div className="grid grid-cols-2 gap-2">
           <label className="block">
-            <span className="block text-[10px] uppercase tracking-wider text-slate-500 mb-1">Start</span>
+            <span className="block text-[10px] uppercase tracking-wider text-fg-muted mb-1">Start</span>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-2 py-1.5 text-xs text-slate-100 outline-none focus:border-indigo-500/40"
+              className="w-full bg-surface-0 border border-border rounded-lg px-2 py-1.5 text-xs text-fg outline-none focus:border-accent/40"
             />
           </label>
           <label className="block">
-            <span className="block text-[10px] uppercase tracking-wider text-slate-500 mb-1">End</span>
+            <span className="block text-[10px] uppercase tracking-wider text-fg-muted mb-1">End</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-2 py-1.5 text-xs text-slate-100 outline-none focus:border-indigo-500/40"
+              className="w-full bg-surface-0 border border-border rounded-lg px-2 py-1.5 text-xs text-fg outline-none focus:border-accent/40"
             />
           </label>
         </div>
         <label className="block">
-          <span className="block text-[10px] uppercase tracking-wider text-slate-500 mb-1">Budget (optional)</span>
+          <span className="block text-[10px] uppercase tracking-wider text-fg-muted mb-1">Budget (optional)</span>
           <input
             type="number"
             value={budget}
             onChange={(e) => setBudget(e.target.value === '' ? '' : parseFloat(e.target.value))}
             placeholder="0"
-            className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-1.5 text-xs text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+            className="w-full bg-surface-0 border border-border rounded-lg px-3 py-1.5 text-xs text-fg placeholder:text-fg-faint outline-none focus:border-accent/40"
           />
         </label>
         <div className="flex gap-2">
-          <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-slate-800/40 text-xs text-slate-500 hover:text-slate-300 transition-colors">Cancel</button>
+          <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-border text-xs text-fg-muted hover:text-fg-secondary transition-colors">Cancel</button>
           <button
             onClick={submit}
             disabled={!name.trim()}
             className={[
               'flex-1 py-2 rounded-lg text-xs font-semibold transition-colors',
-              name.trim() ? 'bg-indigo-500 hover:bg-indigo-400 text-white' : 'bg-slate-800/40 text-slate-600 cursor-not-allowed',
+              name.trim() ? 'bg-accent hover:bg-accent-hover text-white' : 'bg-surface-2 text-fg-faint cursor-not-allowed',
             ].join(' ')}
           >Add trip</button>
         </div>
@@ -203,7 +203,7 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
       exit={{ opacity: 0, x: -12 }}
       className="space-y-5"
     >
-      <button onClick={onBack} className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-300 transition-colors">
+      <button onClick={onBack} className="flex items-center gap-1 text-xs text-fg-muted hover:text-fg-secondary transition-colors">
         <ArrowLeft size={12} /> All trips
       </button>
 
@@ -214,13 +214,13 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
             <input
               value={trip.name}
               onChange={(e) => updateTrip(trip.id, { name: e.target.value })}
-              className="w-full bg-transparent font-syne text-lg font-bold text-slate-100 outline-none"
+              className="w-full bg-transparent font-syne text-lg font-bold text-fg outline-none"
             />
             <input
               value={trip.destination}
               onChange={(e) => updateTrip(trip.id, { destination: e.target.value })}
               placeholder="Destination"
-              className="w-full bg-transparent text-xs text-slate-500 outline-none mt-0.5"
+              className="w-full bg-transparent text-xs text-fg-muted outline-none mt-0.5"
             />
           </div>
         </div>
@@ -233,8 +233,8 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
               className={[
                 'flex-1 px-2 py-1.5 rounded-lg border text-[11px] font-medium transition-colors',
                 trip.status === s.id
-                  ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-300'
-                  : 'border-slate-800/40 text-slate-500 hover:text-slate-300',
+                  ? 'border-accent/40 bg-accent/15 text-accent-text'
+                  : 'border-border text-fg-muted hover:text-fg-secondary',
               ].join(' ')}
             >
               {s.label}
@@ -243,20 +243,20 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
         </div>
       </div>
 
-      <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/30 space-y-2">
+      <div className="p-4 rounded-xl border border-border bg-surface-1 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-wider text-slate-500">Budget</span>
+          <span className="text-[10px] uppercase tracking-wider text-fg-muted">Budget</span>
           <input
             type="number"
             value={trip.budget || ''}
             onChange={(e) => updateTrip(trip.id, { budget: parseFloat(e.target.value) || 0 })}
             placeholder="0"
-            className="w-24 bg-transparent text-sm text-slate-200 text-right outline-none"
+            className="w-24 bg-transparent text-sm text-fg-secondary text-right outline-none"
           />
         </div>
         {trip.budget > 0 && (
           <>
-            <div className="relative h-1.5 rounded-full bg-slate-800 overflow-hidden">
+            <div className="relative h-1.5 rounded-full bg-surface-2 overflow-hidden">
               <motion.div
                 className={`absolute inset-y-0 left-0 ${over ? 'bg-rose-500' : 'bg-emerald-500'}`}
                 initial={false}
@@ -264,7 +264,7 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
                 transition={{ type: 'spring', stiffness: 200, damping: 25 }}
               />
             </div>
-            <div className={`text-xs ${over ? 'text-rose-400' : 'text-slate-400'}`}>
+            <div className={`text-xs ${over ? 'text-rose-400' : 'text-fg-muted'}`}>
               {fmt$(spent, trip.currency)} of {fmt$(trip.budget, trip.currency)}{over ? ` (over by ${fmt$(spent - trip.budget, trip.currency)})` : ''}
             </div>
           </>
@@ -272,24 +272,24 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
       </div>
 
       <section className="space-y-2">
-        <h2 className="text-xs font-medium uppercase tracking-wider text-slate-500">Expenses</h2>
+        <h2 className="text-xs font-medium uppercase tracking-wider text-fg-muted">Expenses</h2>
 
-        <div className="flex items-center gap-2 p-2.5 rounded-lg border border-dashed border-slate-700 bg-slate-950/40">
+        <div className="flex items-center gap-2 p-2.5 rounded-lg border border-dashed border-border-strong bg-surface-0">
           <input
             value={desc}
             onChange={(e) => setDesc(e.target.value)}
             placeholder="What did you spend on?"
-            className="flex-1 min-w-0 bg-transparent text-sm text-slate-200 placeholder-slate-600 outline-none"
+            className="flex-1 min-w-0 bg-transparent text-sm text-fg-secondary placeholder:text-fg-faint outline-none"
             onKeyDown={(e) => e.key === 'Enter' && submitExpense()}
           />
           <div className="flex items-center text-sm text-emerald-400">
-            <DollarSign size={12} className="text-slate-600" />
+            <DollarSign size={12} className="text-fg-faint" />
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value === '' ? '' : parseFloat(e.target.value))}
               placeholder="0"
-              className="w-20 bg-transparent text-right placeholder-slate-700 outline-none"
+              className="w-20 bg-transparent text-right placeholder:text-fg-faint outline-none"
               onKeyDown={(e) => e.key === 'Enter' && submitExpense()}
             />
           </div>
@@ -299,7 +299,7 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
             aria-label="Add expense"
             className={[
               'p-1 rounded-md transition-colors',
-              desc.trim() && amount !== '' ? 'text-indigo-300 hover:bg-indigo-500/15' : 'text-slate-700 cursor-not-allowed',
+              desc.trim() && amount !== '' ? 'text-accent-text hover:bg-accent/15' : 'text-fg-faint cursor-not-allowed',
             ].join(' ')}
           >
             <Plus size={14} />
@@ -309,7 +309,7 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
         <ul className="space-y-1.5">
           <AnimatePresence initial={false}>
             {trip.expenses.length === 0 ? (
-              <li className="text-center py-6 text-xs text-slate-500">No expenses logged yet.</li>
+              <li className="text-center py-6 text-xs text-fg-muted">No expenses logged yet.</li>
             ) : (
               [...trip.expenses].reverse().map((e) => (
                 <motion.li
@@ -318,17 +318,17 @@ function TripDetail({ trip, onBack }: { trip: Trip; onBack: () => void }) {
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, x: -10 }}
-                  className="flex items-center gap-3 p-2.5 rounded-lg border border-slate-800/40 bg-slate-900/20"
+                  className="flex items-center gap-3 p-2.5 rounded-lg border border-border bg-surface-1"
                 >
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm text-slate-200 truncate">{e.description}</div>
-                    <div className="text-[10px] text-slate-500">{fmtDate(e.date)}</div>
+                    <div className="text-sm text-fg-secondary truncate">{e.description}</div>
+                    <div className="text-[10px] text-fg-muted">{fmtDate(e.date)}</div>
                   </div>
                   <span className="text-sm font-semibold text-emerald-400">{fmt$(e.amount, trip.currency)}</span>
                   <button
                     onClick={() => { deleteExpense(trip.id, e.id); addToast('Expense deleted', 'warning'); }}
                     aria-label={`Delete ${e.description}`}
-                    className="text-slate-600 hover:text-rose-400 transition-colors p-1"
+                    className="text-fg-faint hover:text-rose-400 transition-colors p-1"
                   >
                     <Trash2 size={12} />
                   </button>
@@ -365,8 +365,8 @@ export default function TravelView() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <Plane size={18} className="text-indigo-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Travel</h1>
+        <Plane size={18} className="text-accent-text" />
+        <h1 className="font-syne text-lg font-bold text-fg">Travel</h1>
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -381,14 +381,14 @@ export default function TravelView() {
             {!adding && (
               <button
                 onClick={() => setAdding(true)}
-                className="w-full py-2.5 rounded-xl border border-dashed border-slate-700 text-slate-500 text-sm flex items-center justify-center gap-2 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors"
+                className="w-full py-2.5 rounded-xl border border-dashed border-border-strong text-fg-muted text-sm flex items-center justify-center gap-2 hover:border-accent/30 hover:text-accent-text transition-colors"
               >
                 <Plus size={14} /> Plan a new trip
               </button>
             )}
 
             {trips.length === 0 ? (
-              <div className="text-center py-10 text-sm text-slate-500">
+              <div className="text-center py-10 text-sm text-fg-muted">
                 No trips yet — plan your first above.
               </div>
             ) : (

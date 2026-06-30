@@ -50,13 +50,13 @@ export default function QuickCapture({ open, onClose }: QuickCaptureProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -8 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="relative w-full max-w-lg bg-[#0f1829]/95 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-5 shadow-2xl"
+            className="relative w-full max-w-lg bg-[#0f1829]/95 backdrop-blur-xl border border-border rounded-panel p-5 shadow-2xl"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-slate-300">Quick Capture</h2>
+              <h2 className="text-sm font-semibold text-fg-secondary">Quick Capture</h2>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-colors"
+                className="p-1.5 rounded-lg text-fg-muted hover:text-fg-secondary hover:bg-surface-2 transition-colors"
               >
                 <X size={16} />
               </button>
@@ -64,9 +64,9 @@ export default function QuickCapture({ open, onClose }: QuickCaptureProps) {
 
             <CaptureInput onSubmit={handleSubmit} />
 
-            <div className="mt-3 flex items-center gap-3 text-[10px] text-slate-600">
-              <span><kbd className="px-1 py-0.5 rounded bg-slate-800 text-slate-500">Enter</kbd> to save</span>
-              <span><kbd className="px-1 py-0.5 rounded bg-slate-800 text-slate-500">Esc</kbd> to close</span>
+            <div className="mt-3 flex items-center gap-3 text-[10px] text-fg-faint">
+              <span><kbd className="px-1 py-0.5 rounded bg-surface-2 text-fg-muted">Enter</kbd> to save</span>
+              <span><kbd className="px-1 py-0.5 rounded bg-surface-2 text-fg-muted">Esc</kbd> to close</span>
             </div>
           </motion.div>
         </motion.div>

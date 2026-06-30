@@ -39,7 +39,7 @@ const FONT = "'DM Sans', sans-serif";
 
 const STATUS_COLORS = {
   planning: "#64748b",
-  upcoming: "#6366f1",
+  upcoming: "#14b8a6",
   active: "#22c55e",
   done: "#334155",
 };
@@ -78,7 +78,7 @@ const PACKING_CATEGORY_ICONS = {
 const EXPENSE_CATEGORIES = ["transport", "accommodation", "food", "activity", "other"];
 
 const EXPENSE_CATEGORY_COLORS = {
-  transport: "#6366f1",
+  transport: "#14b8a6",
   accommodation: "#f97316",
   food: "#22c55e",
   activity: "#ec4899",
@@ -118,7 +118,7 @@ const QUICK_PACK_TEMPLATES = [
 const EMOJI_OPTIONS = ["✈️", "🗺️", "🏖️", "🏔️", "🌍", "🌏", "🌎", "🏝️", "🗼", "🎌", "🏛️", "🌆", "🚂", "🛳️", "🏕️", "🎿"];
 
 const COVER_COLORS = [
-  "#6366f1", "#f97316", "#ec4899", "#22c55e",
+  "#14b8a6", "#f97316", "#ec4899", "#22c55e",
   "#06b6d4", "#a855f7", "#eab308", "#ef4444",
 ];
 
@@ -590,8 +590,8 @@ function OverviewTab({ trip, onEditTrip, onUpdateNotes }) {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           style={{
-            background: "linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(6,182,212,0.1) 100%)",
-            border: "1px solid rgba(99,102,241,0.3)",
+            background: "linear-gradient(135deg, rgba(45, 212, 191,0.15) 0%, rgba(6,182,212,0.1) 100%)",
+            border: "1px solid rgba(45, 212, 191,0.3)",
             borderRadius: 14,
             padding: "18px 20px",
             marginBottom: 14,
@@ -1425,8 +1425,8 @@ function BucketListModal({ onSave, onClose }) {
                 key={e}
                 onClick={() => setEmoji(e)}
                 style={{
-                  background: emoji === e ? "rgba(99,102,241,0.2)" : "rgba(255,255,255,0.05)",
-                  border: emoji === e ? "2px solid #6366f1" : "2px solid transparent",
+                  background: emoji === e ? "rgba(45, 212, 191,0.2)" : "rgba(255,255,255,0.05)",
+                  border: emoji === e ? "2px solid #14b8a6" : "2px solid transparent",
                   borderRadius: 8,
                   padding: "4px 8px",
                   fontSize: 20,
@@ -1444,7 +1444,7 @@ function BucketListModal({ onSave, onClose }) {
         </div>
         <div style={{ ...S.row, justifyContent: "flex-end", gap: 10 }}>
           <button style={S.btnGhost} onClick={onClose}>Cancel</button>
-          <button style={{ ...S.btn, background: "#6366f1" }} onClick={handleSave}>Add</button>
+          <button style={{ ...S.btn, background: "#14b8a6" }} onClick={handleSave}>Add</button>
         </div>
       </div>
     </Modal>
@@ -1487,7 +1487,7 @@ function BucketListSection({ data, onChange, onStartPlanning }) {
           </div>
         </div>
         <button
-          style={{ ...S.btn, background: "#6366f1", fontSize: 12, padding: "6px 14px" }}
+          style={{ ...S.btn, background: "#14b8a6", fontSize: 12, padding: "6px 14px" }}
           onClick={() => setShowModal(true)}
         >
           + Add Destination
@@ -1512,8 +1512,8 @@ function BucketListSection({ data, onChange, onStartPlanning }) {
             style={{
               background: item.visited
                 ? "rgba(34,197,94,0.08)"
-                : "rgba(99,102,241,0.08)",
-              border: "1px solid " + (item.visited ? "rgba(34,197,94,0.2)" : "rgba(99,102,241,0.2)"),
+                : "rgba(45, 212, 191,0.08)",
+              border: "1px solid " + (item.visited ? "rgba(34,197,94,0.2)" : "rgba(45, 212, 191,0.2)"),
               borderRadius: 12,
               padding: "12px 14px",
             }}
@@ -1533,10 +1533,10 @@ function BucketListSection({ data, onChange, onStartPlanning }) {
                 <button
                   onClick={() => onStartPlanning(item)}
                   style={{
-                    background: "rgba(99,102,241,0.15)",
-                    border: "1px solid rgba(99,102,241,0.3)",
+                    background: "rgba(45, 212, 191,0.15)",
+                    border: "1px solid rgba(45, 212, 191,0.3)",
                     borderRadius: 6,
-                    color: "#818cf8",
+                    color: "#2dd4bf",
                     fontSize: 11,
                     fontWeight: 700,
                     padding: "4px 10px",

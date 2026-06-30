@@ -78,11 +78,11 @@ const TaskCard = React.memo(function TaskCard({ task }) {
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <div className={`text-sm font-medium ${task.completed ? 'line-through text-slate-600' : 'text-slate-200'}`}>
+        <div className={`text-sm font-medium ${task.completed ? 'line-through text-fg-faint' : 'text-fg-secondary'}`}>
           {task.title}
         </div>
         {task.description && !task.completed && (
-          <div className="text-xs text-slate-600 mt-0.5 line-clamp-1">{task.description}</div>
+          <div className="text-xs text-fg-faint mt-0.5 line-clamp-1">{task.description}</div>
         )}
 
         {/* Meta row */}
@@ -99,7 +99,7 @@ const TaskCard = React.memo(function TaskCard({ task }) {
           {task.dueDate && (
             <span
               className={`text-[10px] font-medium ${
-                overdue ? 'text-red-400' : today ? 'text-amber-400' : 'text-slate-600'
+                overdue ? 'text-red-400' : today ? 'text-amber-400' : 'text-fg-faint'
               }`}
             >
               {overdue ? '⚠ ' : today ? '📅 ' : '🗓 '}
@@ -109,7 +109,7 @@ const TaskCard = React.memo(function TaskCard({ task }) {
 
           {/* Tags */}
           {task.tags?.map((tag) => (
-            <span key={tag} className="text-[10px] text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-1.5 py-0.5 rounded-md">
+            <span key={tag} className="text-[10px] text-accent-text bg-accent/10 border border-accent/20 px-1.5 py-0.5 rounded-md">
               {tag}
             </span>
           ))}
@@ -119,7 +119,7 @@ const TaskCard = React.memo(function TaskCard({ task }) {
       {/* Delete */}
       <button
         onClick={() => deleteTask(task.id)}
-        className="text-slate-700 hover:text-red-400 transition-colors text-xs flex-shrink-0 opacity-0 group-hover:opacity-100"
+        className="text-fg-faint hover:text-red-400 transition-colors text-xs flex-shrink-0 opacity-0 group-hover:opacity-100"
       >
         ✕
       </button>

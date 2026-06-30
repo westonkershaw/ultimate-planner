@@ -17,10 +17,10 @@ function ProgressBar({ label, amount, color, pct }) {
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs text-slate-400 font-medium">{label}</span>
+        <span className="text-xs text-fg-muted font-medium">{label}</span>
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold" style={{ color }}>{fmt$(amount)}</span>
-          <span className="text-[10px] text-slate-600">{pct}%</span>
+          <span className="text-[10px] text-fg-faint">{pct}%</span>
         </div>
       </div>
       <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
@@ -57,12 +57,12 @@ const BudgetProjector = React.memo(function BudgetProjector() {
     <Card className="p-5">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <div className="font-syne text-base font-bold text-slate-100">Budget Projector</div>
-          <div className="text-xs text-slate-600">50/30/20 rule</div>
+          <div className="font-syne text-base font-bold text-fg">Budget Projector</div>
+          <div className="text-xs text-fg-faint">50/30/20 rule</div>
         </div>
         <button
           onClick={() => setEditing((e) => !e)}
-          className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+          className="text-xs text-accent-text hover:text-accent-text transition-colors"
         >
           {editing ? 'Cancel' : 'Edit'}
         </button>
@@ -80,7 +80,7 @@ const BudgetProjector = React.memo(function BudgetProjector() {
 
           {/* Preset selectors */}
           <div>
-            <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-2">
+            <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-2">
               Split Preset
             </label>
             <div className="flex gap-2 flex-wrap">
@@ -90,8 +90,8 @@ const BudgetProjector = React.memo(function BudgetProjector() {
                   onClick={() => selectPreset(p)}
                   className={`px-3 py-1.5 rounded-lg text-xs border transition-colors ${
                     budgetSplits.needs === p.needs && budgetSplits.wants === p.wants
-                      ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40'
-                      : 'bg-white/5 text-slate-500 border-white/10 hover:text-slate-300'
+                      ? 'bg-accent/20 text-accent-text border-accent/40'
+                      : 'bg-white/5 text-fg-muted border-white/10 hover:text-fg-secondary'
                   }`}
                 >
                   {p.label}
@@ -104,8 +104,8 @@ const BudgetProjector = React.memo(function BudgetProjector() {
         </div>
       ) : (
         <div className="mb-2">
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-1">Monthly Income</div>
-          <div className="font-syne text-2xl font-bold text-slate-100">{fmt$(income)}</div>
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint mb-1">Monthly Income</div>
+          <div className="font-syne text-2xl font-bold text-fg">{fmt$(income)}</div>
         </div>
       )}
 
@@ -115,7 +115,7 @@ const BudgetProjector = React.memo(function BudgetProjector() {
             label="Needs"
             amount={split.needs}
             pct={budgetSplits.needs}
-            color="#6366f1"
+            color="#14b8a6"
           />
           <ProgressBar
             label="Wants"
@@ -131,7 +131,7 @@ const BudgetProjector = React.memo(function BudgetProjector() {
           />
         </div>
       ) : (
-        <div className="text-center py-4 text-slate-600 text-sm">
+        <div className="text-center py-4 text-fg-faint text-sm">
           Enter your monthly income to see the budget breakdown
         </div>
       )}

@@ -240,7 +240,7 @@ function DragOverlayCard({ block }) {
         borderLeft: `4px solid ${block.color}`,
         boxSizing: "border-box",
         userSelect: "none",
-        boxShadow: "0 12px 32px rgba(0,0,0,0.55), 0 0 0 2px rgba(99,102,241,0.5)",
+        boxShadow: "0 12px 32px rgba(0,0,0,0.55), 0 0 0 2px rgba(45, 212, 191,0.5)",
         opacity: 0.92,
         transform: "scale(1.04)",
         fontFamily: "'DM Sans', sans-serif",
@@ -591,7 +591,7 @@ function DroppableDayColumn({ dayKey, isToday, children, style, onClick, onLegac
       style={{
         ...style,
         background: isOver
-          ? "rgba(99,102,241,0.12)"
+          ? "rgba(45, 212, 191,0.12)"
           : isToday ? "rgba(66,133,244,0.04)" : "transparent",
         transition: "background 0.15s ease",
       }}
@@ -605,8 +605,8 @@ function DroppableDayColumn({ dayKey, isToday, children, style, onClick, onLegac
       {isOver && (
         <div style={{
           position: "absolute", inset: 0,
-          background: "rgba(99,102,241,0.08)",
-          border: "2px dashed rgba(99,102,241,0.4)",
+          background: "rgba(45, 212, 191,0.08)",
+          border: "2px dashed rgba(45, 212, 191,0.4)",
           borderRadius: 4,
           pointerEvents: "none",
           zIndex: 5,

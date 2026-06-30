@@ -99,7 +99,7 @@ const RestTimer = React.memo(function RestTimer({
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="text-xs font-medium text-slate-400 tracking-wide"
+            className="text-xs font-medium text-fg-muted tracking-wide"
             aria-live="polite"
           >
             Next set in...
@@ -178,7 +178,7 @@ const RestTimer = React.memo(function RestTimer({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-x-0 -bottom-5 text-center text-[10px] text-slate-600"
+              className="absolute inset-x-0 -bottom-5 text-center text-[10px] text-fg-faint"
               aria-hidden="true"
             >
               Tap to dismiss
@@ -215,8 +215,8 @@ const RestTimer = React.memo(function RestTimer({
             onClick={() => changeDuration(preset.seconds)}
             className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${
               duration === preset.seconds
-                ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/40'
-                : 'bg-white/5 text-slate-600 hover:text-slate-300 border border-white/10'
+                ? 'bg-accent/30 text-accent-text border border-accent/40'
+                : 'bg-white/5 text-fg-faint hover:text-fg-secondary border border-white/10'
             }`}
             aria-pressed={duration === preset.seconds}
           >

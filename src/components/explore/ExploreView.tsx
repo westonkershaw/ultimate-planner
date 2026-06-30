@@ -70,12 +70,12 @@ const ExploreView = React.memo(function ExploreView() {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center">
-                  <Compass size={20} className="text-indigo-400" />
+                <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/25 flex items-center justify-center">
+                  <Compass size={20} className="text-accent-text" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-slate-100 tracking-tight">Travel Planner</h1>
-                  <p className="text-xs text-slate-500">Plan trips, calculate costs, and compare budgets</p>
+                  <h1 className="text-lg font-bold text-fg tracking-tight">Travel Planner</h1>
+                  <p className="text-xs text-fg-muted">Plan trips, calculate costs, and compare budgets</p>
                 </div>
               </div>
               <Button size="sm" onClick={() => setNewTripModal(true)}>
@@ -130,24 +130,24 @@ function TripCard({ trip, onClick, onDelete }: {
     <Card hover onClick={onClick} className="p-4 group">
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-slate-100 truncate">{trip.name}</h3>
+          <h3 className="text-sm font-semibold text-fg truncate">{trip.name}</h3>
           {hasRoute && (
-            <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5 truncate">
+            <p className="text-xs text-fg-muted flex items-center gap-1 mt-0.5 truncate">
               <MapPin size={10} className="flex-shrink-0" />
               <span className="truncate">{trip.fromLocation}</span>
-              <ArrowRight size={8} className="flex-shrink-0 text-slate-700" />
+              <ArrowRight size={8} className="flex-shrink-0 text-fg-faint" />
               <span className="truncate">{trip.toLocation}</span>
             </p>
           )}
         </div>
         <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={APP_SPRING}
           onClick={onDelete}
-          className="p-1.5 rounded-lg text-slate-700 hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100"
+          className="p-1.5 rounded-lg text-fg-faint hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100"
           aria-label="Delete trip">
           <Trash2 size={12} />
         </motion.button>
       </div>
-      <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
+      <div className="flex items-center gap-3 text-xs text-fg-muted mb-3">
         <span className="flex items-center gap-1"><Calendar size={10} /> {trip.days}d / {trip.nights}n</span>
         <span className="flex items-center gap-1"><Users size={10} /> {trip.people}</span>
         {trip.distanceMiles > 0 && (
@@ -155,10 +155,10 @@ function TripCard({ trip, onClick, onDelete }: {
         )}
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-bold text-indigo-300">
+        <span className="text-sm font-bold text-accent-text">
           {budget.total > 0 ? formatUsd(budget.total) : 'No estimate'}
         </span>
-        <ChevronRight size={14} className="text-slate-700 group-hover:text-slate-500 transition-colors" />
+        <ChevronRight size={14} className="text-fg-faint group-hover:text-fg-muted transition-colors" />
       </div>
     </Card>
   );
@@ -168,12 +168,12 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
       className="flex flex-col items-center gap-4 py-20">
-      <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-        <Compass size={28} className="text-indigo-500/60" />
+      <div className="w-16 h-16 rounded-panel bg-accent/10 border border-accent/20 flex items-center justify-center">
+        <Compass size={28} className="text-accent-text/60" />
       </div>
       <div className="text-center">
-        <p className="text-sm font-medium text-slate-300">No trips planned yet</p>
-        <p className="text-xs text-slate-600 mt-1">Create a trip to calculate fuel, food, accommodation, and total costs</p>
+        <p className="text-sm font-medium text-fg-secondary">No trips planned yet</p>
+        <p className="text-xs text-fg-faint mt-1">Create a trip to calculate fuel, food, accommodation, and total costs</p>
       </div>
       <Button size="sm" onClick={onCreate}><Plus size={14} /> Plan a Trip</Button>
     </motion.div>

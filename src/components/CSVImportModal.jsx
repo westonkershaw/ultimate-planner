@@ -240,7 +240,7 @@ export default function CSVImportModal({ onImport, onClose }) {
   return (
     <div style={S.overlay} onClick={e => e.target === e.currentTarget && onClose()}>
       {toastMsg && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#6366f1', color: '#fff', padding: '12px 20px', borderRadius: 8, zIndex: 10000, fontSize: 13, fontWeight: 600, fontFamily: "'DM Sans',sans-serif", boxShadow: '0 8px 24px rgba(99,102,241,0.4)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#14b8a6', color: '#fff', padding: '12px 20px', borderRadius: 8, zIndex: 10000, fontSize: 13, fontWeight: 600, fontFamily: "'DM Sans',sans-serif", boxShadow: '0 8px 24px rgba(45, 212, 191,0.4)' }}>
           {toastMsg}
         </div>
       )}
@@ -273,15 +273,15 @@ export default function CSVImportModal({ onImport, onClose }) {
                 <div style={{ fontSize:13, color:'rgba(100,116,139,0.8)', lineHeight:1.6, marginBottom:24 }}>
                   Supports CSV, OFX, and QFX files. Works with Chase, Bank of America, Wells Fargo, Citi, Capital One, Discover, and most banks.
                 </div>
-                <button onClick={() => fileRef.current?.click()} style={{ ...S.btn('linear-gradient(135deg,#6366f1,#8b5cf6)'), padding:'12px 32px', fontSize:14 }}>
+                <button onClick={() => fileRef.current?.click()} style={{ ...S.btn('linear-gradient(135deg,#14b8a6,#8b5cf6)'), padding:'12px 32px', fontSize:14 }}>
                   Choose File
                 </button>
                 <input ref={fileRef} type="file" accept=".csv,.CSV,.ofx,.OFX,.qfx,.QFX" style={{ display:'none' }} onChange={handleFile} />
               </div>
 
               {/* How to export guide */}
-              <div style={{ background:'rgba(99,102,241,0.06)', border:'1px solid rgba(99,102,241,0.15)', borderRadius:12, padding:'14px 16px', marginTop:8 }}>
-                <div style={{ fontSize:11, color:'#818cf8', fontWeight:700, letterSpacing:'1px', textTransform:'uppercase', marginBottom:10 }}>How to export from your bank</div>
+              <div style={{ background:'rgba(45, 212, 191,0.06)', border:'1px solid rgba(45, 212, 191,0.15)', borderRadius:12, padding:'14px 16px', marginTop:8 }}>
+                <div style={{ fontSize:11, color:'#2dd4bf', fontWeight:700, letterSpacing:'1px', textTransform:'uppercase', marginBottom:10 }}>How to export from your bank</div>
                 {[
                   { bank:'Chase', steps:'Sign in → Activity → Download Account Activity → CSV' },
                   { bank:'Bank of America', steps:'Sign in → Transactions → Download → CSV Format' },
@@ -308,7 +308,7 @@ export default function CSVImportModal({ onImport, onClose }) {
 
               {/* Sample data preview */}
               <div style={{ background:'rgba(15,23,42,0.6)', borderRadius:10, padding:12, marginBottom:16, overflowX:'auto', border:'1px solid rgba(51,65,85,0.3)' }}>
-                <div style={{ fontSize:10, color:'#818cf8', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.5px', marginBottom:8 }}>Preview (first 3 rows)</div>
+                <div style={{ fontSize:10, color:'#2dd4bf', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.5px', marginBottom:8 }}>Preview (first 3 rows)</div>
                 <table style={{ width:'100%', fontSize:11, color:'#e2e8f0', borderCollapse:'collapse' }}>
                   <thead>
                     <tr>
@@ -378,7 +378,7 @@ export default function CSVImportModal({ onImport, onClose }) {
               <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
                 <div style={{ display:'flex', gap:4, flex:1 }}>
                   {['all','expense','income'].map(f => (
-                    <button key={f} onClick={() => setFilter(f)} style={{ ...S.btn(filter===f ? 'rgba(99,102,241,0.25)' : 'rgba(15,23,42,0.6)', filter===f ? '#a5b4fc' : 'rgba(100,116,139,0.7)'), border:`1px solid ${filter===f?'rgba(99,102,241,0.4)':'rgba(51,65,85,0.4)'}`, padding:'5px 12px', fontSize:11, borderRadius:8 }}>
+                    <button key={f} onClick={() => setFilter(f)} style={{ ...S.btn(filter===f ? 'rgba(45, 212, 191,0.25)' : 'rgba(15,23,42,0.6)', filter===f ? '#a5b4fc' : 'rgba(100,116,139,0.7)'), border:`1px solid ${filter===f?'rgba(45, 212, 191,0.4)':'rgba(51,65,85,0.4)'}`, padding:'5px 12px', fontSize:11, borderRadius:8 }}>
                       {f.charAt(0).toUpperCase()+f.slice(1)}
                     </button>
                   ))}
@@ -391,9 +391,9 @@ export default function CSVImportModal({ onImport, onClose }) {
               {/* Transaction list */}
               <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
                 {filtered.map(t => (
-                  <div key={t.id} onClick={() => toggleOne(t.id)} style={{ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', borderRadius:10, cursor:'pointer', background: selected.has(t.id) ? 'rgba(99,102,241,0.08)' : 'rgba(15,23,42,0.4)', border:`1px solid ${selected.has(t.id)?'rgba(99,102,241,0.25)':'rgba(51,65,85,0.25)'}`, transition:'all 0.15s' }}>
+                  <div key={t.id} onClick={() => toggleOne(t.id)} style={{ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', borderRadius:10, cursor:'pointer', background: selected.has(t.id) ? 'rgba(45, 212, 191,0.08)' : 'rgba(15,23,42,0.4)', border:`1px solid ${selected.has(t.id)?'rgba(45, 212, 191,0.25)':'rgba(51,65,85,0.25)'}`, transition:'all 0.15s' }}>
                     {/* Checkbox */}
-                    <div style={{ width:16, height:16, borderRadius:4, border:`2px solid ${selected.has(t.id)?'#6366f1':'rgba(100,116,139,0.4)'}`, background:selected.has(t.id)?'#6366f1':'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:10, color:'#fff' }}>
+                    <div style={{ width:16, height:16, borderRadius:4, border:`2px solid ${selected.has(t.id)?'#14b8a6':'rgba(100,116,139,0.4)'}`, background:selected.has(t.id)?'#14b8a6':'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:10, color:'#fff' }}>
                       {selected.has(t.id) ? '✓' : ''}
                     </div>
 
@@ -444,7 +444,7 @@ export default function CSVImportModal({ onImport, onClose }) {
           {step === 'mapping' && (
             <>
               <button onClick={() => setStep('upload')} style={{ ...S.btn('rgba(15,23,42,0.8)', 'rgba(148,163,184,0.7)'), border:'1px solid rgba(51,65,85,0.5)' }}>Back</button>
-              <button onClick={applyMapping} style={{ ...S.btn('linear-gradient(135deg,#6366f1,#8b5cf6)'), flex:1 }}>
+              <button onClick={applyMapping} style={{ ...S.btn('linear-gradient(135deg,#14b8a6,#8b5cf6)'), flex:1 }}>
                 Apply Mapping
               </button>
             </>
@@ -452,13 +452,13 @@ export default function CSVImportModal({ onImport, onClose }) {
           {step === 'preview' && (
             <>
               <button onClick={() => setStep('upload')} style={{ ...S.btn('rgba(15,23,42,0.8)', 'rgba(148,163,184,0.7)'), border:'1px solid rgba(51,65,85,0.5)' }}>← Back</button>
-              <button onClick={doImport} disabled={selected.size === 0} style={{ ...S.btn('linear-gradient(135deg,#6366f1,#8b5cf6)'), flex:1, opacity: selected.size===0 ? 0.5 : 1 }}>
+              <button onClick={doImport} disabled={selected.size === 0} style={{ ...S.btn('linear-gradient(135deg,#14b8a6,#8b5cf6)'), flex:1, opacity: selected.size===0 ? 0.5 : 1 }}>
                 Import {selected.size} Transaction{selected.size !== 1 ? 's' : ''}
               </button>
             </>
           )}
           {step === 'done' && (
-            <button onClick={onClose} style={{ ...S.btn('linear-gradient(135deg,#6366f1,#8b5cf6)'), flex:1 }}>Done</button>
+            <button onClick={onClose} style={{ ...S.btn('linear-gradient(135deg,#14b8a6,#8b5cf6)'), flex:1 }}>Done</button>
           )}
         </div>
 

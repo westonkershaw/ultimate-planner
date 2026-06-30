@@ -3,16 +3,16 @@ import { motion, useReducedMotion } from 'framer-motion';
 
 // ── Category → accent color map ────────────────────────────────────────────
 const CATEGORY_COLORS = {
-  financial:   '#6366f1',
-  physical:    '#10b981',
+  financial:   '#0e9488',
+  physical:    '#41b27a',
   intellectual:'#3b82f6',
-  social:      '#f59e0b',
+  social:      '#d9a441',
   creative:    '#ec4899',
-  health:      '#14b8a6',
+  health:      '#2dd4bf',
   work:        '#8b5cf6',
 };
 
-const FALLBACK_COLOR = '#6366f1';
+const FALLBACK_COLOR = '#5b626d';
 
 function getCategoryColor(category) {
   return CATEGORY_COLORS[category] ?? FALLBACK_COLOR;
@@ -20,8 +20,8 @@ function getCategoryColor(category) {
 
 // ── Priority dot config ────────────────────────────────────────────────────
 const PRIORITY_DOT = {
-  high:   { color: '#ef4444', show: true },
-  low:    { color: '#10b981', show: true },
+  high:   { color: '#e2685f', show: true },
+  low:    { color: '#41b27a', show: true },
   normal: { color: 'transparent', show: false },
 };
 
@@ -82,9 +82,9 @@ const TaskItem = React.memo(function TaskItem({ task, onToggle, onDelete, index 
         flexDirection: 'row',
         alignItems: 'flex-start',
         gap: 10,
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderRadius: 12,
+        background: 'var(--color-surface-1)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 8,
         padding: '12px 14px',
         cursor: 'pointer',
         position: 'relative',
@@ -92,12 +92,12 @@ const TaskItem = React.memo(function TaskItem({ task, onToggle, onDelete, index 
       }}
       onHoverStart={(e) => {
         if (e.currentTarget) {
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+          e.currentTarget.style.borderColor = 'var(--color-border-strong)';
         }
       }}
       onHoverEnd={(e) => {
         if (e.currentTarget) {
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
+          e.currentTarget.style.borderColor = 'var(--color-border)';
         }
       }}
     >
@@ -115,7 +115,7 @@ const TaskItem = React.memo(function TaskItem({ task, onToggle, onDelete, index 
           width: 18,
           height: 18,
           borderRadius: 6,
-          border: task.done ? 'none' : '2px solid rgba(100,116,139,0.5)',
+          border: task.done ? 'none' : '2px solid var(--color-border-strong)',
           background: task.done ? accentColor : 'transparent',
           display: 'flex',
           alignItems: 'center',
@@ -167,7 +167,7 @@ const TaskItem = React.memo(function TaskItem({ task, onToggle, onDelete, index 
         {/* Title */}
         <motion.div
           animate={{
-            color: task.done ? 'rgba(100,116,139,0.5)' : '#e2e8f0',
+            color: task.done ? '#8b929e' : '#eceef2',
             textDecoration: task.done ? 'line-through' : 'none',
           }}
           transition={{ duration: 0.2 }}
@@ -199,8 +199,8 @@ const TaskItem = React.memo(function TaskItem({ task, onToggle, onDelete, index 
               style={{
                 fontSize: 11,
                 fontWeight: 500,
-                color: '#818cf8',
-                background: 'rgba(99,102,241,0.15)',
+                color: 'var(--color-accent-text)',
+                background: 'color-mix(in srgb, var(--color-accent) 15%, transparent)',
                 borderRadius: 6,
                 padding: '1px 6px',
                 lineHeight: '1.6',
@@ -215,7 +215,7 @@ const TaskItem = React.memo(function TaskItem({ task, onToggle, onDelete, index 
             <span
               style={{
                 fontSize: 11,
-                color: 'rgba(148,163,184,0.5)',
+                color: 'var(--color-fg-muted)',
                 lineHeight: '1.6',
               }}
             >
@@ -273,7 +273,7 @@ function DeleteButton({ onDelete, prefersReduced }) {
       style={{
         fontSize: 14,
         lineHeight: 1,
-        color: 'rgba(148,163,184,0.4)',
+        color: 'var(--color-fg-faint)',
         background: 'none',
         border: 'none',
         cursor: 'pointer',
@@ -283,15 +283,15 @@ function DeleteButton({ onDelete, prefersReduced }) {
         outline: 'none',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.color = 'rgba(248,113,113,0.9)';
+        e.currentTarget.style.color = 'var(--color-danger)';
         e.currentTarget.style.opacity = '1';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.color = 'rgba(148,163,184,0.4)';
+        e.currentTarget.style.color = 'var(--color-fg-faint)';
       }}
       onFocus={(e) => {
         e.currentTarget.style.opacity = '1';
-        e.currentTarget.style.boxShadow = '0 0 0 2px rgba(248,113,113,0.4)';
+        e.currentTarget.style.boxShadow = '0 0 0 2px color-mix(in srgb, var(--color-danger) 40%, transparent)';
       }}
       onBlur={(e) => {
         e.currentTarget.style.opacity = '0';

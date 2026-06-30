@@ -64,10 +64,10 @@ export default function EnvelopeBudgeting() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-base font-bold text-slate-100">
+          <h3 className="text-base font-bold text-fg">
             Envelope Budgets
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-fg-muted mt-0.5">
             Allocate fixed amounts per category and track spending
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function EnvelopeBudgeting() {
       {envelopes.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
           {[
-            { label: 'Total Budget', value: fmt$(totalBudget), color: '#6366f1' },
+            { label: 'Total Budget', value: fmt$(totalBudget), color: '#14b8a6' },
             { label: 'Total Spent', value: fmt$(totalSpent), color: '#f59e0b' },
             {
               label: 'On Track',
@@ -103,7 +103,7 @@ export default function EnvelopeBudgeting() {
               >
                 {s.value}
               </div>
-              <div className="text-[10px] text-slate-500 mt-0.5">
+              <div className="text-[10px] text-fg-muted mt-0.5">
                 {s.label}
               </div>
             </Card>
@@ -117,10 +117,10 @@ export default function EnvelopeBudgeting() {
           <div className="text-2xl mb-2">
             <span role="img" aria-hidden>&#x1F4E6;</span>
           </div>
-          <div className="text-sm font-semibold text-slate-300 mb-1">
+          <div className="text-sm font-semibold text-fg-secondary mb-1">
             No envelopes yet
           </div>
-          <div className="text-xs text-slate-500 max-w-xs mx-auto">
+          <div className="text-xs text-fg-muted max-w-xs mx-auto">
             Create spending envelopes to allocate fixed budgets per category.
             Track exactly where your money goes each month.
           </div>

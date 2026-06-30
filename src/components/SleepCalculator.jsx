@@ -120,10 +120,10 @@ export default function SleepCalculator() {
             onClick={() => setMode(m.id)}
             style={{
               flex: 1,
-              background: mode === m.id ? "rgba(99,102,241,0.2)" : "rgba(255,255,255,0.04)",
-              border: `1px solid ${mode === m.id ? "rgba(99,102,241,0.5)" : "rgba(255,255,255,0.1)"}`,
+              background: mode === m.id ? "rgba(45, 212, 191,0.2)" : "rgba(255,255,255,0.04)",
+              border: `1px solid ${mode === m.id ? "rgba(45, 212, 191,0.5)" : "rgba(255,255,255,0.1)"}`,
               borderRadius: 10,
-              color: mode === m.id ? "#818cf8" : "rgba(148,163,184,0.6)",
+              color: mode === m.id ? "#2dd4bf" : "rgba(148,163,184,0.6)",
               padding: "10px 8px",
               cursor: "pointer",
               fontSize: 12,
@@ -168,7 +168,7 @@ export default function SleepCalculator() {
           </select>
           <button
             onClick={setNow}
-            style={{ marginLeft: "auto", background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", padding: "8px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}
+            style={{ marginLeft: "auto", background: "rgba(45, 212, 191,0.12)", border: "1px solid rgba(45, 212, 191,0.3)", borderRadius: 8, color: "#2dd4bf", padding: "8px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}
           >
             Now
           </button>
@@ -236,8 +236,8 @@ export default function SleepCalculator() {
       </div>
 
       {/* Info */}
-      <div style={{ marginTop: 16, background: "rgba(99,102,241,0.07)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: 12, padding: "12px 14px" }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#818cf8", marginBottom: 4 }}>💡 How it works</div>
+      <div style={{ marginTop: 16, background: "rgba(45, 212, 191,0.07)", border: "1px solid rgba(45, 212, 191,0.2)", borderRadius: 12, padding: "12px 14px" }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "#2dd4bf", marginBottom: 4 }}>💡 How it works</div>
         <div style={{ fontSize: 11, color: "rgba(148,163,184,0.65)", lineHeight: 1.65 }}>
           Sleep happens in ~{cycleLen}-minute cycles through light sleep, deep sleep, and REM. Waking at the end of a cycle — rather than in the middle — means you wake up feeling more refreshed. This calculator adds {fallAsleep} minutes to fall asleep before counting cycles.
         </div>

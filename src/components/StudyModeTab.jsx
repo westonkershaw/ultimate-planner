@@ -90,7 +90,7 @@ function defaultDeck(name) {
     id: uid(),
     name,
     emoji: "📚",
-    color: "#6366f1",
+    color: "#14b8a6",
     description: "",
     cards: [],
     createdAt: new Date().toISOString(),
@@ -138,7 +138,7 @@ const EMOJI_OPTIONS = [
 ];
 
 const COLOR_OPTIONS = [
-  "#6366f1", "#06b6d4", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6",
+  "#14b8a6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6",
 ];
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
@@ -215,7 +215,7 @@ const S = {
 // ─── Pomodoro SVG Ring Timer ──────────────────────────────────────────────────
 
 const PHASE_COLORS = {
-  work:       "#6366f1",
+  work:       "#14b8a6",
   shortBreak: "#10b981",
   longBreak:  "#06b6d4",
 };
@@ -478,8 +478,8 @@ function PomodoroTimer({ onSessionComplete }) {
         <button
           onClick={() => setDeepFocus((v) => !v)}
           style={{
-            background: deepFocus ? "rgba(99,102,241,0.25)" : "rgba(255,255,255,0.05)",
-            border: "1px solid " + (deepFocus ? "#6366f1" : "rgba(255,255,255,0.1)"),
+            background: deepFocus ? "rgba(45, 212, 191,0.25)" : "rgba(255,255,255,0.05)",
+            border: "1px solid " + (deepFocus ? "#14b8a6" : "rgba(255,255,255,0.1)"),
             borderRadius: 8,
             padding: "4px 10px",
             fontSize: 11,
@@ -642,7 +642,7 @@ function StudyStatsDashboard({ decks, sessions }) {
 
       {/* Secondary stats row */}
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-        {statCard("Total cards", totalCards, totalReviews + " total reviews", "#6366f1")}
+        {statCard("Total cards", totalCards, totalReviews + " total reviews", "#14b8a6")}
         {statCard("Consistency", consistency + "/7 days", "this week", "#ec4899")}
         {bestDay
           ? statCard("Best study day", fmtSeconds(bestDay.seconds), fmtDate(bestDay.dateStr), "#34d399")
@@ -744,7 +744,7 @@ function DeckProgressRing({ deck, sessions }) {
     [masterPct]
   );
   const viewBoxStr = "0 0 48 48";
-  const ringColor = deck.color || "#6366f1";
+  const ringColor = deck.color || "#14b8a6";
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -1325,7 +1325,7 @@ function FlashCard({ card, flipped, onFlip }) {
             inset: 0,
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
-            background: "linear-gradient(135deg, rgba(6,182,212,0.12), rgba(99,102,241,0.10))",
+            background: "linear-gradient(135deg, rgba(6,182,212,0.12), rgba(45, 212, 191,0.10))",
             backdropFilter: "blur(16px)",
             border: "1px solid rgba(6,182,212,0.3)",
             borderRadius: "20px",
@@ -1373,9 +1373,9 @@ function FlashCard({ card, flipped, onFlip }) {
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
-            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(6,182,212,0.10))",
+            background: "linear-gradient(135deg, rgba(45, 212, 191,0.15), rgba(6,182,212,0.10))",
             backdropFilter: "blur(16px)",
-            border: "1px solid rgba(99,102,241,0.35)",
+            border: "1px solid rgba(45, 212, 191,0.35)",
             borderRadius: "20px",
             display: "flex",
             flexDirection: "column",

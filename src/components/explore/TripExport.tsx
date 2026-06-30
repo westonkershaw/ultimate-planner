@@ -78,7 +78,7 @@ const TripExport = React.memo(function TripExport({ trip }: TripExportProps) {
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-3">
         <Share2 size={16} className="text-pink-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Export & Share</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">Export & Share</h3>
       </div>
       <div className="flex gap-2">
         <Button variant="ghost" size="sm" onClick={handleCopy} className="flex-1">

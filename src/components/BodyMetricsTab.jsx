@@ -11,7 +11,7 @@ import {
 const uid = () => Math.random().toString(36).slice(2, 9);
 
 const ACCENT = "#f97316";
-const INDIGO  = "#6366f1";
+const INDIGO  = "#14b8a6";
 
 const S = {
   card: {
@@ -912,7 +912,7 @@ function PRTracker({ workoutHistory }) {
                   </div>
                   <div style={{ fontSize: 10, color: "rgba(100,116,139,0.6)", marginTop: 1 }}>{formatDate(pr.ts)}</div>
                 </div>
-                <div style={{ fontSize: 16, fontWeight: 900, color: idx === 0 ? ACCENT : "#818cf8", fontFamily: "'DM Sans',sans-serif", flexShrink: 0 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: idx === 0 ? ACCENT : "#2dd4bf", fontFamily: "'DM Sans',sans-serif", flexShrink: 0 }}>
                   {pr.weight} lbs
                 </div>
               </motion.div>
@@ -1008,7 +1008,7 @@ export function BodyMetricsDashWidget({ data, workoutHistory = [], onNavigate })
           </div>
           {topPR && (
             <div style={{ fontSize: 11, color: "rgba(148,163,184,0.6)" }}>
-              🏆 Top PR: <span style={{ color: "#818cf8", fontWeight: 700 }}>{topPR.name} — {topPR.weight} lbs</span>
+              🏆 Top PR: <span style={{ color: "#2dd4bf", fontWeight: 700 }}>{topPR.name} — {topPR.weight} lbs</span>
             </div>
           )}
         </div>

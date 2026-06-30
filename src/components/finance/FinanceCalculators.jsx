@@ -217,7 +217,7 @@ function AmortTable({ start, years, rate, monthly, compound }) {
 
   return (
     <div style={{ marginTop: 16 }}>
-      <button onClick={() => setShow(!show)} style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 8, color: "#818cf8", padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>
+      <button onClick={() => setShow(!show)} style={{ background: "rgba(45, 212, 191,0.1)", border: "1px solid rgba(45, 212, 191,0.25)", borderRadius: 8, color: "#2dd4bf", padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>
         {show ? "▲ Hide" : "▼ Show"} year-by-year breakdown
       </button>
       {show && rows.length > 0 && (
@@ -551,8 +551,8 @@ function FHACalc() {
   return (
     <div>
       <SectionHeader icon="🏡" title="FHA Loan Calculator" />
-      <div style={{ background: "rgba(99,102,241,0.07)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "rgba(148,163,184,0.7)", lineHeight: 1.6 }}>
-        <strong style={{ color: "#818cf8" }}>FHA loans</strong> are government-backed mortgages for first-time and low-credit buyers. Minimum 3.5% down. Requires Mortgage Insurance Premium (MIP) — both upfront and annual.
+      <div style={{ background: "rgba(45, 212, 191,0.07)", border: "1px solid rgba(45, 212, 191,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "rgba(148,163,184,0.7)", lineHeight: 1.6 }}>
+        <strong style={{ color: "#2dd4bf" }}>FHA loans</strong> are government-backed mortgages for first-time and low-credit buyers. Minimum 3.5% down. Requires Mortgage Insurance Premium (MIP) — both upfront and annual.
       </div>
       <CalcSection>
         <Grid>
@@ -633,7 +633,7 @@ function LoanAmortTable({ principal, rate, termMonths }) {
 
   return (
     <div style={{ marginTop: 16 }}>
-      <button onClick={() => setShow(!show)} style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 8, color: "#818cf8", padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>
+      <button onClick={() => setShow(!show)} style={{ background: "rgba(45, 212, 191,0.1)", border: "1px solid rgba(45, 212, 191,0.25)", borderRadius: 8, color: "#2dd4bf", padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>
         {show ? "▲ Hide" : "▼ Show"} amortization schedule
       </button>
       {show && rows.length > 0 && (
@@ -874,7 +874,7 @@ function SalaryCalc() {
             401k Contribution
             <span style={{ marginLeft: 6, fontSize: 10, color: "rgba(129,140,248,0.7)" }}>you keep this, pre-tax</span>
           </span>
-          <span style={{ color: "#818cf8", fontWeight: 600 }}>-{fmt$(result.k401deduction)}</span>
+          <span style={{ color: "#2dd4bf", fontWeight: 600 }}>-{fmt$(result.k401deduction)}</span>
         </div>
         <div style={{ ...rowStyle, borderBottom: "2px solid rgba(51,65,85,0.4)" }}>
           <span style={rowLabelStyle}>Health Insurance</span>
@@ -910,7 +910,7 @@ function SalaryCalc() {
           padding: "6px 14px",
           fontSize: 12,
           fontWeight: 700,
-          color: "#818cf8",
+          color: "#2dd4bf",
         }}>
           Take-Home Rate: {result.totalGross > 0 ? ((result.netAnnual / result.totalGross) * 100).toFixed(1) : "0.0"}%
         </div>
@@ -953,8 +953,8 @@ function SalaryCalc() {
       {/* 401k projection */}
       {result.k401annual > 0 && (
         <div style={{ background: "rgba(129,140,248,0.07)", border: "1px solid rgba(129,140,248,0.2)", borderRadius: 12, padding: "12px 14px", fontSize: 12, color: "rgba(148,163,184,0.75)", lineHeight: 1.6 }}>
-          <span style={{ color: "#818cf8", fontWeight: 700 }}>401k projection:</span> Contributing {fmt$(result.k401annual)}/year grows to approximately{" "}
-          <span style={{ color: "#818cf8", fontWeight: 800 }}>{fmt$(result.k401future)}</span> in 10 years at 7% annual return.
+          <span style={{ color: "#2dd4bf", fontWeight: 700 }}>401k projection:</span> Contributing {fmt$(result.k401annual)}/year grows to approximately{" "}
+          <span style={{ color: "#2dd4bf", fontWeight: 800 }}>{fmt$(result.k401future)}</span> in 10 years at 7% annual return.
         </div>
       )}
     </div>
@@ -978,7 +978,7 @@ export default function FinanceCalculators() {
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
       {/* Example values disclaimer */}
-      <div style={{ background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.18)", borderRadius: 10, padding: "8px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(148,163,184,0.7)", lineHeight: 1.5 }}>
+      <div style={{ background: "rgba(45, 212, 191,0.06)", border: "1px solid rgba(45, 212, 191,0.18)", borderRadius: 10, padding: "8px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(148,163,184,0.7)", lineHeight: 1.5 }}>
         <span style={{ flexShrink: 0 }}>{"\u{1F4A1}"}</span>
         <span>All calculators are pre-filled with <strong style={{ color: "rgba(165,180,252,0.8)" }}>example values</strong> to show how they work. Replace them with your own numbers.</span>
       </div>
@@ -989,10 +989,10 @@ export default function FinanceCalculators() {
             key={t.id}
             onClick={() => setTab(t.id)}
             style={{
-              background: tab === t.id ? "rgba(99,102,241,0.15)" : "transparent",
-              border: `1px solid ${tab === t.id ? "rgba(99,102,241,0.4)" : "rgba(255,255,255,0.1)"}`,
+              background: tab === t.id ? "rgba(45, 212, 191,0.15)" : "transparent",
+              border: `1px solid ${tab === t.id ? "rgba(45, 212, 191,0.4)" : "rgba(255,255,255,0.1)"}`,
               borderRadius: 20,
-              color: tab === t.id ? "#818cf8" : "rgba(148,163,184,0.6)",
+              color: tab === t.id ? "#2dd4bf" : "rgba(148,163,184,0.6)",
               padding: "6px 14px",
               cursor: "pointer",
               fontSize: 11,

@@ -39,23 +39,23 @@ export default function AISection() {
       aria-labelledby="ai-heading"
     >
       <div className="flex items-center gap-2">
-        <Bot size={14} className="text-slate-500" />
-        <h2 id="ai-heading" className="text-xs font-medium text-slate-500 uppercase tracking-wider">AI Coach</h2>
+        <Bot size={14} className="text-fg-muted" />
+        <h2 id="ai-heading" className="text-xs font-medium text-fg-muted uppercase tracking-wider">AI Coach</h2>
       </div>
 
-      <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.04] space-y-3">
+      <div className="p-4 rounded-xl border border-accent/20 bg-accent/[0.04] space-y-3">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center flex-shrink-0">
+          <div className="w-9 h-9 rounded-card bg-accent flex items-center justify-center flex-shrink-0">
             <Sparkles size={16} className="text-white" />
           </div>
           <div>
-            <div className="text-sm font-medium text-slate-200">Weekly AI Insights</div>
-            <div className="text-[11px] text-slate-500">Personalized summary powered by Claude</div>
+            <div className="text-sm font-medium text-fg-secondary">Weekly AI Insights</div>
+            <div className="text-[11px] text-fg-muted">Personalized summary powered by Claude</div>
           </div>
         </div>
 
         {insight && (
-          <div className="text-sm text-slate-300 leading-relaxed p-3 rounded-lg bg-slate-900/40 border border-slate-800/40">
+          <div className="text-sm text-fg-secondary leading-relaxed p-3 rounded-lg bg-surface-1 border border-border">
             {insight}
           </div>
         )}
@@ -66,8 +66,8 @@ export default function AISection() {
           className={[
             'w-full py-2.5 rounded-xl border text-sm font-medium transition-colors',
             loading
-              ? 'border-slate-700/40 bg-slate-800/40 text-slate-500 cursor-not-allowed'
-              : 'border-indigo-500/30 bg-indigo-500/15 text-indigo-300 hover:bg-indigo-500/25',
+              ? 'border-border-strong bg-surface-2 text-fg-muted cursor-not-allowed'
+              : 'border-accent/30 bg-accent/15 text-accent-text hover:bg-accent/25',
           ].join(' ')}
         >
           {loading ? 'Generating…' : '💡 Generate weekly insight'}

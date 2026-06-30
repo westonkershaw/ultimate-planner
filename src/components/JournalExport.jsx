@@ -548,7 +548,7 @@ export default function JournalExportModal({ journals, onClose }) {
             </div>
             {filtered.length > 0 && (
               <div>
-                <div style={{ fontSize: 20, fontWeight: 800, color: "#818cf8" }}>
+                <div style={{ fontSize: 20, fontWeight: 800, color: "#2dd4bf" }}>
                   {filtered.filter((e) => e.rating > 0).length > 0
                     ? (filtered.reduce((s, e) => s + (e.rating || 0), 0) / filtered.filter((e) => e.rating > 0).length).toFixed(1)
                     : "—"}
@@ -616,8 +616,8 @@ export default function JournalExportModal({ journals, onClose }) {
               onClick={handlePrint}
               disabled={filtered.length === 0}
               style={{
-                background: "rgba(99,102,241,0.12)",
-                border: "1px solid rgba(99,102,241,0.3)",
+                background: "rgba(45, 212, 191,0.12)",
+                border: "1px solid rgba(45, 212, 191,0.3)",
                 borderRadius: 12, color: "#fff",
                 padding: "14px 18px", cursor: filtered.length === 0 ? "default" : "pointer",
                 fontSize: 13, fontWeight: 700, fontFamily: FONT,

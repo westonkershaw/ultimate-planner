@@ -29,18 +29,18 @@ function AchievementCard({ post }: { post: AchievementPost }) {
       layout
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-4 rounded-xl border border-slate-800/50 bg-slate-900/40 space-y-3"
+      className="p-4 rounded-xl border border-border bg-surface-1 space-y-3"
     >
       {/* Header */}
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center text-xl flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center text-xl flex-shrink-0">
           {achievement.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-bold text-slate-100">{achievement.title}</h4>
-          <p className="text-xs text-slate-500">{achievement.description}</p>
+          <h4 className="text-sm font-bold text-fg">{achievement.title}</h4>
+          <p className="text-xs text-fg-muted">{achievement.description}</p>
         </div>
-        <span className="text-[10px] text-slate-600 flex-shrink-0">
+        <span className="text-[10px] text-fg-faint flex-shrink-0">
           {timeAgo(achievement.earnedAt)}
         </span>
       </div>
@@ -57,13 +57,13 @@ function AchievementCard({ post }: { post: AchievementPost }) {
               className={[
                 'flex items-center gap-1 px-2 py-1 rounded-full text-xs transition-all',
                 r.reacted
-                  ? 'bg-indigo-500/15 border border-indigo-500/30'
-                  : 'bg-slate-800/40 border border-slate-800/20 hover:border-slate-700',
+                  ? 'bg-accent/15 border border-accent/30'
+                  : 'bg-surface-2 border border-border hover:border-border-strong',
               ].join(' ')}
             >
               <span>{emoji}</span>
               {r.count > 0 && (
-                <span className={r.reacted ? 'text-indigo-400' : 'text-slate-500'}>
+                <span className={r.reacted ? 'text-accent-text' : 'text-fg-muted'}>
                   {r.count}
                 </span>
               )}
@@ -96,12 +96,12 @@ export default function AchievementFeed() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <Award size={14} className="text-indigo-400" />
-        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+        <Award size={14} className="text-accent-text" />
+        <span className="text-xs font-bold text-fg-muted uppercase tracking-wider">
           Achievements
         </span>
         {posts.length > 0 && (
-          <span className="text-[10px] text-slate-600 ml-auto">
+          <span className="text-[10px] text-fg-faint ml-auto">
             {posts.length} earned
           </span>
         )}
@@ -114,8 +114,8 @@ export default function AchievementFeed() {
           className="text-center py-12 space-y-3"
         >
           <div className="text-4xl">🏅</div>
-          <p className="text-sm text-slate-400">No achievements yet</p>
-          <p className="text-xs text-slate-600 max-w-xs mx-auto">
+          <p className="text-sm text-fg-muted">No achievements yet</p>
+          <p className="text-xs text-fg-faint max-w-xs mx-auto">
             Complete tasks, log workouts, and set daily intentions to earn your first achievement
           </p>
         </motion.div>

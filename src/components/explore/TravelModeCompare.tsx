@@ -70,7 +70,7 @@ const TravelModeCompare = React.memo(function TravelModeCompare({
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
         <Trophy size={16} className="text-amber-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Travel Mode Comparison</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">Travel Mode Comparison</h3>
       </div>
 
       {/* Cost comparison badges */}
@@ -86,8 +86,8 @@ const TravelModeCompare = React.memo(function TravelModeCompare({
                 </span>
               )}
               <m.icon size={16} className={`mx-auto mb-1 ${m.color}`} />
-              <p className="text-xs text-slate-400">{m.label}</p>
-              <p className="text-sm font-bold text-slate-100">{cost > 0 ? formatUsd(cost) : '—'}</p>
+              <p className="text-xs text-fg-muted">{m.label}</p>
+              <p className="text-sm font-bold text-fg">{cost > 0 ? formatUsd(cost) : '—'}</p>
             </div>
           );
         })}
@@ -103,7 +103,7 @@ const TravelModeCompare = React.memo(function TravelModeCompare({
           <Plane size={12} className="text-sky-400" />
           <span className="text-xs font-semibold text-sky-400">Flight Estimate</span>
           {suggestedFlight > 0 && (
-            <span className="ml-auto text-[10px] text-slate-600">avg ~{formatUsd(suggestedFlight)}/person</span>
+            <span className="ml-auto text-[10px] text-fg-faint">avg ~{formatUsd(suggestedFlight)}/person</span>
           )}
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -126,7 +126,7 @@ const TravelModeCompare = React.memo(function TravelModeCompare({
         <div className="flex items-center gap-2 mb-2">
           <Key size={12} className="text-amber-400" />
           <span className="text-xs font-semibold text-amber-400">Rental Car Estimate</span>
-          <span className="ml-auto text-[10px] text-slate-600">avg ~$55/day</span>
+          <span className="ml-auto text-[10px] text-fg-faint">avg ~$55/day</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <Input label="$/day" type="number" min={0} step={5}

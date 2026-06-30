@@ -12,13 +12,13 @@ export default function DailyIntention({ value, onChange }: DailyIntentionProps)
 
   return (
     <div className="space-y-2">
-      <label className="text-xs font-medium text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-        <Sparkles size={12} className="text-indigo-400" />
+      <label className="text-xs font-medium text-fg-muted uppercase tracking-wider flex items-center gap-1.5">
+        <Sparkles size={12} className="text-accent-text" />
         Today's Intention
       </label>
       <motion.div
-        animate={{ borderColor: focused ? 'rgba(99,102,241,0.5)' : 'rgba(30,41,59,0.6)' }}
-        className="rounded-xl border bg-slate-900/40 overflow-hidden"
+        animate={{ borderColor: focused ? 'rgba(45, 212, 191,0.5)' : 'rgba(30,41,59,0.6)' }}
+        className="rounded-xl border bg-surface-1 overflow-hidden"
       >
         <input
           value={value}
@@ -26,7 +26,7 @@ export default function DailyIntention({ value, onChange }: DailyIntentionProps)
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="What do you want to accomplish today?"
-          className="w-full bg-transparent px-4 py-3 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none"
+          className="w-full bg-transparent px-4 py-3 text-sm text-fg-secondary placeholder:text-fg-faint focus:outline-none"
         />
       </motion.div>
     </div>

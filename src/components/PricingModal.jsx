@@ -85,8 +85,8 @@ function ContextBanner({ featureContext }) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ ...SPRING, delay: 0.02 }}
       style={{
-        background: 'linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.08))',
-        border: '1px solid rgba(99,102,241,0.3)',
+        background: 'linear-gradient(135deg,rgba(45, 212, 191,0.12),rgba(14, 148, 136,0.08))',
+        border: '1px solid rgba(45, 212, 191,0.3)',
         borderRadius: 12,
         padding: '12px 14px',
         marginBottom: 20,
@@ -123,25 +123,25 @@ function PlanCard({ plan, selected, onSelect, disabled }) {
         borderRadius: 16,
         border: selected
           ? plan.highlight
-            ? '2px solid #818cf8'
-            : '2px solid rgba(99,102,241,0.55)'
+            ? '2px solid #2dd4bf'
+            : '2px solid rgba(45, 212, 191,0.55)'
           : plan.highlight
-          ? '1.5px solid rgba(99,102,241,0.35)'
+          ? '1.5px solid rgba(45, 212, 191,0.35)'
           : '1px solid rgba(255,255,255,0.08)',
         background: selected
           ? plan.highlight
-            ? 'linear-gradient(160deg,rgba(99,102,241,0.2),rgba(139,92,246,0.14))'
-            : 'rgba(99,102,241,0.1)'
+            ? 'linear-gradient(160deg,rgba(45, 212, 191,0.2),rgba(14, 148, 136,0.14))'
+            : 'rgba(45, 212, 191,0.1)'
           : plan.highlight
-          ? 'linear-gradient(160deg,rgba(99,102,241,0.08),rgba(139,92,246,0.04))'
+          ? 'linear-gradient(160deg,rgba(45, 212, 191,0.08),rgba(14, 148, 136,0.04))'
           : 'rgba(255,255,255,0.025)',
         cursor: disabled ? 'not-allowed' : 'pointer',
         textAlign: 'center',
         transition: 'all 0.15s',
         boxShadow: plan.highlight && selected
-          ? '0 0 28px rgba(99,102,241,0.22)'
+          ? '0 0 28px rgba(45, 212, 191,0.22)'
           : plan.highlight
-          ? '0 0 18px rgba(99,102,241,0.1)'
+          ? '0 0 18px rgba(45, 212, 191,0.1)'
           : 'none',
         fontFamily: "'DM Sans',sans-serif",
       }}
@@ -152,7 +152,7 @@ function PlanCard({ plan, selected, onSelect, disabled }) {
           top: -9,
           left: '50%',
           transform: 'translateX(-50%)',
-          background: 'linear-gradient(90deg,#6366f1,#8b5cf6)',
+          background: 'linear-gradient(90deg,#14b8a6,#8b5cf6)',
           color: '#fff',
           fontSize: 8,
           fontWeight: 900,
@@ -181,7 +181,7 @@ function PlanCard({ plan, selected, onSelect, disabled }) {
         {plan.note}
       </div>
       {selected && (
-        <div style={{ position: 'absolute', top: 8, right: 8, width: 16, height: 16, borderRadius: '50%', background: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'absolute', top: 8, right: 8, width: 16, height: 16, borderRadius: '50%', background: '#14b8a6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Check size={9} color="#fff" />
         </div>
       )}
@@ -192,8 +192,8 @@ function PlanCard({ plan, selected, onSelect, disabled }) {
 function FAQItem({ item, isOpen, onToggle }) {
   return (
     <div style={{
-      background: isOpen ? 'rgba(99,102,241,0.06)' : 'rgba(255,255,255,0.02)',
-      border: isOpen ? '1px solid rgba(99,102,241,0.2)' : '1px solid rgba(255,255,255,0.05)',
+      background: isOpen ? 'rgba(45, 212, 191,0.06)' : 'rgba(255,255,255,0.02)',
+      border: isOpen ? '1px solid rgba(45, 212, 191,0.2)' : '1px solid rgba(255,255,255,0.05)',
       borderRadius: 10,
       overflow: 'hidden',
       transition: 'all 0.15s',
@@ -299,14 +299,14 @@ export default function PricingModal({
         transition={{ type: 'spring', stiffness: 360, damping: 28 }}
         style={{
           background: 'linear-gradient(160deg,#0b101c,#0f172a 50%,#0d0b1f)',
-          border: '1px solid rgba(99,102,241,0.2)',
+          border: '1px solid rgba(45, 212, 191,0.2)',
           borderRadius: 24,
           padding: '24px 20px 20px',
           maxWidth: 460,
           width: '100%',
           maxHeight: '94vh',
           overflowY: 'auto',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(99,102,241,0.06)',
+          boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(45, 212, 191,0.06)',
           fontFamily: "'DM Sans',sans-serif",
         }}
       >
@@ -353,7 +353,7 @@ export default function PricingModal({
           transition={{ ...SPRING, delay: 0.06 }}
           style={{ marginBottom: 22 }}
         >
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(99,102,241,0.75)', marginBottom: 10 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(45, 212, 191,0.75)', marginBottom: 10 }}>
             What you unlock
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
@@ -365,8 +365,8 @@ export default function PricingModal({
                   borderRadius: 12, padding: '10px 12px',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
-                    <div style={{ width: 26, height: 26, borderRadius: 8, background: 'rgba(99,102,241,0.14)', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <FeatIcon size={13} color="#818cf8" />
+                    <div style={{ width: 26, height: 26, borderRadius: 8, background: 'rgba(45, 212, 191,0.14)', border: '1px solid rgba(45, 212, 191,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <FeatIcon size={13} color="#2dd4bf" />
                     </div>
                     <span style={{ fontSize: 12, fontWeight: 700, color: '#e2e8f0' }}>{feat.label}</span>
                   </div>
@@ -376,7 +376,7 @@ export default function PricingModal({
             })}
             {/* "And much more" pill */}
             <div style={{
-              background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)',
+              background: 'rgba(45, 212, 191,0.06)', border: '1px solid rgba(45, 212, 191,0.15)',
               borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <span style={{ fontSize: 12, color: 'rgba(165,180,252,0.7)', fontWeight: 600 }}>+ much more ✨</span>
@@ -391,7 +391,7 @@ export default function PricingModal({
           transition={{ ...SPRING, delay: 0.12 }}
           style={{ marginBottom: 14 }}
         >
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(99,102,241,0.75)', marginBottom: 10 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(45, 212, 191,0.75)', marginBottom: 10 }}>
             Choose your plan
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
@@ -421,9 +421,9 @@ export default function PricingModal({
             style={{
               width: '100%', padding: '15px', borderRadius: 14, border: 'none',
               cursor: loading ? 'not-allowed' : 'pointer',
-              background: 'linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%)',
+              background: 'linear-gradient(135deg,#14b8a6 0%,#8b5cf6 100%)',
               color: '#fff', fontSize: 15, fontWeight: 800,
-              boxShadow: loading ? 'none' : '0 8px 28px rgba(99,102,241,0.4)',
+              boxShadow: loading ? 'none' : '0 8px 28px rgba(45, 212, 191,0.4)',
               marginBottom: 10, opacity: loading ? 0.7 : 1,
               fontFamily: "'DM Sans',sans-serif", letterSpacing: '0.01em',
               transition: 'opacity 0.15s',
@@ -456,7 +456,7 @@ export default function PricingModal({
           transition={{ ...SPRING, delay: 0.22 }}
           style={{ marginBottom: 20 }}
         >
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(99,102,241,0.75)', marginBottom: 10 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(45, 212, 191,0.75)', marginBottom: 10 }}>
             Questions
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -476,7 +476,7 @@ export default function PricingModal({
           {onRestore && (
             <button
               onClick={onRestore}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 11, color: 'rgba(99,102,241,0.55)', fontFamily: "'DM Sans',sans-serif", marginBottom: 8, display: 'block', width: '100%' }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 11, color: 'rgba(45, 212, 191,0.55)', fontFamily: "'DM Sans',sans-serif", marginBottom: 8, display: 'block', width: '100%' }}
             >
               Restore purchases
             </button>
@@ -486,9 +486,9 @@ export default function PricingModal({
           </p>
           <p style={{ fontSize: 10, color: 'rgba(71,85,105,0.55)', margin: 0, lineHeight: 1.6 }}>
             By upgrading you agree to our{' '}
-            <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(99,102,241,0.6)', textDecoration: 'underline' }}>Terms</a>
+            <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(45, 212, 191,0.6)', textDecoration: 'underline' }}>Terms</a>
             {' '}and{' '}
-            <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(99,102,241,0.6)', textDecoration: 'underline' }}>Privacy Policy</a>
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(45, 212, 191,0.6)', textDecoration: 'underline' }}>Privacy Policy</a>
           </p>
         </div>
       </motion.div>

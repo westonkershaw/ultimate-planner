@@ -32,7 +32,7 @@ function StarRow({ value, onChange }: { value: SleepQuality; onChange: (n: Sleep
         >
           <Star
             size={20}
-            className={value >= n ? 'fill-amber-400 text-amber-400' : 'text-slate-700'}
+            className={value >= n ? 'fill-amber-400 text-amber-400' : 'text-fg-faint'}
           />
         </button>
       ))}
@@ -42,10 +42,10 @@ function StarRow({ value, onChange }: { value: SleepQuality; onChange: (n: Sleep
 
 function StatPill({ Icon, label, value }: { Icon: React.FC<{ size?: number }>; label: string; value: string }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800/40 bg-slate-900/30">
+    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border bg-surface-1">
       <Icon size={14} />
-      <span className="text-[10px] uppercase tracking-wider text-slate-500">{label}</span>
-      <span className="text-sm font-semibold text-slate-200 ml-auto">{value}</span>
+      <span className="text-[10px] uppercase tracking-wider text-fg-muted">{label}</span>
+      <span className="text-sm font-semibold text-fg-secondary ml-auto">{value}</span>
     </div>
   );
 }
@@ -76,34 +76,34 @@ function TodayComposer() {
     <motion.section
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-4 p-4 rounded-2xl border border-slate-800/40 bg-slate-900/30"
+      className="space-y-4 p-4 rounded-panel border border-border bg-surface-1"
     >
-      <h2 className="text-xs font-medium uppercase tracking-wider text-slate-500">
+      <h2 className="text-xs font-medium uppercase tracking-wider text-fg-muted">
         Last night · {fmtDate(today)}
       </h2>
 
       <div className="grid grid-cols-2 gap-3">
         <label className="block">
-          <span className="block text-[10px] uppercase tracking-wider text-slate-500 mb-1">Bed</span>
+          <span className="block text-[10px] uppercase tracking-wider text-fg-muted mb-1">Bed</span>
           <input
             type="time"
             value={bedTime}
             onChange={(e) => setBedTime(e.target.value)}
-            className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 outline-none focus:border-indigo-500/40"
+            className="w-full bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg outline-none focus:border-accent/40"
           />
         </label>
         <label className="block">
-          <span className="block text-[10px] uppercase tracking-wider text-slate-500 mb-1">Wake</span>
+          <span className="block text-[10px] uppercase tracking-wider text-fg-muted mb-1">Wake</span>
           <input
             type="time"
             value={wakeTime}
             onChange={(e) => setWakeTime(e.target.value)}
-            className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 outline-none focus:border-indigo-500/40"
+            className="w-full bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg outline-none focus:border-accent/40"
           />
         </label>
       </div>
 
-      <div className="text-center text-sm text-indigo-300 font-semibold">
+      <div className="text-center text-sm text-accent-text font-semibold">
         {fmtHours(hours)} of sleep
       </div>
 
@@ -116,7 +116,7 @@ function TodayComposer() {
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Notes (optional)"
         rows={2}
-        className="w-full resize-none bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+        className="w-full resize-none bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg placeholder:text-fg-faint outline-none focus:border-accent/40"
       />
 
       <button
@@ -124,7 +124,7 @@ function TodayComposer() {
         disabled={!canSave}
         className={[
           'w-full py-2.5 rounded-xl text-sm font-semibold transition-colors',
-          canSave ? 'bg-indigo-500 hover:bg-indigo-400 text-white' : 'bg-slate-800/40 text-slate-600 cursor-not-allowed',
+          canSave ? 'bg-accent hover:bg-accent-hover text-white' : 'bg-surface-2 text-fg-faint cursor-not-allowed',
         ].join(' ')}
       >
         {existing ? 'Update sleep' : 'Log sleep'}
@@ -141,15 +141,15 @@ function EntryItem({ entry, onDelete }: { entry: SleepEntry; onDelete: (id: stri
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -10 }}
-      className="flex items-center gap-3 p-3 rounded-xl border border-slate-800/40 bg-slate-900/20"
+      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-1"
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-slate-300">{fmtDate(entry.date)}</span>
-          <span className="text-[10px] text-slate-500">{entry.bedTime} → {entry.wakeTime}</span>
+          <span className="text-xs font-semibold text-fg-secondary">{fmtDate(entry.date)}</span>
+          <span className="text-[10px] text-fg-muted">{entry.bedTime} → {entry.wakeTime}</span>
         </div>
-        <div className="text-[11px] text-slate-500 mt-0.5">{fmtHours(hours)}</div>
-        {entry.notes && <div className="text-xs text-slate-400 mt-1 line-clamp-2">{entry.notes}</div>}
+        <div className="text-[11px] text-fg-muted mt-0.5">{fmtHours(hours)}</div>
+        {entry.notes && <div className="text-xs text-fg-muted mt-1 line-clamp-2">{entry.notes}</div>}
       </div>
       {entry.quality > 0 && (
         <div className="flex items-center gap-0.5">
@@ -161,7 +161,7 @@ function EntryItem({ entry, onDelete }: { entry: SleepEntry; onDelete: (id: stri
       <button
         onClick={() => onDelete(entry.id)}
         aria-label={`Delete sleep entry from ${entry.date}`}
-        className="text-slate-600 hover:text-rose-400 transition-colors p-1"
+        className="text-fg-faint hover:text-rose-400 transition-colors p-1"
       >
         <Trash2 size={12} />
       </button>
@@ -193,21 +193,21 @@ export default function SleepView() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <Moon size={18} className="text-indigo-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Sleep</h1>
+        <Moon size={18} className="text-accent-text" />
+        <h1 className="font-syne text-lg font-bold text-fg">Sleep</h1>
       </motion.div>
 
       <div className="grid grid-cols-3 gap-2">
-        <StatPill Icon={({ size }) => <Clock size={size} className="text-indigo-400" />} label="7d avg" value={fmtHours(avg7)} />
+        <StatPill Icon={({ size }) => <Clock size={size} className="text-accent-text" />} label="7d avg" value={fmtHours(avg7)} />
         <StatPill Icon={({ size }) => <Gauge size={size} className="text-emerald-400" />} label="Quality" value={avgQ > 0 ? `${avgQ}/5` : '–'} />
-        <StatPill Icon={({ size }) => <Moon size={size} className="text-violet-400" />} label="Entries" value={String(entries.length)} />
+        <StatPill Icon={({ size }) => <Moon size={size} className="text-accent-text" />} label="Entries" value={String(entries.length)} />
       </div>
 
       <TodayComposer />
 
       {history.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-xs font-medium uppercase tracking-wider text-slate-500">History</h2>
+          <h2 className="text-xs font-medium uppercase tracking-wider text-fg-muted">History</h2>
           <ul className="space-y-2">
             <AnimatePresence initial={false}>
               {history.map((e) => (

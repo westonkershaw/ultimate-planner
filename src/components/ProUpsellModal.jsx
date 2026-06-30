@@ -35,10 +35,10 @@ const S = {
     maxHeight: '90vh',
     overflowY: 'auto',
     background: 'rgba(12,17,32,0.98)',
-    border: '1px solid rgba(99,102,241,0.25)',
+    border: '1px solid rgba(45, 212, 191,0.25)',
     borderRadius: '24px',
     padding: '32px',
-    boxShadow: '0 0 80px rgba(99,102,241,0.12), 0 40px 80px rgba(0,0,0,0.7)',
+    boxShadow: '0 0 80px rgba(45, 212, 191,0.12), 0 40px 80px rgba(0,0,0,0.7)',
   },
   closeBtn: {
     position: 'absolute',
@@ -64,7 +64,7 @@ const S = {
     fontWeight: 700,
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
-    background: 'linear-gradient(90deg, #6366f1, #a78bfa)',
+    background: 'linear-gradient(90deg, #14b8a6, #a78bfa)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
@@ -90,7 +90,7 @@ const S = {
     marginBottom: '12px',
   },
   featureIcon: {
-    color: '#6366f1',
+    color: '#14b8a6',
     fontSize: '14px',
     marginTop: '2px',
     flexShrink: 0,
@@ -124,8 +124,8 @@ const S = {
     cursor: 'pointer',
   },
   lifetimeCard: {
-    background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.15))',
-    border: '1px solid rgba(99,102,241,0.5)',
+    background: 'linear-gradient(135deg, rgba(45, 212, 191,0.2), rgba(14, 148, 136,0.15))',
+    border: '1px solid rgba(45, 212, 191,0.5)',
     borderRadius: '16px',
     padding: '20px',
     display: 'flex',
@@ -169,7 +169,7 @@ const S = {
     fontSize: '32px',
     fontWeight: 800,
     lineHeight: 1,
-    background: 'linear-gradient(90deg, #6366f1, #a78bfa)',
+    background: 'linear-gradient(90deg, #14b8a6, #a78bfa)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
@@ -203,7 +203,7 @@ const S = {
   primaryBtn: {
     width: '100%',
     padding: '11px 0',
-    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+    background: 'linear-gradient(135deg, #14b8a6, #8b5cf6)',
     border: 'none',
     borderRadius: '10px',
     color: '#fff',
@@ -212,7 +212,7 @@ const S = {
     cursor: 'pointer',
     marginTop: '4px',
     letterSpacing: '0.02em',
-    boxShadow: '0 4px 20px rgba(99,102,241,0.35)',
+    boxShadow: '0 4px 20px rgba(45, 212, 191,0.35)',
   },
   trustRow: {
     display: 'flex',
@@ -370,7 +370,7 @@ function ProUpsellModal({ open, onClose, onUpgrade, userName }) {
                 style={S.lifetimeCard}
                 whileHover={{
                   scale: 1.02,
-                  boxShadow: '0 0 30px rgba(99,102,241,0.3)',
+                  boxShadow: '0 0 30px rgba(45, 212, 191,0.3)',
                 }}
                 whileTap={{ scale: 0.98 }}
                 transition={SPRING}
@@ -386,7 +386,7 @@ function ProUpsellModal({ open, onClose, onUpgrade, userName }) {
                   style={S.primaryBtn}
                   onClick={() => onUpgrade('yearly')}
                   whileHover={{
-                    boxShadow: '0 0 30px rgba(99,102,241,0.5)',
+                    boxShadow: '0 0 30px rgba(45, 212, 191,0.5)',
                     background: 'linear-gradient(135deg, #7c7ff5, #9d6ef8)',
                   }}
                   whileTap={{ scale: 0.97 }}
@@ -456,17 +456,17 @@ export function ProUpsellDemo() {
         onClick={() => setOpen(true)}
         style={{
           padding: '12px 24px',
-          background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+          background: 'linear-gradient(135deg, #14b8a6, #8b5cf6)',
           border: 'none',
           borderRadius: '12px',
           color: '#fff',
           fontSize: '15px',
           fontWeight: 700,
           cursor: 'pointer',
-          boxShadow: '0 4px 20px rgba(99,102,241,0.4)',
+          boxShadow: '0 4px 20px rgba(45, 212, 191,0.4)',
           letterSpacing: '0.02em',
         }}
-        whileHover={{ scale: 1.04, boxShadow: '0 6px 28px rgba(99,102,241,0.55)' }}
+        whileHover={{ scale: 1.04, boxShadow: '0 6px 28px rgba(45, 212, 191,0.55)' }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       >

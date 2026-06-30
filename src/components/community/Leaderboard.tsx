@@ -53,33 +53,33 @@ export default function Leaderboard() {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-5 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 text-center space-y-3"
+        className="p-5 rounded-panel border border-accent/20 bg-accent/5 text-center space-y-3"
       >
-        <div className="text-xs font-bold text-indigo-400 uppercase tracking-[2px]">
+        <div className="text-xs font-bold text-accent-text uppercase tracking-[2px]">
           Your Weekly Score
         </div>
-        <div className="text-5xl font-black text-slate-100 font-[Syne]">
+        <div className="text-5xl font-black text-fg font-[Syne]">
           {myStats.score}
         </div>
-        <div className="flex justify-center gap-6 text-xs text-slate-400">
+        <div className="flex justify-center gap-6 text-xs text-fg-muted">
           <span className="flex items-center gap-1">
-            <CheckSquare size={12} className="text-indigo-400" />
+            <CheckSquare size={12} className="text-accent-text" />
             {myStats.tasksCompleted} tasks
           </span>
           <span className="flex items-center gap-1">
-            <Dumbbell size={12} className="text-indigo-400" />
+            <Dumbbell size={12} className="text-accent-text" />
             {myStats.workouts} workouts
           </span>
           <span className="flex items-center gap-1">
-            <Sparkles size={12} className="text-indigo-400" />
+            <Sparkles size={12} className="text-accent-text" />
             {myStats.plannerDays}d planned
           </span>
         </div>
         {/* Score bar */}
-        <div className="bg-slate-900/60 rounded-full h-2 overflow-hidden max-w-xs mx-auto">
+        <div className="bg-surface-1 rounded-full h-2 overflow-hidden max-w-xs mx-auto">
           <motion.div
             className="h-full rounded-full"
-            style={{ background: 'linear-gradient(90deg, #6366f1, #34d399)' }}
+            style={{ background: 'linear-gradient(90deg, #14b8a6, #34d399)' }}
             initial={{ width: 0 }}
             animate={{ width: `${myStats.score}%` }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -90,7 +90,7 @@ export default function Leaderboard() {
       {/* Header */}
       <div className="flex items-center gap-2">
         <Trophy size={14} className="text-amber-400" />
-        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+        <span className="text-xs font-bold text-fg-muted uppercase tracking-wider">
           Weekly Leaderboard
         </span>
       </div>
@@ -106,8 +106,8 @@ export default function Leaderboard() {
             className={[
               'flex items-center gap-3 p-3 rounded-xl border transition-all',
               entry.isCurrentUser
-                ? 'border-indigo-500/30 bg-indigo-500/8'
-                : RANK_STYLES[entry.rank] ?? 'border-slate-800/40 bg-slate-900/30',
+                ? 'border-accent/30 bg-accent/8'
+                : RANK_STYLES[entry.rank] ?? 'border-border bg-surface-1',
             ].join(' ')}
           >
             {/* Rank */}
@@ -115,7 +115,7 @@ export default function Leaderboard() {
               {entry.rank <= 3 ? (
                 <span className="text-lg">{RANK_BADGES[entry.rank - 1]}</span>
               ) : (
-                <span className="text-sm font-bold text-slate-600">#{entry.rank}</span>
+                <span className="text-sm font-bold text-fg-faint">#{entry.rank}</span>
               )}
             </div>
 
@@ -123,8 +123,8 @@ export default function Leaderboard() {
             <div className={[
               'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0',
               entry.isCurrentUser
-                ? 'bg-indigo-500/30 text-indigo-300'
-                : 'bg-slate-800 text-slate-400',
+                ? 'bg-accent/30 text-accent-text'
+                : 'bg-surface-2 text-fg-muted',
             ].join(' ')}>
               {entry.name[0]}
             </div>
@@ -134,17 +134,17 @@ export default function Leaderboard() {
               <div className="flex items-center gap-2">
                 <span className={[
                   'text-sm font-semibold truncate',
-                  entry.isCurrentUser ? 'text-indigo-300' : 'text-slate-200',
+                  entry.isCurrentUser ? 'text-accent-text' : 'text-fg-secondary',
                 ].join(' ')}>
                   {entry.name}
                 </span>
                 {entry.isCurrentUser && (
-                  <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/15 px-1.5 py-0.5 rounded">
+                  <span className="text-[9px] font-bold text-accent-text bg-accent/15 px-1.5 py-0.5 rounded">
                     YOU
                   </span>
                 )}
               </div>
-              <span className="text-[10px] text-slate-600">
+              <span className="text-[10px] text-fg-faint">
                 {entry.tasksCompleted}t &middot; {entry.workouts}w &middot; {entry.plannerDays}d
               </span>
             </div>
@@ -153,7 +153,7 @@ export default function Leaderboard() {
             <div className="text-right flex-shrink-0">
               <span className={[
                 'text-lg font-black',
-                entry.isCurrentUser ? 'text-indigo-300' : 'text-slate-300',
+                entry.isCurrentUser ? 'text-accent-text' : 'text-fg-secondary',
               ].join(' ')}>
                 {entry.score}
               </span>
@@ -162,7 +162,7 @@ export default function Leaderboard() {
         ))}
       </div>
 
-      <p className="text-[10px] text-slate-700 text-center pt-1">
+      <p className="text-[10px] text-fg-faint text-center pt-1">
         Score based on tasks completed, workouts logged &amp; days planned this week
       </p>
     </div>

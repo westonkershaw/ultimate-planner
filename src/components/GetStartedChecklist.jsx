@@ -82,7 +82,7 @@ function ProgressBar({ value, total }) {
         initial={{ width: 0 }}
         animate={{ width: `${pct}%` }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        style={{ height: '100%', background: '#6366f1', borderRadius: 99 }}
+        style={{ height: '100%', background: '#14b8a6', borderRadius: 99 }}
       />
     </div>
   );
@@ -149,10 +149,10 @@ function ChecklistItem({ item }) {
           onClick={item.action}
           aria-label={'Go to: ' + item.label}
           style={{
-            background: 'rgba(99,102,241,0.15)',
-            border: '1px solid rgba(99,102,241,0.3)',
+            background: 'rgba(45, 212, 191,0.15)',
+            border: '1px solid rgba(45, 212, 191,0.3)',
             borderRadius: 8,
-            color: '#818cf8',
+            color: '#2dd4bf',
             fontSize: 13,
             fontWeight: 700,
             cursor: 'pointer',
@@ -161,8 +161,8 @@ function ChecklistItem({ item }) {
             flexShrink: 0,
             transition: 'background 0.15s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(99,102,241,0.3)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(99,102,241,0.15)'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(45, 212, 191,0.3)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(45, 212, 191,0.15)'; }}
         >
           →
         </button>

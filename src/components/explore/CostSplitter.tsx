@@ -40,9 +40,9 @@ const CostSplitter = React.memo(function CostSplitter({
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
         <Users size={16} className="text-cyan-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Split Costs</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">Split Costs</h3>
         {people.length > 0 && (
-          <span className="ml-auto text-xs text-slate-400">{formatUsd(split.perPerson)}/person</span>
+          <span className="ml-auto text-xs text-fg-muted">{formatUsd(split.perPerson)}/person</span>
         )}
       </div>
 
@@ -64,19 +64,19 @@ const CostSplitter = React.memo(function CostSplitter({
             const isNegative = b.balance < 0;
             return (
               <div key={person.id} className="flex items-center gap-2 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
-                <span className="text-xs font-medium text-slate-200 flex-1 truncate">{person.name}</span>
+                <span className="text-xs font-medium text-fg-secondary flex-1 truncate">{person.name}</span>
                 <Input containerClassName="w-24" type="number" min={0} step={10}
                   value={person.paid || ''} placeholder="Paid $"
                   onChange={(e) => onUpdate(person.id, { paid: parseFloat(e.target.value) || 0 })} />
                 <div className={`flex items-center gap-1 w-20 justify-end text-xs font-semibold ${
-                  isPositive ? 'text-emerald-400' : isNegative ? 'text-red-400' : 'text-slate-500'
+                  isPositive ? 'text-emerald-400' : isNegative ? 'text-red-400' : 'text-fg-muted'
                 }`}>
                   {isPositive && <ArrowUpRight size={10} />}
                   {isNegative && <ArrowDownRight size={10} />}
                   {formatUsd(Math.abs(b.balance))}
                 </div>
                 <button onClick={() => onRemove(person.id)}
-                  className="text-slate-700 hover:text-red-400 transition-colors"><X size={12} /></button>
+                  className="text-fg-faint hover:text-red-400 transition-colors"><X size={12} /></button>
               </div>
             );
           })}
@@ -93,7 +93,7 @@ const CostSplitter = React.memo(function CostSplitter({
       </div>
 
       {people.length > 0 && (
-        <div className="mt-3 pt-3 border-t border-white/5 text-[10px] text-slate-500">
+        <div className="mt-3 pt-3 border-t border-white/5 text-[10px] text-fg-muted">
           <ArrowUpRight size={8} className="inline text-emerald-400" /> gets back &middot;{' '}
           <ArrowDownRight size={8} className="inline text-red-400" /> owes the group
         </div>

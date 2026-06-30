@@ -65,7 +65,7 @@ const EXERCISE_LIBRARY = {
 };
 
 const CATEGORY_COLORS = {
-  chest: '#6366f1',
+  chest: '#14b8a6',
   back: '#10b981',
   shoulders: '#f59e0b',
   legs: '#ef4444',
@@ -105,7 +105,7 @@ function ExerciseRow({ ex, onAdd, onExpand }) {
   const [imgError, setImgError] = useState(false);
 
   const imgSrc = getExerciseImage(ex.name);
-  const accentColor = CATEGORY_COLORS[ex.category] || '#6366f1';
+  const accentColor = CATEGORY_COLORS[ex.category] || '#14b8a6';
   const addAriaLabel = 'Add ' + ex.name + ' to routine';
 
   const handleAdd = useCallback(
@@ -166,15 +166,15 @@ function ExerciseRow({ ex, onAdd, onExpand }) {
 
       {/* Text */}
       <div className="flex-1 min-w-0">
-        <div className="text-sm text-slate-300 font-medium truncate">{ex.name}</div>
-        <div className="text-[10px] text-slate-600 capitalize mt-0.5">
+        <div className="text-sm text-fg-secondary font-medium truncate">{ex.name}</div>
+        <div className="text-[10px] text-fg-faint capitalize mt-0.5">
           {ex.equipment} · {ex.category}
         </div>
       </div>
 
       {/* Add button */}
       <button
-        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-600 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors opacity-0 group-hover:opacity-100 flex-shrink-0"
+        className="w-7 h-7 rounded-lg flex items-center justify-center text-fg-faint hover:text-accent-text hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 flex-shrink-0"
         onClick={handleAdd}
         aria-label={addAriaLabel}
         tabIndex={-1}
@@ -191,7 +191,7 @@ function ExerciseDetailCard({ ex, onAdd, onClose }) {
   const [imgError, setImgError] = useState(false);
 
   const imgSrc = getExerciseImage(ex.name);
-  const accentColor = CATEGORY_COLORS[ex.category] || '#6366f1';
+  const accentColor = CATEGORY_COLORS[ex.category] || '#14b8a6';
   const categoryIcon = CATEGORY_ICONS[ex.category] || '🏋️';
   const addLabel = 'Add ' + ex.name + ' to routine';
   const badgeBg = accentColor + '33';
@@ -245,7 +245,7 @@ function ExerciseDetailCard({ ex, onAdd, onClose }) {
         />
         {/* Close button */}
         <button
-          className="absolute top-2 right-2 w-7 h-7 rounded-lg bg-black/40 backdrop-blur-sm flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+          className="absolute top-2 right-2 w-7 h-7 rounded-lg bg-black/40 backdrop-blur-sm flex items-center justify-center text-fg-muted hover:text-white transition-colors"
           onClick={onClose}
           aria-label="Close exercise detail"
         >
@@ -265,10 +265,10 @@ function ExerciseDetailCard({ ex, onAdd, onClose }) {
           >
             {ex.category}
           </span>
-          <span className="px-2 py-0.5 rounded-md text-[11px] font-medium capitalize bg-white/[0.06] text-slate-400">
+          <span className="px-2 py-0.5 rounded-md text-[11px] font-medium capitalize bg-white/[0.06] text-fg-muted">
             {ex.equipment}
           </span>
-          <span className="px-2 py-0.5 rounded-md text-[11px] font-medium capitalize bg-white/[0.06] text-slate-400">
+          <span className="px-2 py-0.5 rounded-md text-[11px] font-medium capitalize bg-white/[0.06] text-fg-muted">
             {ex.type}
           </span>
         </div>
@@ -356,8 +356,8 @@ const ExerciseLibrary = React.memo(function ExerciseLibrary({ onAdd, recentlyUse
           aria-pressed={activeCategory === 'all'}
           className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
             activeCategory === 'all'
-              ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/40'
-              : 'bg-white/5 text-slate-500 hover:text-slate-300 border border-white/10'
+              ? 'bg-accent/30 text-accent-text border border-accent/40'
+              : 'bg-white/5 text-fg-muted hover:text-fg-secondary border border-white/10'
           }`}
         >
           All
@@ -370,7 +370,7 @@ const ExerciseLibrary = React.memo(function ExerciseLibrary({ onAdd, recentlyUse
             className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium capitalize transition-colors ${
               activeCategory === cat
                 ? 'text-slate-900 border border-transparent'
-                : 'bg-white/5 text-slate-500 hover:text-slate-300 border border-white/10'
+                : 'bg-white/5 text-fg-muted hover:text-fg-secondary border border-white/10'
             }`}
             style={
               activeCategory === cat
@@ -404,7 +404,7 @@ const ExerciseLibrary = React.memo(function ExerciseLibrary({ onAdd, recentlyUse
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-1.5">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint mb-1.5">
               Recently Used
             </div>
             <div className="flex flex-col gap-1 mb-3">
@@ -417,7 +417,7 @@ const ExerciseLibrary = React.memo(function ExerciseLibrary({ onAdd, recentlyUse
                 />
               ))}
             </div>
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-1.5">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint mb-1.5">
               All Exercises
             </div>
           </motion.div>
@@ -437,7 +437,7 @@ const ExerciseLibrary = React.memo(function ExerciseLibrary({ onAdd, recentlyUse
           ))}
         </AnimatePresence>
         {filteredExercises.length === 0 && (
-          <div className="text-center py-8 text-slate-600 text-sm">No exercises found</div>
+          <div className="text-center py-8 text-fg-faint text-sm">No exercises found</div>
         )}
       </div>
     </div>

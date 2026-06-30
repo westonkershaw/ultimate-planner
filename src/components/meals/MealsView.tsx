@@ -18,12 +18,12 @@ function MacroBar({ label, current, target, color }: { label: string; current: n
   return (
     <div className="space-y-1">
       <div className="flex items-baseline justify-between text-[11px]">
-        <span className="text-slate-500 uppercase tracking-wider">{label}</span>
-        <span className={over ? 'text-rose-400' : 'text-slate-300'}>
-          {Math.round(current)} <span className="text-slate-600">/ {target}{label === 'cals' ? '' : 'g'}</span>
+        <span className="text-fg-muted uppercase tracking-wider">{label}</span>
+        <span className={over ? 'text-rose-400' : 'text-fg-secondary'}>
+          {Math.round(current)} <span className="text-fg-faint">/ {target}{label === 'cals' ? '' : 'g'}</span>
         </span>
       </div>
-      <div className="relative h-1.5 rounded-full bg-slate-800 overflow-hidden">
+      <div className="relative h-1.5 rounded-full bg-surface-2 overflow-hidden">
         <motion.div
           className="absolute inset-y-0 left-0"
           style={{ background: over ? '#ef4444' : color }}
@@ -54,13 +54,13 @@ function AddMealRow({ onAdd }: { onAdd: (m: { name: string; calories: number; pr
     setName(''); setCals(''); setP(''); setC(''); setF('');
   };
   return (
-    <div className="p-2.5 rounded-lg border border-dashed border-slate-700 bg-slate-950/40 space-y-2">
+    <div className="p-2.5 rounded-lg border border-dashed border-border-strong bg-surface-0 space-y-2">
       <div className="flex items-center gap-2">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="What did you eat?"
-          className="flex-1 min-w-0 bg-transparent text-sm text-slate-200 placeholder-slate-600 outline-none"
+          className="flex-1 min-w-0 bg-transparent text-sm text-fg-secondary placeholder:text-fg-faint outline-none"
           onKeyDown={(e) => e.key === 'Enter' && submit()}
         />
         <button
@@ -69,7 +69,7 @@ function AddMealRow({ onAdd }: { onAdd: (m: { name: string; calories: number; pr
           aria-label="Add meal"
           className={[
             'p-1 rounded-md transition-colors',
-            name.trim() ? 'text-indigo-300 hover:bg-indigo-500/15' : 'text-slate-700 cursor-not-allowed',
+            name.trim() ? 'text-accent-text hover:bg-accent/15' : 'text-fg-faint cursor-not-allowed',
           ].join(' ')}
         >
           <Plus size={14} />
@@ -84,7 +84,7 @@ function AddMealRow({ onAdd }: { onAdd: (m: { name: string; calories: number; pr
             onChange={(e) => set(e.target.value === '' ? '' : parseFloat(e.target.value))}
             placeholder={lbl}
             aria-label={lbl}
-            className="w-full bg-slate-950/40 border border-slate-800/40 rounded px-1.5 py-1 text-[11px] text-center text-slate-200 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+            className="w-full bg-surface-0 border border-border rounded px-1.5 py-1 text-[11px] text-center text-fg-secondary placeholder:text-fg-faint outline-none focus:border-accent/40"
           />
         ))}
       </div>
@@ -103,9 +103,9 @@ function SlotCard({ date, slot }: { date: string; slot: MealSlot }) {
   return (
     <section className="space-y-2">
       <div className="flex items-center gap-2">
-        <Icon size={14} className="text-indigo-400" />
-        <h3 className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</h3>
-        <span className="text-[10px] text-slate-500 ml-auto">{Math.round(cals)} cal</span>
+        <Icon size={14} className="text-accent-text" />
+        <h3 className="text-xs font-medium uppercase tracking-wider text-fg-muted">{label}</h3>
+        <span className="text-[10px] text-fg-muted ml-auto">{Math.round(cals)} cal</span>
       </div>
 
       <ul className="space-y-1.5">
@@ -117,18 +117,18 @@ function SlotCard({ date, slot }: { date: string; slot: MealSlot }) {
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: -10 }}
-              className="flex items-center gap-2 p-2 rounded-lg border border-slate-800/40 bg-slate-900/20"
+              className="flex items-center gap-2 p-2 rounded-lg border border-border bg-surface-1"
             >
               <div className="flex-1 min-w-0">
-                <div className="text-sm text-slate-200 truncate">{m.name}</div>
-                <div className="text-[10px] text-slate-500">
+                <div className="text-sm text-fg-secondary truncate">{m.name}</div>
+                <div className="text-[10px] text-fg-muted">
                   {Math.round(m.calories)} cal · P {Math.round(m.protein)} · C {Math.round(m.carbs)} · F {Math.round(m.fat)}
                 </div>
               </div>
               <button
                 onClick={() => { deleteMeal(date, slot, m.id); addToast('Meal removed', 'warning'); }}
                 aria-label={`Delete ${m.name}`}
-                className="text-slate-600 hover:text-rose-400 transition-colors p-1"
+                className="text-fg-faint hover:text-rose-400 transition-colors p-1"
               >
                 <Trash2 size={12} />
               </button>
@@ -161,30 +161,30 @@ export default function MealsView() {
         className="flex items-center justify-between gap-2"
       >
         <div className="flex items-center gap-2">
-          <Utensils size={18} className="text-indigo-400" />
-          <h1 className="font-syne text-lg font-bold text-slate-100">Meals</h1>
+          <Utensils size={18} className="text-accent-text" />
+          <h1 className="font-syne text-lg font-bold text-fg">Meals</h1>
         </div>
-        <button onClick={() => setEditing((v) => !v)} className="text-[10px] text-slate-500 hover:text-slate-300 transition-colors">
+        <button onClick={() => setEditing((v) => !v)} className="text-[10px] text-fg-muted hover:text-fg-secondary transition-colors">
           {editing ? 'Done' : 'Edit targets'}
         </button>
       </motion.div>
 
-      <div className="p-4 rounded-2xl border border-slate-800/40 bg-slate-900/30 space-y-3">
-        <MacroBar label="cals"    current={totals.calories} target={targets.calories} color="#6366f1" />
+      <div className="p-4 rounded-panel border border-border bg-surface-1 space-y-3">
+        <MacroBar label="cals"    current={totals.calories} target={targets.calories} color="#14b8a6" />
         <MacroBar label="protein" current={totals.protein}  target={targets.protein}  color="#22c55e" />
         <MacroBar label="carbs"   current={totals.carbs}    target={targets.carbs}    color="#f59e0b" />
         <MacroBar label="fat"     current={totals.fat}      target={targets.fat}      color="#a78bfa" />
 
         {editing && (
-          <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-slate-800/40">
+          <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-border">
             {(['calories', 'protein', 'carbs', 'fat'] as const).map((k) => (
               <label key={k} className="block">
-                <span className="block text-[9px] uppercase tracking-wider text-slate-500 mb-0.5">{k}</span>
+                <span className="block text-[9px] uppercase tracking-wider text-fg-muted mb-0.5">{k}</span>
                 <input
                   type="number"
                   value={targets[k]}
                   onChange={(e) => setTargets({ [k]: parseFloat(e.target.value) || 0 })}
-                  className="w-full bg-slate-950/40 border border-slate-800/40 rounded px-1.5 py-1 text-xs text-center text-slate-200 outline-none focus:border-indigo-500/40"
+                  className="w-full bg-surface-0 border border-border rounded px-1.5 py-1 text-xs text-center text-fg-secondary outline-none focus:border-accent/40"
                 />
               </label>
             ))}

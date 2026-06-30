@@ -25,10 +25,10 @@ function Hero({ netWorth, assets, liabilities, snapshots }: {
   const delta = last && monthAgo ? last.netWorth - monthAgo.netWorth : 0;
   const isUp = delta >= 0;
   return (
-    <div className="p-5 rounded-2xl border border-slate-800/40 bg-gradient-to-br from-emerald-500/[0.06] to-indigo-500/[0.04] space-y-3">
-      <div className="text-[10px] uppercase tracking-wider text-slate-500">Net Worth</div>
+    <div className="p-5 rounded-panel border border-border bg-surface-1 space-y-3">
+      <div className="text-[10px] uppercase tracking-wider text-fg-muted">Net Worth</div>
       <div className="flex items-baseline gap-3">
-        <span className="font-syne text-3xl font-bold text-slate-100">{fmt$(netWorth)}</span>
+        <span className="font-syne text-3xl font-bold text-fg">{fmt$(netWorth)}</span>
         {monthAgo && (
           <span className={`flex items-center gap-1 text-xs font-medium ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>
             {isUp ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
@@ -37,8 +37,8 @@ function Hero({ netWorth, assets, liabilities, snapshots }: {
         )}
       </div>
       <div className="flex items-center gap-4 pt-1 text-xs">
-        <span className="text-slate-400">Assets <span className="text-emerald-400 font-semibold">{fmt$(assets)}</span></span>
-        <span className="text-slate-400">Liabilities <span className="text-rose-400 font-semibold">{fmt$(liabilities)}</span></span>
+        <span className="text-fg-muted">Assets <span className="text-emerald-400 font-semibold">{fmt$(assets)}</span></span>
+        <span className="text-fg-muted">Liabilities <span className="text-rose-400 font-semibold">{fmt$(liabilities)}</span></span>
       </div>
     </div>
   );
@@ -60,8 +60,8 @@ function Sparkline({ snapshots }: { snapshots: NetWorthSnapshot[] }) {
     })
     .join(' ');
   return (
-    <div className="p-3 rounded-xl border border-slate-800/40 bg-slate-900/30">
-      <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-2">Last {recent.length} snapshots</div>
+    <div className="p-3 rounded-xl border border-border bg-surface-1">
+      <div className="text-[10px] uppercase tracking-wider text-fg-muted mb-2">Last {recent.length} snapshots</div>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-12" preserveAspectRatio="none" aria-hidden>
         <polyline points={points} fill="none" stroke="#22c55e" strokeWidth="1.5" />
       </svg>
@@ -73,15 +73,15 @@ function AssetRow({ asset, onChange, onDelete }: {
   asset: NetWorthAsset; onChange: (patch: Partial<NetWorthAsset>) => void; onDelete: () => void;
 }) {
   return (
-    <li className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-800/40 bg-slate-900/20">
+    <li className="flex items-center gap-2 p-2.5 rounded-lg border border-border bg-surface-1">
       <input
         value={asset.name}
         onChange={(e) => onChange({ name: e.target.value })}
         aria-label="Asset name"
-        className="flex-1 min-w-0 bg-transparent text-sm text-slate-200 outline-none"
+        className="flex-1 min-w-0 bg-transparent text-sm text-fg-secondary outline-none"
       />
       <div className="flex items-center text-emerald-400 text-sm">
-        <span className="text-slate-600">$</span>
+        <span className="text-fg-faint">$</span>
         <input
           type="number"
           value={asset.value}
@@ -90,7 +90,7 @@ function AssetRow({ asset, onChange, onDelete }: {
           className="w-24 bg-transparent text-right outline-none"
         />
       </div>
-      <button onClick={onDelete} aria-label={`Delete ${asset.name}`} className="text-slate-600 hover:text-rose-400 transition-colors p-1">
+      <button onClick={onDelete} aria-label={`Delete ${asset.name}`} className="text-fg-faint hover:text-rose-400 transition-colors p-1">
         <Trash2 size={12} />
       </button>
     </li>
@@ -101,15 +101,15 @@ function LiabilityRow({ liability, onChange, onDelete }: {
   liability: NetWorthLiability; onChange: (patch: Partial<NetWorthLiability>) => void; onDelete: () => void;
 }) {
   return (
-    <li className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-800/40 bg-slate-900/20">
+    <li className="flex items-center gap-2 p-2.5 rounded-lg border border-border bg-surface-1">
       <input
         value={liability.name}
         onChange={(e) => onChange({ name: e.target.value })}
         aria-label="Liability name"
-        className="flex-1 min-w-0 bg-transparent text-sm text-slate-200 outline-none"
+        className="flex-1 min-w-0 bg-transparent text-sm text-fg-secondary outline-none"
       />
       <div className="flex items-center text-rose-400 text-sm">
-        <span className="text-slate-600">$</span>
+        <span className="text-fg-faint">$</span>
         <input
           type="number"
           value={liability.balance}
@@ -118,7 +118,7 @@ function LiabilityRow({ liability, onChange, onDelete }: {
           className="w-24 bg-transparent text-right outline-none"
         />
       </div>
-      <button onClick={onDelete} aria-label={`Delete ${liability.name}`} className="text-slate-600 hover:text-rose-400 transition-colors p-1">
+      <button onClick={onDelete} aria-label={`Delete ${liability.name}`} className="text-fg-faint hover:text-rose-400 transition-colors p-1">
         <Trash2 size={12} />
       </button>
     </li>
@@ -134,22 +134,22 @@ function AddRow({ onAdd, label, color }: { onAdd: (name: string, value: number) 
     setName(''); setValue('');
   };
   return (
-    <div className="flex items-center gap-2 p-2.5 rounded-lg border border-dashed border-slate-700 bg-slate-950/40">
+    <div className="flex items-center gap-2 p-2.5 rounded-lg border border-dashed border-border-strong bg-surface-0">
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder={label}
-        className="flex-1 min-w-0 bg-transparent text-sm text-slate-200 placeholder-slate-600 outline-none"
+        className="flex-1 min-w-0 bg-transparent text-sm text-fg-secondary placeholder:text-fg-faint outline-none"
         onKeyDown={(e) => e.key === 'Enter' && submit()}
       />
       <div className="flex items-center text-sm" style={{ color }}>
-        <span className="text-slate-600">$</span>
+        <span className="text-fg-faint">$</span>
         <input
           type="number"
           value={value}
           onChange={(e) => setValue(e.target.value === '' ? '' : parseFloat(e.target.value))}
           placeholder="0"
-          className="w-24 bg-transparent text-right placeholder-slate-700 outline-none"
+          className="w-24 bg-transparent text-right placeholder:text-fg-faint outline-none"
           onKeyDown={(e) => e.key === 'Enter' && submit()}
         />
       </div>
@@ -159,7 +159,7 @@ function AddRow({ onAdd, label, color }: { onAdd: (name: string, value: number) 
         aria-label="Add"
         className={[
           'p-1 rounded-md transition-colors',
-          name.trim() && value !== '' ? 'text-indigo-300 hover:bg-indigo-500/15' : 'text-slate-700 cursor-not-allowed',
+          name.trim() && value !== '' ? 'text-accent-text hover:bg-accent/15' : 'text-fg-faint cursor-not-allowed',
         ].join(' ')}
       >
         <Plus size={14} />
@@ -198,7 +198,7 @@ export default function NetWorthView() {
         className="flex items-center gap-2"
       >
         <Coins size={18} className="text-emerald-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Net Worth</h1>
+        <h1 className="font-syne text-lg font-bold text-fg">Net Worth</h1>
       </motion.div>
 
       <Hero netWorth={nw} assets={totalA} liabilities={totalL} snapshots={snapshots} />
@@ -207,7 +207,7 @@ export default function NetWorthView() {
 
       <section className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-medium uppercase tracking-wider text-slate-500">Assets</h2>
+          <h2 className="text-xs font-medium uppercase tracking-wider text-fg-muted">Assets</h2>
           <span className="text-xs text-emerald-400 font-semibold">{fmt$(totalA)}</span>
         </div>
         <ul className="space-y-2">
@@ -227,7 +227,7 @@ export default function NetWorthView() {
 
       <section className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-medium uppercase tracking-wider text-slate-500">Liabilities</h2>
+          <h2 className="text-xs font-medium uppercase tracking-wider text-fg-muted">Liabilities</h2>
           <span className="text-xs text-rose-400 font-semibold">{fmt$(totalL)}</span>
         </div>
         <ul className="space-y-2">

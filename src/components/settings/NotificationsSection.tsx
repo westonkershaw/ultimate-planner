@@ -23,7 +23,7 @@ function Toggle({ on, onToggle, label }: { on: boolean; onToggle: () => void; la
       role="switch"
       aria-checked={on}
       aria-label={label}
-      className={`relative w-10 h-5 rounded-full transition-colors flex-shrink-0 ${on ? 'bg-indigo-500' : 'bg-slate-700'}`}
+      className={`relative w-10 h-5 rounded-full transition-colors flex-shrink-0 ${on ? 'bg-accent' : 'bg-surface-3'}`}
     >
       <motion.span
         animate={{ x: on ? 20 : 2 }}
@@ -42,17 +42,17 @@ function PrefRow({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="p-3 rounded-xl border border-slate-800/40 bg-slate-900/30">
+    <div className="p-3 rounded-xl border border-border bg-surface-1">
       <div className="flex items-center gap-3">
-        <Icon size={18} className="text-indigo-400 flex-shrink-0" />
+        <Icon size={18} className="text-accent-text flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium text-slate-200">{title}</div>
-          <div className="text-[11px] text-slate-500 mt-0.5">{subtitle}</div>
+          <div className="text-sm font-medium text-fg-secondary">{title}</div>
+          <div className="text-[11px] text-fg-muted mt-0.5">{subtitle}</div>
         </div>
         <Toggle on={on} onToggle={onToggle} label={title} />
       </div>
       {on && children && (
-        <div className="mt-3 pt-3 border-t border-slate-800/40">{children}</div>
+        <div className="mt-3 pt-3 border-t border-border">{children}</div>
       )}
     </div>
   );
@@ -87,20 +87,20 @@ export default function NotificationsSection() {
       aria-labelledby="notifs-heading"
     >
       <div className="flex items-center gap-2">
-        <Bell size={14} className="text-slate-500" />
-        <h2 id="notifs-heading" className="text-xs font-medium text-slate-500 uppercase tracking-wider">Notifications</h2>
+        <Bell size={14} className="text-fg-muted" />
+        <h2 id="notifs-heading" className="text-xs font-medium text-fg-muted uppercase tracking-wider">Notifications</h2>
       </div>
 
       {perm !== 'granted' && perm !== 'unsupported' && (
         <div className="flex items-center gap-3 p-3 rounded-xl border border-amber-500/20 bg-amber-500/[0.04]">
           <Bell size={18} className="text-amber-400 flex-shrink-0" />
           <div className="flex-1">
-            <div className="text-sm text-slate-200">Enable browser notifications</div>
-            <div className="text-[11px] text-slate-500">Required for reminders to fire</div>
+            <div className="text-sm text-fg-secondary">Enable browser notifications</div>
+            <div className="text-[11px] text-fg-muted">Required for reminders to fire</div>
           </div>
           <button
             onClick={askPermission}
-            className="px-3 py-1.5 rounded-lg bg-indigo-500/15 border border-indigo-500/30 text-xs font-medium text-indigo-300 hover:bg-indigo-500/25 transition-colors"
+            className="px-3 py-1.5 rounded-lg bg-accent/15 border border-accent/30 text-xs font-medium text-accent-text hover:bg-accent/25 transition-colors"
           >
             Enable
           </button>
@@ -117,14 +117,14 @@ export default function NotificationsSection() {
         }
       >
         <label className="flex items-center gap-3">
-          <span className="text-xs text-slate-500 flex-1">Time</span>
+          <span className="text-xs text-fg-muted flex-1">Time</span>
           <input
             type="time"
             value={prefs.taskReminder?.time || '08:00'}
             onChange={(e) =>
               update({ taskReminder: { enabled: true, time: e.target.value } })
             }
-            className="bg-slate-900/60 border border-slate-800/60 rounded-lg text-slate-100 text-xs px-2 py-1 outline-none"
+            className="bg-surface-1 border border-border rounded-lg text-fg text-xs px-2 py-1 outline-none"
           />
         </label>
       </PrefRow>
@@ -139,14 +139,14 @@ export default function NotificationsSection() {
         }
       >
         <label className="flex items-center gap-3">
-          <span className="text-xs text-slate-500 flex-1">Time</span>
+          <span className="text-xs text-fg-muted flex-1">Time</span>
           <input
             type="time"
             value={prefs.eveningReminder?.time || '20:00'}
             onChange={(e) =>
               update({ eveningReminder: { enabled: true, time: e.target.value } })
             }
-            className="bg-slate-900/60 border border-slate-800/60 rounded-lg text-slate-100 text-xs px-2 py-1 outline-none"
+            className="bg-surface-1 border border-border rounded-lg text-fg text-xs px-2 py-1 outline-none"
           />
         </label>
       </PrefRow>
@@ -161,13 +161,13 @@ export default function NotificationsSection() {
         }
       >
         <label className="flex items-center gap-3">
-          <span className="text-xs text-slate-500 flex-1">Minutes before</span>
+          <span className="text-xs text-fg-muted flex-1">Minutes before</span>
           <select
             value={prefs.eventReminders?.minutesBefore ?? 15}
             onChange={(e) =>
               update({ eventReminders: { enabled: true, minutesBefore: parseInt(e.target.value) } })
             }
-            className="bg-slate-900/60 border border-slate-800/60 rounded-lg text-slate-100 text-xs px-2 py-1 outline-none"
+            className="bg-surface-1 border border-border rounded-lg text-fg text-xs px-2 py-1 outline-none"
           >
             {[5, 10, 15, 30].map((m) => (
               <option key={m} value={m}>{m} min</option>
@@ -189,7 +189,7 @@ export default function NotificationsSection() {
       {perm === 'granted' && (
         <button
           onClick={() => sendNotification('Ultimate Life Planner', '🔔 Test — your reminders are working!')}
-          className="w-full py-2.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 text-sm font-medium text-indigo-300 hover:bg-indigo-500/20 transition-colors"
+          className="w-full py-2.5 rounded-xl border border-accent/30 bg-accent/10 text-sm font-medium text-accent-text hover:bg-accent/20 transition-colors"
         >
           Send test notification
         </button>

@@ -18,7 +18,7 @@ const uid = () => Math.random().toString(36).slice(2, 9);
 
 const QUALITY_EMOJI  = ["", "😴", "💤", "😐", "😊", "⭐"];
 const QUALITY_LABEL  = ["", "Poor", "Fair", "Okay", "Good", "Great"];
-const QUALITY_COLOR  = ["", "#ef4444", "#f97316", "#eab308", "#22c55e", "#6366f1"];
+const QUALITY_COLOR  = ["", "#ef4444", "#f97316", "#eab308", "#22c55e", "#14b8a6"];
 
 const DUR_COLOR = (h) => {
   if (h < 6)        return "#ef4444";
@@ -73,7 +73,7 @@ const INPUT_STYLE = {
 };
 
 const BTN_PRIMARY = {
-  background: "linear-gradient(135deg,#6366f1,#818cf8)",
+  background: "linear-gradient(135deg,#14b8a6,#2dd4bf)",
   border: "none",
   borderRadius: 10,
   color: "#fff",
@@ -94,9 +94,9 @@ const BTN_DISABLED = {
 };
 
 const TAB_PILL_ACTIVE = {
-  background: "rgba(99,102,241,0.25)",
+  background: "rgba(45, 212, 191,0.25)",
   color: "#a5b4fc",
-  border: "1px solid rgba(99,102,241,0.35)",
+  border: "1px solid rgba(45, 212, 191,0.35)",
 };
 
 const TAB_PILL_IDLE = {
@@ -247,7 +247,7 @@ function SleepScoreCard({ sleepLog }) {
       style={{
         ...CARD,
         background: "rgba(15,23,42,0.7)",
-        border: "1px solid rgba(99,102,241,0.2)",
+        border: "1px solid rgba(45, 212, 191,0.2)",
         marginBottom: 14,
       }}
     >
@@ -375,8 +375,8 @@ function SleepChart14Day({ sleepLog }) {
         >
           <defs>
             <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#6366f1" stopOpacity="0.02" />
+              <stop offset="0%" stopColor="#14b8a6" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#14b8a6" stopOpacity="0.02" />
             </linearGradient>
           </defs>
 
@@ -414,7 +414,7 @@ function SleepChart14Day({ sleepLog }) {
             <polyline
               points={polyline}
               fill="none"
-              stroke="#818cf8"
+              stroke="#2dd4bf"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -559,7 +559,7 @@ function InsightCards({ sleepLog, weekDays }) {
     },
     {
       icon: Award,
-      color: "#818cf8",
+      color: "#2dd4bf",
       title: "Best Night",
       value: bestNight ? fmtDuration(bestNight.h) : "—",
       sub: bestNight ? fmtDate(bestNight.date) + " (" + shortDayName(bestNight.date) + ")" : "No data",
@@ -780,7 +780,7 @@ function LogTab({ data, onChange }) {
 
       {/* Last Night Summary */}
       {lastNightEntry && (
-        <div style={{ ...CARD, background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)" }}>
+        <div style={{ ...CARD, background: "rgba(45, 212, 191,0.08)", border: "1px solid rgba(45, 212, 191,0.2)" }}>
           <div style={SECTION_LABEL}>Last Night</div>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <span style={{ fontSize: 34 }}>{QUALITY_EMOJI[lastNightEntry.quality]}</span>
@@ -1047,7 +1047,7 @@ function InsightsTab({ data }) {
         {/* Best streak */}
         <div style={{ ...CARD, marginBottom: 0, textAlign: "center" }}>
           <div style={SECTION_LABEL}>Best Streak</div>
-          <div style={{ fontSize: 32, fontWeight: 800, color: "#6366f1", fontFamily: "'Syne', serif" }}>
+          <div style={{ fontSize: 32, fontWeight: 800, color: "#14b8a6", fontFamily: "'Syne', serif" }}>
             {streak}
             <span style={{ fontSize: 16, fontWeight: 600, color: "rgba(255,255,255,0.4)", marginLeft: 4 }}>
               nights
@@ -1180,7 +1180,7 @@ function TrendsTab({ data }) {
     return (
       <div style={{
         background: "rgba(15,17,23,0.95)",
-        border: "1px solid rgba(99,102,241,0.4)",
+        border: "1px solid rgba(45, 212, 191,0.4)",
         borderRadius: 10,
         padding: "10px 14px",
         fontFamily: "'DM Sans', sans-serif",
@@ -1223,9 +1223,9 @@ function TrendsTab({ data }) {
             key={r}
             onClick={() => setRange(r)}
             style={{
-              background: range === r ? "rgba(99,102,241,0.25)" : "rgba(255,255,255,0.04)",
+              background: range === r ? "rgba(45, 212, 191,0.25)" : "rgba(255,255,255,0.04)",
               color: range === r ? "#a5b4fc" : "rgba(255,255,255,0.5)",
-              border: `1px solid ${range === r ? "rgba(99,102,241,0.35)" : "rgba(255,255,255,0.07)"}`,
+              border: `1px solid ${range === r ? "rgba(45, 212, 191,0.35)" : "rgba(255,255,255,0.07)"}`,
               padding: "6px 14px",
               borderRadius: 20,
               fontSize: 13,
@@ -1261,13 +1261,13 @@ function TrendsTab({ data }) {
                 tickLine={false}
                 width={32}
               />
-              <Tooltip content={<CustomTooltip />} cursor={{ stroke: "rgba(99,102,241,0.3)" }} />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: "rgba(45, 212, 191,0.3)" }} />
               <ReferenceLine y={80} stroke="#34c98a" strokeDasharray="5 3" strokeOpacity={0.5} label={{ value: "Great", fill: "#34c98a", fontSize: 9, position: "right" }} />
               <ReferenceLine y={60} stroke="#4f9cf9" strokeDasharray="5 3" strokeOpacity={0.4} label={{ value: "Good", fill: "#4f9cf9", fontSize: 9, position: "right" }} />
               <defs>
                 <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#818cf8" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#818cf8" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#2dd4bf" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#2dd4bf" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <Area
@@ -1280,9 +1280,9 @@ function TrendsTab({ data }) {
               <Line
                 type="monotone"
                 dataKey="score"
-                stroke="#818cf8"
+                stroke="#2dd4bf"
                 strokeWidth={2.5}
-                dot={{ r: 4, fill: "#818cf8", stroke: "#0f1117", strokeWidth: 2 }}
+                dot={{ r: 4, fill: "#2dd4bf", stroke: "#0f1117", strokeWidth: 2 }}
                 activeDot={{ r: 6, fill: "#a5b4fc", stroke: "#0f1117", strokeWidth: 2 }}
                 connectNulls
               />
@@ -1316,7 +1316,7 @@ function TrendsTab({ data }) {
               <Tooltip content={<CustomTooltip />} cursor={{ stroke: "rgba(34,197,94,0.3)" }} />
               <ReferenceLine y={7} stroke="#22c55e" strokeDasharray="5 3" strokeOpacity={0.6} label={{ value: "7h min", fill: "#22c55e", fontSize: 9, position: "right" }} />
               {avgDuration > 0 && (
-                <ReferenceLine y={avgDuration} stroke="#818cf8" strokeDasharray="6 4" strokeOpacity={0.7} label={{ value: `avg ${fmtDuration(avgDuration)}`, fill: "#818cf8", fontSize: 9, position: "right" }} />
+                <ReferenceLine y={avgDuration} stroke="#2dd4bf" strokeDasharray="6 4" strokeOpacity={0.7} label={{ value: `avg ${fmtDuration(avgDuration)}`, fill: "#2dd4bf", fontSize: 9, position: "right" }} />
               )}
               <defs>
                 <linearGradient id="durationGradient" x1="0" y1="0" x2="0" y2="1">
@@ -1446,7 +1446,7 @@ function TrendsTab({ data }) {
       <div style={{ ...CARD, padding: "12px 16px" }}>
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
           {[
-            { color: "#818cf8", label: "Sleep Score", dash: false },
+            { color: "#2dd4bf", label: "Sleep Score", dash: false },
             { color: "#22c55e", label: "Duration", dash: false },
             { color: "#34c98a", label: "Great (80+)", dash: true },
             { color: "#4f9cf9", label: "Good (60+)", dash: true },
@@ -1491,7 +1491,7 @@ export default function SleepTrackerTab({ data, onChange }) {
     <div style={{ padding: "16px 0", fontFamily: "'DM Sans', sans-serif" }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-        <Moon size={20} style={{ color: "#818cf8" }} />
+        <Moon size={20} style={{ color: "#2dd4bf" }} />
         <h2 style={{ margin: 0, fontFamily: "'Syne', serif", fontSize: 22, fontWeight: 800, color: "#f1f5f9" }}>
           Sleep Tracker
         </h2>
@@ -1591,7 +1591,7 @@ export function SleepDashWidget({ data, onNavigate }) {
       {/* Top row: last night + score */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Moon size={14} style={{ color: "#818cf8" }} />
+          <Moon size={14} style={{ color: "#2dd4bf" }} />
           <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.45)", textTransform: "uppercase", letterSpacing: "0.6px" }}>
             Sleep
           </span>
@@ -1659,8 +1659,8 @@ export function SleepDashWidget({ data, onNavigate }) {
       <button
         onClick={() => onNavigate && onNavigate()}
         style={{
-          background: "rgba(99,102,241,0.12)",
-          border: "1px solid rgba(99,102,241,0.25)",
+          background: "rgba(45, 212, 191,0.12)",
+          border: "1px solid rgba(45, 212, 191,0.25)",
           borderRadius: 8,
           color: "#a5b4fc",
           fontSize: 12,
@@ -1674,8 +1674,8 @@ export function SleepDashWidget({ data, onNavigate }) {
           gap: 5,
           transition: "background 0.2s",
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.2)")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.12)")}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(45, 212, 191,0.2)")}
+        onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(45, 212, 191,0.12)")}
       >
         <Moon size={12} />
         Log Sleep

@@ -59,20 +59,20 @@ export default function DailyPlanner() {
           >
             <BookOpen size={18} className="text-amber-400" />
             <div className="text-left">
-              <p className="text-sm font-medium text-slate-200">Time to reflect</p>
-              <p className="text-xs text-slate-500">How did today go? Tap to review.</p>
+              <p className="text-sm font-medium text-fg-secondary">Time to reflect</p>
+              <p className="text-xs text-fg-muted">How did today go? Tap to review.</p>
             </div>
           </motion.button>
         )}
 
         {plan.review && (
-          <div className="p-3 rounded-xl border border-slate-800/40 bg-slate-900/30">
+          <div className="p-3 rounded-xl border border-border bg-surface-1">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs text-slate-500">Today's review:</span>
+              <span className="text-xs text-fg-muted">Today's review:</span>
               <span className="text-xs">{'⭐'.repeat(plan.review.rating)}</span>
             </div>
             {plan.review.notes && (
-              <p className="text-xs text-slate-400">{plan.review.notes}</p>
+              <p className="text-xs text-fg-muted">{plan.review.notes}</p>
             )}
           </div>
         )}

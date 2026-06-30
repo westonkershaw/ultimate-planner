@@ -29,7 +29,7 @@ export default class ErrorBoundary extends React.Component {
         }}>
           <div style={{
             maxWidth: 480, textAlign: 'center',
-            background: 'rgba(15,17,26,0.9)', border: '1px solid rgba(99,102,241,0.3)',
+            background: 'rgba(15,17,26,0.9)', border: '1px solid rgba(45, 212, 191,0.3)',
             borderRadius: 16, padding: 40
           }}>
             <div style={{ fontSize: 56, marginBottom: 16 }}>😵</div>
@@ -42,7 +42,7 @@ export default class ErrorBoundary extends React.Component {
             <button
               onClick={() => { this.setState({ hasError: false, error: null, errorInfo: null }); window.location.reload(); }}
               style={{
-                background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                background: 'linear-gradient(135deg, #14b8a6, #8b5cf6)',
                 color: 'white', border: 'none', borderRadius: 10,
                 padding: '12px 28px', fontSize: 15, fontWeight: 600,
                 cursor: 'pointer', marginBottom: 16
@@ -52,7 +52,7 @@ export default class ErrorBoundary extends React.Component {
             </button>
             <p style={{ color: '#475569', fontSize: 13, margin: 0 }}>
               If this keeps happening, email{' '}
-              <a href="mailto:weston.kershaw@gmail.com" style={{ color: '#6366f1' }}>
+              <a href="mailto:weston.kershaw@gmail.com" style={{ color: '#14b8a6' }}>
                 weston.kershaw@gmail.com
               </a>
             </p>

@@ -270,18 +270,18 @@ export default function CommandPalette({
     ? {
         width: "100vw",
         background: "rgba(9,14,28,0.99)",
-        border: "1px solid rgba(99,102,241,0.25)",
+        border: "1px solid rgba(45, 212, 191,0.25)",
         borderRadius: "20px 20px 0 0",
         overflow: "hidden",
-        boxShadow: "0 -8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.1)",
+        boxShadow: "0 -8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(45, 212, 191,0.1)",
       }
     : {
         width: "min(560px, 92vw)",
         background: "rgba(9,14,28,0.97)",
-        border: "1px solid rgba(99,102,241,0.25)",
+        border: "1px solid rgba(45, 212, 191,0.25)",
         borderRadius: 14,
         overflow: "hidden",
-        boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(99,102,241,0.1)",
+        boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(45, 212, 191,0.1)",
       };
 
   const inputWrapStyle = {
@@ -340,7 +340,7 @@ export default function CommandPalette({
           >
             {/* Search input */}
             <div style={inputWrapStyle}>
-              <span style={{ fontSize: 17, color: "rgba(99,102,241,0.8)", flexShrink: 0 }}>⌘</span>
+              <span style={{ fontSize: 17, color: "rgba(45, 212, 191,0.8)", flexShrink: 0 }}>⌘</span>
               <motion.div
                 style={{ flex: 1, display: "flex" }}
                 animate={
@@ -494,11 +494,11 @@ export default function CommandPalette({
                         cursor: "pointer",
                         background:
                           i === selected
-                            ? "rgba(99,102,241,0.12)"
+                            ? "rgba(45, 212, 191,0.12)"
                             : "transparent",
                         borderLeft:
                           i === selected
-                            ? "2px solid #6366f1"
+                            ? "2px solid #14b8a6"
                             : "2px solid transparent",
                         transition: "all 0.08s",
                       }}

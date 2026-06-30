@@ -63,8 +63,8 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-indigo-500/30 bg-[#0f1829] p-4 shadow-xl"
-      style={{ boxShadow: '0 0 30px rgba(99,102,241,0.1)' }}
+      className="rounded-2xl border border-accent/30 bg-[#0f1829] p-4 shadow-xl"
+      style={{ boxShadow: '0 0 30px rgba(45, 212, 191,0.1)' }}
     >
       {/* Title input */}
       <input
@@ -76,7 +76,7 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
         onFocus={() => setExpanded(true)}
         placeholder="Add a task... (Enter to save)"
         autoFocus
-        className="w-full bg-transparent text-slate-200 text-sm placeholder:text-slate-600 outline-none"
+        className="w-full bg-transparent text-fg-secondary text-sm placeholder:text-fg-faint outline-none"
       />
       {errors.title && <p className="text-xs text-red-400 mt-1">{errors.title}</p>}
 
@@ -96,14 +96,14 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description (optional)"
                 rows={2}
-                className="w-full bg-[#0a1120]/80 rounded-lg border border-white/10 px-3 py-2 text-xs text-slate-300 placeholder:text-slate-700 outline-none focus:border-indigo-500/60 resize-none"
+                className="w-full bg-[#0a1120]/80 rounded-lg border border-white/10 px-3 py-2 text-xs text-fg-secondary placeholder:text-fg-faint outline-none focus:border-accent/60 resize-none"
               />
 
               {/* Priority & Due date row */}
               <div className="flex gap-3 items-center flex-wrap">
                 {/* Priority */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] text-slate-600 uppercase tracking-wider">Priority</span>
+                  <span className="text-[10px] text-fg-faint uppercase tracking-wider">Priority</span>
                   <div className="flex gap-1">
                     {PRIORITIES.map((p) => (
                       <button
@@ -113,7 +113,7 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
                         className={`px-2 py-0.5 rounded-md text-[10px] capitalize transition-colors border ${
                           priority === p
                             ? 'text-slate-900'
-                            : 'bg-transparent text-slate-600 border-white/10 hover:text-slate-400'
+                            : 'bg-transparent text-fg-faint border-white/10 hover:text-fg-muted'
                         }`}
                         style={priority === p ? {
                           backgroundColor: PRIORITY_COLORS[p],
@@ -131,7 +131,7 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="bg-[#0a1120]/80 rounded-lg border border-white/10 px-2 py-1 text-xs text-slate-400 outline-none focus:border-indigo-500/60"
+                  className="bg-[#0a1120]/80 rounded-lg border border-white/10 px-2 py-1 text-xs text-fg-muted outline-none focus:border-accent/60"
                 />
               </div>
 
@@ -140,13 +140,13 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[10px] text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-1.5 py-0.5 rounded-md flex items-center gap-1"
+                    className="text-[10px] text-accent-text bg-accent/10 border border-accent/20 px-1.5 py-0.5 rounded-md flex items-center gap-1"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => setTags((t) => t.filter((t2) => t2 !== tag))}
-                      className="text-indigo-600 hover:text-red-400 leading-none"
+                      className="text-accent-text hover:text-red-400 leading-none"
                     >
                       ×
                     </button>
@@ -159,7 +159,7 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
                     if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); handleAddTag(); }
                   }}
                   placeholder="+ tag"
-                  className="bg-transparent text-[10px] text-indigo-400 placeholder:text-slate-700 outline-none w-14"
+                  className="bg-transparent text-[10px] text-accent-text placeholder:text-fg-faint outline-none w-14"
                 />
               </div>
 
@@ -168,13 +168,13 @@ const QuickAdd = React.memo(function QuickAdd({ onClose }) {
                 <button
                   type="button"
                   onClick={() => { setExpanded(false); onClose?.(); }}
-                  className="text-xs text-slate-600 hover:text-slate-400 transition-colors px-3 py-1.5"
+                  className="text-xs text-fg-faint hover:text-fg-muted transition-colors px-3 py-1.5"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="text-xs font-medium px-4 py-1.5 rounded-lg bg-indigo-500 hover:bg-indigo-400 text-white transition-colors"
+                  className="text-xs font-medium px-4 py-1.5 rounded-lg bg-accent hover:bg-accent-hover text-white transition-colors"
                 >
                   Add Task
                 </button>

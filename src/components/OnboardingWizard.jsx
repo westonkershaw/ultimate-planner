@@ -57,14 +57,14 @@ const S = {
     margin: '0 0 28px', lineHeight: 1.6,
   },
   btn: {
-    background: '#6366f1', color: '#fff', border: 'none',
+    background: '#14b8a6', color: '#fff', border: 'none',
     borderRadius: 12, padding: '13px 28px',
     fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 700,
     cursor: 'pointer', width: '100%', marginTop: 8,
     transition: 'opacity 0.15s',
   },
   btnDisabled: {
-    background: '#6366f1', color: '#fff', border: 'none',
+    background: '#14b8a6', color: '#fff', border: 'none',
     borderRadius: 12, padding: '13px 28px',
     fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 700,
     cursor: 'not-allowed', width: '100%', marginTop: 8,
@@ -102,7 +102,7 @@ function Dots({ step, total }) {
           key={i}
           style={{
             width: i === step ? 22 : 8, height: 8, borderRadius: 99,
-            background: i === step ? '#6366f1' : 'rgba(255,255,255,0.1)',
+            background: i === step ? '#14b8a6' : 'rgba(255,255,255,0.1)',
             transition: 'width 0.25s ease, background 0.25s ease',
           }}
         />
@@ -203,8 +203,8 @@ export default function OnboardingWizard({ onComplete }) {
             key={label}
             style={{
               display: 'flex', alignItems: 'center', gap: 10,
-              background: 'rgba(99,102,241,0.07)',
-              border: '1px solid rgba(99,102,241,0.15)',
+              background: 'rgba(45, 212, 191,0.07)',
+              border: '1px solid rgba(45, 212, 191,0.15)',
               borderRadius: 12, padding: '12px 14px',
             }}
           >
@@ -219,9 +219,9 @@ export default function OnboardingWizard({ onComplete }) {
       </button>
       <p style={{ fontSize: 11, color: 'rgba(100,116,139,0.55)', textAlign: 'center', marginTop: 14, lineHeight: 1.6 }}>
         By continuing, you agree to our{' '}
-        <a href="https://ultimate-planner-alpha.vercel.app/terms.html" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(99,102,241,0.7)', textDecoration: 'underline' }}>Terms of Service</a>
+        <a href="https://ultimate-planner-alpha.vercel.app/terms.html" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(45, 212, 191,0.7)', textDecoration: 'underline' }}>Terms of Service</a>
         {' '}and{' '}
-        <a href="https://ultimate-planner-alpha.vercel.app/privacy.html" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(99,102,241,0.7)', textDecoration: 'underline' }}>Privacy Policy</a>.
+        <a href="https://ultimate-planner-alpha.vercel.app/privacy.html" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(45, 212, 191,0.7)', textDecoration: 'underline' }}>Privacy Policy</a>.
       </p>
     </motion.div>,
 
@@ -249,13 +249,13 @@ export default function OnboardingWizard({ onComplete }) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: goal === 'all' ? 10 : 20 }}>
         {FOCUS_OPTIONS.map((opt) => {
           const selected = goal === opt.id;
-          const selBorder = selected ? '#6366f1' : 'rgba(255,255,255,0.08)';
+          const selBorder = selected ? '#14b8a6' : 'rgba(255,255,255,0.08)';
           return (
             <button
               key={opt.id}
               onClick={() => setGoal(opt.id)}
               style={{
-                background: selected ? 'rgba(99,102,241,0.15)' : 'rgba(15,23,42,0.6)',
+                background: selected ? 'rgba(45, 212, 191,0.15)' : 'rgba(15,23,42,0.6)',
                 border: '1.5px solid ' + selBorder,
                 borderRadius: 12, padding: '12px 10px', cursor: 'pointer',
                 textAlign: 'left', fontFamily: "'DM Sans', sans-serif",
@@ -276,8 +276,8 @@ export default function OnboardingWizard({ onComplete }) {
         <p style={{
           fontSize: 12,
           color: 'rgba(148,163,184,0.65)',
-          background: 'rgba(99,102,241,0.08)',
-          border: '1px solid rgba(99,102,241,0.2)',
+          background: 'rgba(45, 212, 191,0.08)',
+          border: '1px solid rgba(45, 212, 191,0.2)',
           borderRadius: 10,
           padding: '9px 12px',
           margin: '0 0 20px',

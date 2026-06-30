@@ -223,12 +223,12 @@ function TemplateLibrary({ onImport, onClose }) {
     >
       <div className="flex items-center justify-between mb-4">
         <div>
-          <div className="font-syne text-lg font-bold text-slate-100">Template Library</div>
-          <div className="text-xs text-slate-500">Popular programs ready to import</div>
+          <div className="font-syne text-lg font-bold text-fg">Template Library</div>
+          <div className="text-xs text-fg-muted">Popular programs ready to import</div>
         </div>
         <button
           onClick={onClose}
-          className="px-3 py-1.5 text-xs text-slate-500 hover:text-slate-300 rounded-lg hover:bg-white/[0.05] transition-colors"
+          className="px-3 py-1.5 text-xs text-fg-muted hover:text-fg-secondary rounded-lg hover:bg-white/[0.05] transition-colors"
         >
           Back
         </button>
@@ -250,7 +250,7 @@ function TemplateLibrary({ onImport, onClose }) {
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-xl flex-shrink-0" aria-hidden="true">{tpl.icon}</span>
-                    <div className="font-syne text-sm font-bold text-slate-100 truncate">{tpl.name}</div>
+                    <div className="font-syne text-sm font-bold text-fg truncate">{tpl.name}</div>
                   </div>
                   <span
                     className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
@@ -264,11 +264,11 @@ function TemplateLibrary({ onImport, onClose }) {
                   </span>
                 </div>
 
-                <p className="text-[11px] text-slate-500 leading-relaxed mb-3">{tpl.description}</p>
+                <p className="text-[11px] text-fg-muted leading-relaxed mb-3">{tpl.description}</p>
 
-                <div className="flex items-center gap-3 text-[10px] text-slate-600 mb-3">
+                <div className="flex items-center gap-3 text-[10px] text-fg-faint mb-3">
                   <span>{tpl.routines.length} routine{tpl.routines.length !== 1 ? 's' : ''}</span>
-                  <span className="text-slate-700">·</span>
+                  <span className="text-fg-faint">·</span>
                   <span>{totalExercises} exercises</span>
                 </div>
 
@@ -276,7 +276,7 @@ function TemplateLibrary({ onImport, onClose }) {
                   {tpl.routines.map((r) => (
                     <span
                       key={r.name}
-                      className="text-[10px] text-slate-500 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-lg"
+                      className="text-[10px] text-fg-muted bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-lg"
                     >
                       {r.name}
                     </span>
@@ -305,22 +305,22 @@ function RoutineCard({ routine, onStart, onEdit, onDelete }) {
     <Card className="p-4" hover>
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
-          <div className="font-syne text-base font-bold text-slate-100 truncate">{routine.name}</div>
-          <div className="text-xs text-slate-600 mt-0.5">
+          <div className="font-syne text-base font-bold text-fg truncate">{routine.name}</div>
+          <div className="text-xs text-fg-faint mt-0.5">
             {routine.exercises?.length || 0} exercises · {totalSets} sets · ~{duration}m
           </div>
         </div>
         <div className="flex gap-1.5 flex-shrink-0">
           <button
             onClick={() => onEdit(routine)}
-            className="p-1.5 rounded-lg text-slate-600 hover:text-slate-300 hover:bg-white/[0.05] transition-colors text-xs"
+            className="p-1.5 rounded-lg text-fg-faint hover:text-fg-secondary hover:bg-white/[0.05] transition-colors text-xs"
             aria-label={`Edit ${routine.name}`}
           >
             ✏
           </button>
           <button
             onClick={() => onDelete(routine.id)}
-            className="p-1.5 rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-500/5 transition-colors text-xs"
+            className="p-1.5 rounded-lg text-fg-faint hover:text-red-400 hover:bg-red-500/5 transition-colors text-xs"
             aria-label={`Delete ${routine.name}`}
           >
             ✕
@@ -330,12 +330,12 @@ function RoutineCard({ routine, onStart, onEdit, onDelete }) {
 
       <div className="flex gap-1.5 flex-wrap mb-4">
         {routine.exercises?.slice(0, 4).map((ex, i) => (
-          <span key={i} className="text-[10px] text-slate-500 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-lg">
+          <span key={i} className="text-[10px] text-fg-muted bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-lg">
             {ex.name}
           </span>
         ))}
         {(routine.exercises?.length || 0) > 4 && (
-          <span className="text-[10px] text-slate-600 px-2 py-0.5">
+          <span className="text-[10px] text-fg-faint px-2 py-0.5">
             +{routine.exercises.length - 4} more
           </span>
         )}
@@ -356,7 +356,7 @@ function VolumeTrendChart({ sessions }) {
 
   return (
     <div>
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
         Weekly Volume (lbs)
       </div>
       <div className="flex items-end gap-1.5 h-24" role="img" aria-label="Weekly volume trend bar chart">
@@ -370,15 +370,15 @@ function VolumeTrendChart({ sessions }) {
                   className="absolute bottom-0 left-0 right-0 rounded-t-sm"
                   style={{
                     background: isCurrentWeek
-                      ? 'rgba(99,102,241,0.8)'
-                      : 'rgba(99,102,241,0.3)',
+                      ? 'rgba(45, 212, 191,0.8)'
+                      : 'rgba(45, 212, 191,0.3)',
                   }}
                   initial={{ height: 0 }}
                   animate={{ height: `${Math.max(heightPct, week.volume > 0 ? 4 : 0)}%` }}
                   transition={{ type: 'spring', stiffness: 200, damping: 30, delay: i * 0.04 }}
                 />
               </div>
-              <div className="text-[9px] text-slate-700 truncate w-full text-center">
+              <div className="text-[9px] text-fg-faint truncate w-full text-center">
                 {week.weekLabel.split(' ')[1]}
               </div>
             </div>
@@ -386,7 +386,7 @@ function VolumeTrendChart({ sessions }) {
         })}
       </div>
       {weeks.every((w) => w.volume === 0) && (
-        <div className="text-center text-xs text-slate-600 mt-2">
+        <div className="text-center text-xs text-fg-faint mt-2">
           Complete workouts to see volume trend
         </div>
       )}
@@ -402,10 +402,10 @@ function PRBoard({ sessions }) {
   if (prs.length === 0) {
     return (
       <div>
-        <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+        <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
           Personal Records
         </div>
-        <div className="text-center py-4 text-xs text-slate-600">
+        <div className="text-center py-4 text-xs text-fg-faint">
           Log workouts to see your PRs
         </div>
       </div>
@@ -414,7 +414,7 @@ function PRBoard({ sessions }) {
 
   return (
     <div>
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
         Personal Records
       </div>
       <div className="space-y-2">
@@ -431,10 +431,10 @@ function PRBoard({ sessions }) {
                 {i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}
               </span>
               <div>
-                <div className="text-sm font-medium text-slate-200 truncate max-w-[160px]">
+                <div className="text-sm font-medium text-fg-secondary truncate max-w-[160px]">
                   {pr.exerciseName}
                 </div>
-                <div className="text-[10px] text-slate-600">
+                <div className="text-[10px] text-fg-faint">
                   {pr.bestWeight} lbs × {pr.repsAtBest} reps
                 </div>
               </div>
@@ -442,7 +442,7 @@ function PRBoard({ sessions }) {
             <div className="text-right">
               <div className="font-syne text-base font-bold text-amber-400">{pr.epley1RM}</div>
               <div
-                className="text-[9px] text-slate-600 uppercase tracking-wider cursor-help"
+                className="text-[9px] text-fg-faint uppercase tracking-wider cursor-help"
                 title="Estimated One Rep Max — the maximum weight you could lift for a single rep, calculated from your best set"
               >
                 est. 1RM ?
@@ -471,14 +471,14 @@ function FrequencyGrid({ sessions }) {
 
   return (
     <div>
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
         4-Week Activity
       </div>
       <div className="flex gap-1 items-start" role="img" aria-label="4-week workout frequency grid">
         {/* Day labels */}
         <div className="flex flex-col gap-1 mr-1">
           {DAY_LABELS.map((label, i) => (
-            <div key={i} className="h-5 w-4 flex items-center justify-center text-[9px] text-slate-700">
+            <div key={i} className="h-5 w-4 flex items-center justify-center text-[9px] text-fg-faint">
               {label}
             </div>
           ))}
@@ -500,10 +500,10 @@ function FrequencyGrid({ sessions }) {
                     className="w-5 h-5 rounded-sm"
                     style={{
                       backgroundColor: cell.worked
-                        ? 'rgba(99,102,241,0.85)'
+                        ? 'rgba(45, 212, 191,0.85)'
                         : 'rgba(255,255,255,0.05)',
                       border: cell.worked
-                        ? '1px solid rgba(99,102,241,0.5)'
+                        ? '1px solid rgba(45, 212, 191,0.5)'
                         : '1px solid rgba(255,255,255,0.06)',
                     }}
                     aria-label={`${cell.dateStr}: ${cell.worked ? 'worked out' : 'rest day'}`}
@@ -550,10 +550,10 @@ function StrengthStandardsCard({ sessions, bodyweightLbs }) {
   if (standards.length === 0) {
     return (
       <Card className="p-4">
-        <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+        <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
           Strength Standards
         </div>
-        <div className="text-center py-4 text-xs text-slate-600">
+        <div className="text-center py-4 text-xs text-fg-faint">
           Log Bench Press, Squat, or Deadlift to see your strength level
         </div>
       </Card>
@@ -562,7 +562,7 @@ function StrengthStandardsCard({ sessions, bodyweightLbs }) {
 
   return (
     <Card className="p-4">
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-4">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-4">
         Strength Standards
       </div>
       <div className="space-y-5">
@@ -590,11 +590,11 @@ function StrengthStandardsCard({ sessions, bodyweightLbs }) {
               transition={{ delay: i * 0.08 }}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm font-medium text-slate-200">
+                <span className="text-sm font-medium text-fg-secondary">
                   {entry.exerciseName}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-slate-500">{bwRatioDisplay}</span>
+                  <span className="text-[11px] text-fg-muted">{bwRatioDisplay}</span>
                   <span
                     className="text-[10px] font-bold px-2 py-0.5 rounded-full"
                     style={{ color: levelColor, backgroundColor: levelColor + '22' }}
@@ -631,14 +631,14 @@ function StrengthStandardsCard({ sessions, bodyweightLbs }) {
               {/* Threshold labels */}
               <div className="flex justify-between mt-1">
                 {SEGMENT_LEVELS.map((lvl) => (
-                  <span key={lvl} className="text-[8px] text-slate-700 capitalize flex-1 text-center">
+                  <span key={lvl} className="text-[8px] text-fg-faint capitalize flex-1 text-center">
                     {lvl.slice(0, 3)}
                   </span>
                 ))}
               </div>
 
               <div
-                className="text-[10px] text-slate-600 mt-0.5 cursor-help"
+                className="text-[10px] text-fg-faint mt-0.5 cursor-help"
                 title="Estimated One Rep Max — the maximum weight you could lift for a single rep"
               >
                 {entry.best1RM} lb est. 1RM ?
@@ -654,7 +654,7 @@ function StrengthStandardsCard({ sessions, bodyweightLbs }) {
 // ── Muscle Group Balance Card ──────────────────────────────────────────────
 
 const GROUP_COLORS = {
-  push: '#6366f1',
+  push: '#14b8a6',
   pull: '#06b6d4',
   legs: '#22c55e',
   core: '#f59e0b',
@@ -669,13 +669,13 @@ function MuscleGroupBalanceCard({ sessions }) {
 
   return (
     <Card className="p-4">
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-4">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-4">
         Muscle Group Balance — Last 30 Days
       </div>
       <div className="space-y-3">
         {groups.map((g, i) => {
           const pct = (g.sessionsLast28Days / maxSessions) * 100;
-          const barColor = GROUP_COLORS[g.group] ?? '#6366f1';
+          const barColor = GROUP_COLORS[g.group] ?? '#14b8a6';
           const isNeglected7Days = g.daysSinceLast >= 7 || g.daysSinceLast === -1;
           const lastTrainedLabel = g.daysSinceLast === -1
             ? 'Never'
@@ -693,7 +693,7 @@ function MuscleGroupBalanceCard({ sessions }) {
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-1.5">
                   <span aria-hidden="true">{g.emoji}</span>
-                  <span className="text-sm font-medium text-slate-200">{g.label}</span>
+                  <span className="text-sm font-medium text-fg-secondary">{g.label}</span>
                   {isNeglected7Days && (
                     <span
                       className="text-xs"
@@ -704,9 +704,9 @@ function MuscleGroupBalanceCard({ sessions }) {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-2 text-[11px] text-slate-500">
+                <div className="flex items-center gap-2 text-[11px] text-fg-muted">
                   <span>{g.sessionsLast28Days} sessions</span>
-                  <span className="text-slate-700">·</span>
+                  <span className="text-fg-faint">·</span>
                   <span>{lastTrainedLabel}</span>
                 </div>
               </div>
@@ -731,11 +731,11 @@ function MuscleGroupBalanceCard({ sessions }) {
 
 const REC_STYLES = {
   recovery:  { bg: 'bg-blue-500/10',  border: 'border-blue-500/20',  text: 'text-blue-300'  },
-  lift_heavy:{ bg: 'bg-indigo-500/10',border: 'border-indigo-500/20',text: 'text-indigo-300' },
+  lift_heavy:{ bg: 'bg-accent/10',border: 'border-accent/20',text: 'text-accent-text' },
   leg_day:   { bg: 'bg-emerald-500/10',border:'border-emerald-500/20',text:'text-emerald-300' },
   pull_day:  { bg: 'bg-cyan-500/10',  border: 'border-cyan-500/20',  text: 'text-cyan-300'  },
   push_day:  { bg: 'bg-violet-500/10',border: 'border-violet-500/20',text: 'text-violet-300' },
-  rest:      { bg: 'bg-slate-500/10', border: 'border-slate-500/20', text: 'text-slate-300'  },
+  rest:      { bg: 'bg-slate-500/10', border: 'border-slate-500/20', text: 'text-fg-secondary'  },
   general:   { bg: 'bg-amber-500/10', border: 'border-amber-500/20', text: 'text-amber-300'  },
 };
 
@@ -745,7 +745,7 @@ function WorkoutRecommendationCard({ sessions }) {
 
   return (
     <Card className="p-4">
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
         Today's Recommendation
       </div>
       <motion.div
@@ -760,7 +760,7 @@ function WorkoutRecommendationCard({ sessions }) {
           {rec.message}
         </p>
         {rec.urgency === 'high' && (
-          <div className="mt-1.5 text-[10px] text-slate-500 uppercase tracking-widest">
+          <div className="mt-1.5 text-[10px] text-fg-muted uppercase tracking-widest">
             High priority
           </div>
         )}
@@ -777,10 +777,10 @@ function PRTimelineCard({ sessions }) {
   if (timeline.length === 0) {
     return (
       <Card className="p-4">
-        <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+        <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
           PR Timeline
         </div>
-        <div className="text-center py-4 text-xs text-slate-600">
+        <div className="text-center py-4 text-xs text-fg-faint">
           Complete sets to start tracking PRs
         </div>
       </Card>
@@ -789,7 +789,7 @@ function PRTimelineCard({ sessions }) {
 
   return (
     <Card className="p-4">
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
         PR Timeline — Top 8 by Recency
       </div>
       <div className="space-y-2">
@@ -811,10 +811,10 @@ function PRTimelineCard({ sessions }) {
                   <span className="text-xs shrink-0" aria-label="PR set in last 14 days">🔥</span>
                 )}
                 <div className="min-w-0">
-                  <div className="text-sm font-medium text-slate-200 truncate max-w-[150px]">
+                  <div className="text-sm font-medium text-fg-secondary truncate max-w-[150px]">
                     {entry.exerciseName}
                   </div>
-                  <div className="text-[10px] text-slate-600">{entry.currentPRDate}</div>
+                  <div className="text-[10px] text-fg-faint">{entry.currentPRDate}</div>
                 </div>
               </div>
               <div className="text-right shrink-0">
@@ -845,7 +845,7 @@ function DailyVolumeTrendChart({ sessions }) {
 
   return (
     <Card className="p-4">
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
         Volume — Last 7 Days (lbs)
       </div>
       <div
@@ -869,17 +869,17 @@ function DailyVolumeTrendChart({ sessions }) {
                   title={day.dateStr + ': ' + day.volume + ' lbs'}
                 />
               </div>
-              <div className="text-[9px] text-slate-600">{day.dayLabel}</div>
+              <div className="text-[9px] text-fg-faint">{day.dayLabel}</div>
             </div>
           );
         })}
       </div>
       {isEmpty && (
-        <div className="text-center text-xs text-slate-600 mt-2">
+        <div className="text-center text-xs text-fg-faint mt-2">
           Log workouts to see daily volume
         </div>
       )}
-      <div className="flex items-center gap-3 mt-3 text-[10px] text-slate-600">
+      <div className="flex items-center gap-3 mt-3 text-[10px] text-fg-faint">
         <span className="flex items-center gap-1">
           <span className="inline-block w-2.5 h-2.5 rounded-sm bg-emerald-500" />
           Above average
@@ -903,11 +903,11 @@ function ProgressSection({ workoutHistory, streak, bodyweightLbs }) {
         <div className="text-4xl" aria-hidden="true">🔥</div>
         <div>
           <div className="font-syne text-3xl font-bold text-amber-400">{streak}</div>
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-fg-muted">
             day workout streak
           </div>
           {streak === 0 && (
-            <div className="text-xs text-slate-600 mt-0.5">Log a workout to start your streak</div>
+            <div className="text-xs text-fg-faint mt-0.5">Log a workout to start your streak</div>
           )}
         </div>
       </Card>
@@ -1024,9 +1024,9 @@ const WorkoutView = React.memo(function WorkoutView() {
     <div className="p-4 sm:p-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-syne text-2xl font-bold text-slate-100">Workouts</h1>
+          <h1 className="font-syne text-2xl font-bold text-fg">Workouts</h1>
           <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-slate-600 text-sm">{routines.length} routines</span>
+            <span className="text-fg-faint text-sm">{routines.length} routines</span>
             {isNewUser && (
               <span className="text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
                 New here? Start below
@@ -1048,12 +1048,12 @@ const WorkoutView = React.memo(function WorkoutView() {
       {workoutHistory.length > 0 && (
         <div className="grid grid-cols-3 gap-3 mb-6">
           <Card className="p-3 text-center">
-            <div className="font-syne text-xl font-bold text-indigo-400">{workoutHistory.length}</div>
-            <div className="text-[10px] text-slate-600 uppercase tracking-wider mt-0.5">Total</div>
+            <div className="font-syne text-xl font-bold text-accent-text">{workoutHistory.length}</div>
+            <div className="text-[10px] text-fg-faint uppercase tracking-wider mt-0.5">Total</div>
           </Card>
           <Card className="p-3 text-center">
             <div className="font-syne text-xl font-bold text-amber-400">{streak}</div>
-            <div className="text-[10px] text-slate-600 uppercase tracking-wider mt-0.5">Streak</div>
+            <div className="text-[10px] text-fg-faint uppercase tracking-wider mt-0.5">Streak</div>
           </Card>
           <Card className="p-3 text-center">
             <div className="font-syne text-xl font-bold text-emerald-400">
@@ -1063,7 +1063,7 @@ const WorkoutView = React.memo(function WorkoutView() {
                 return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
               }).length}
             </div>
-            <div className="text-[10px] text-slate-600 uppercase tracking-wider mt-0.5">This Month</div>
+            <div className="text-[10px] text-fg-faint uppercase tracking-wider mt-0.5">This Month</div>
           </Card>
         </div>
       )}
@@ -1076,8 +1076,8 @@ const WorkoutView = React.memo(function WorkoutView() {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2.5 text-sm font-medium capitalize transition-colors border-b-2 -mb-px ${
               activeTab === tab
-                ? 'border-indigo-500 text-indigo-400'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-accent text-accent-text'
+                : 'border-transparent text-fg-muted hover:text-fg-secondary'
             }`}
           >
             {tab}
@@ -1109,10 +1109,10 @@ const WorkoutView = React.memo(function WorkoutView() {
                 {/* Headline */}
                 <div className="text-center mb-6">
                   <div className="text-4xl mb-3" aria-hidden="true">🏋️</div>
-                  <div className="font-syne text-xl font-bold text-slate-100 mb-1">
+                  <div className="font-syne text-xl font-bold text-fg mb-1">
                     Welcome to Workouts
                   </div>
-                  <div className="text-slate-500 text-sm max-w-xs mx-auto">
+                  <div className="text-fg-muted text-sm max-w-xs mx-auto">
                     Track every lift, build strength over time, and hit personal records.
                     Getting started takes under a minute.
                   </div>
@@ -1129,25 +1129,25 @@ const WorkoutView = React.memo(function WorkoutView() {
                       key={step}
                       className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3"
                     >
-                      <div className="w-6 h-6 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 text-xs font-bold flex items-center justify-center mx-auto mb-2">
+                      <div className="w-6 h-6 rounded-full bg-accent/20 border border-accent/30 text-accent-text text-xs font-bold flex items-center justify-center mx-auto mb-2">
                         {step}
                       </div>
-                      <div className="text-xs font-medium text-slate-300">{label}</div>
-                      <div className="text-[10px] text-slate-600 mt-0.5">{sub}</div>
+                      <div className="text-xs font-medium text-fg-secondary">{label}</div>
+                      <div className="text-[10px] text-fg-faint mt-0.5">{sub}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Beginner template preview */}
-                <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/[0.04] p-4 mb-4">
+                <div className="rounded-xl border border-accent/20 bg-accent/[0.04] p-4 mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <div className="text-sm font-semibold text-slate-200">Full Body Starter</div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">
+                      <div className="text-sm font-semibold text-fg-secondary">Full Body Starter</div>
+                      <div className="text-[11px] text-fg-muted mt-0.5">
                         Recommended for beginners — 3 exercises, ~20 min
                       </div>
                     </div>
-                    <span className="text-[10px] text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] text-accent-text bg-accent/10 border border-accent/20 px-2 py-0.5 rounded-full">
                       Template
                     </span>
                   </div>
@@ -1155,7 +1155,7 @@ const WorkoutView = React.memo(function WorkoutView() {
                     {STARTER_TEMPLATE.exercises.map((ex) => (
                       <span
                         key={ex.name}
-                        className="text-[11px] text-slate-400 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-lg"
+                        className="text-[11px] text-fg-muted bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-lg"
                       >
                         {ex.name} {ex.sets.length}×{ex.sets[0].reps}
                       </span>
@@ -1169,13 +1169,13 @@ const WorkoutView = React.memo(function WorkoutView() {
                 {/* Browse Templates */}
                 <button
                   onClick={() => setShowTemplates(true)}
-                  className="w-full rounded-xl border border-indigo-500/15 bg-indigo-500/[0.04] py-3 text-sm text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/[0.08] transition-colors mb-4"
+                  className="w-full rounded-xl border border-accent/15 bg-accent/[0.04] py-3 text-sm text-accent-text hover:text-accent-text hover:bg-accent/[0.08] transition-colors mb-4"
                 >
                   Browse All Templates
                 </button>
 
                 {/* Divider */}
-                <div className="flex items-center gap-3 text-slate-700 text-xs mb-4">
+                <div className="flex items-center gap-3 text-fg-faint text-xs mb-4">
                   <div className="flex-1 h-px bg-white/[0.06]" />
                   or
                   <div className="flex-1 h-px bg-white/[0.06]" />
@@ -1184,7 +1184,7 @@ const WorkoutView = React.memo(function WorkoutView() {
                 {/* Build own */}
                 <button
                   onClick={() => { setEditingRoutine(null); setShowBuilder(true); }}
-                  className="w-full rounded-xl border border-dashed border-white/10 py-3 text-sm text-slate-500 hover:text-slate-300 hover:border-indigo-500/30 transition-colors"
+                  className="w-full rounded-xl border border-dashed border-white/10 py-3 text-sm text-fg-muted hover:text-fg-secondary hover:border-accent/30 transition-colors"
                 >
                   Build my own routine
                 </button>
@@ -1206,7 +1206,7 @@ const WorkoutView = React.memo(function WorkoutView() {
                 {/* Browse Templates button below routine grid */}
                 <button
                   onClick={() => setShowTemplates(true)}
-                  className="w-full mt-4 rounded-xl border border-white/[0.08] bg-white/[0.02] py-3 text-sm text-slate-500 hover:text-indigo-400 hover:border-indigo-500/20 hover:bg-indigo-500/[0.04] transition-colors flex items-center justify-center gap-2"
+                  className="w-full mt-4 rounded-xl border border-white/[0.08] bg-white/[0.02] py-3 text-sm text-fg-muted hover:text-accent-text hover:border-accent/20 hover:bg-accent/[0.04] transition-colors flex items-center justify-center gap-2"
                 >
                   <span aria-hidden="true">📋</span>
                   Browse Templates
@@ -1228,8 +1228,8 @@ const WorkoutView = React.memo(function WorkoutView() {
             {workoutHistory.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-3xl mb-3" aria-hidden="true">📋</div>
-                <div className="text-slate-400 font-medium mb-1">No sessions logged yet</div>
-                <div className="text-slate-600 text-sm mb-5">
+                <div className="text-fg-muted font-medium mb-1">No sessions logged yet</div>
+                <div className="text-fg-faint text-sm mb-5">
                   Complete your first workout and it will appear here.
                 </div>
                 <Button size="sm" onClick={() => setActiveTab('routines')}>
@@ -1241,8 +1241,8 @@ const WorkoutView = React.memo(function WorkoutView() {
                 <Card key={session.id} className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-slate-200">{session.routineName}</div>
-                      <div className="text-xs text-slate-600">
+                      <div className="font-medium text-fg-secondary">{session.routineName}</div>
+                      <div className="text-xs text-fg-faint">
                         {new Date(session.completedAt).toLocaleDateString('en-US', {
                           weekday: 'short', month: 'short', day: 'numeric',
                         })}
@@ -1254,7 +1254,7 @@ const WorkoutView = React.memo(function WorkoutView() {
                       <div className="text-sm font-bold text-emerald-400">
                         {session.exercises?.reduce((a, ex) => a + ex.sets.filter((s) => s.completed).length, 0) || 0} sets
                       </div>
-                      <div className="text-[10px] text-slate-600">{session.exercises?.length || 0} exercises</div>
+                      <div className="text-[10px] text-fg-faint">{session.exercises?.length || 0} exercises</div>
                     </div>
                   </div>
                 </Card>

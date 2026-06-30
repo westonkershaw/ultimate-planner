@@ -30,12 +30,12 @@ function todayStr() {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const ACCENT = "#c084fc";
-const INDIGO = "#6366f1";
+const INDIGO = "#14b8a6";
 const CANVAS_BG = "rgba(8,9,13,0.95)";
 
 // Category color map — matches the app-wide category palette
 const CATEGORY_COLORS = {
-  intellectual: "#6366f1",
+  intellectual: "#14b8a6",
   physical:     "#f43f5e",
   financial:    "#10b981",
   spiritual:    "#a78bfa",
@@ -58,13 +58,13 @@ const TOOLBAR_STYLE = {
   background: "rgba(8,9,13,0.8)",
   backdropFilter: "blur(20px)",
   WebkitBackdropFilter: "blur(20px)",
-  borderBottom: "1px solid rgba(99,102,241,0.18)",
+  borderBottom: "1px solid rgba(45, 212, 191,0.18)",
   flexWrap: "wrap",
 };
 
 const BTN = {
-  background: "rgba(99,102,241,0.15)",
-  border: "1px solid rgba(99,102,241,0.25)",
+  background: "rgba(45, 212, 191,0.15)",
+  border: "1px solid rgba(45, 212, 191,0.25)",
   borderRadius: 8,
   color: "#f1f5f9",
   cursor: "pointer",
@@ -77,7 +77,7 @@ const BTN = {
 const BTN_PRIMARY = {
   ...BTN,
   background: INDIGO,
-  border: "1px solid rgba(99,102,241,0.6)",
+  border: "1px solid rgba(45, 212, 191,0.6)",
   fontWeight: 700,
 };
 
@@ -89,7 +89,7 @@ const BTN_GHOST = {
 
 const CARD_STYLE = {
   background: "rgba(17,24,39,0.7)",
-  border: "1px solid rgba(99,102,241,0.15)",
+  border: "1px solid rgba(45, 212, 191,0.15)",
   borderRadius: 14,
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
@@ -108,12 +108,12 @@ const TEMPLATES = [
     id: "goals",
     label: "Goals Board",
     emoji: "🏆",
-    color: "#6366f1",
+    color: "#14b8a6",
     items: [
       { type: "goal", content: "My #1 Goal This Year", x: 10, y: 10, width: 35, fontSize: 18, bold: true, italic: false, color: "#c084fc", bgColor: "rgba(192,132,252,0.12)" },
-      { type: "goal", content: "Health & Fitness Goal", x: 55, y: 10, width: 35, fontSize: 16, bold: false, italic: false, color: "#6366f1", bgColor: "rgba(99,102,241,0.12)" },
+      { type: "goal", content: "Health & Fitness Goal", x: 55, y: 10, width: 35, fontSize: 16, bold: false, italic: false, color: "#14b8a6", bgColor: "rgba(45, 212, 191,0.12)" },
       { type: "goal", content: "Career Milestone", x: 10, y: 50, width: 35, fontSize: 16, bold: false, italic: false, color: "#34d399", bgColor: "rgba(52,211,153,0.1)" },
-      { type: "quote", content: "Dream big. Act bold. Stay focused.", x: 55, y: 50, width: 35, fontSize: 15, bold: false, italic: true, color: "#f1f5f9", bgColor: "rgba(99,102,241,0.08)" },
+      { type: "quote", content: "Dream big. Act bold. Stay focused.", x: 55, y: 50, width: 35, fontSize: 15, bold: false, italic: true, color: "#f1f5f9", bgColor: "rgba(45, 212, 191,0.08)" },
     ],
   },
   {
@@ -181,7 +181,7 @@ function defaultAffirmationGalleryCard(partial) {
     id: uid(),
     cardType: "affirmation",
     text: partial.text || "I am capable of achieving everything I set my mind to.",
-    gradient: partial.gradient || "135deg, #6366f1 0%, #a78bfa 100%",
+    gradient: partial.gradient || "135deg, #14b8a6 0%, #a78bfa 100%",
     pinned: false,
     createdAt: new Date().toISOString(),
   };
@@ -202,7 +202,7 @@ function defaultDreamGalleryCard(partial) {
 // ─── Color Picker ─────────────────────────────────────────────────────────────
 
 const PRESET_COLORS = [
-  "#c084fc", "#6366f1", "#f9a8d4", "#67e8f9",
+  "#c084fc", "#14b8a6", "#f9a8d4", "#67e8f9",
   "#86efac", "#fde68a", "#fb923c", "#f87171",
   "#f1f5f9", "#94a3b8",
 ];
@@ -390,7 +390,7 @@ function GoalGalleryCard({ card, onEdit, onDelete }) {
 }
 
 function AffirmationGalleryCard({ card, onEdit, onDelete, onTogglePin }) {
-  const gradient = card.gradient || "135deg, #6366f1 0%, #a78bfa 100%";
+  const gradient = card.gradient || "135deg, #14b8a6 0%, #a78bfa 100%";
   const bgGrad = "linear-gradient(" + gradient + ")";
 
   return (
@@ -582,7 +582,7 @@ function DreamGalleryCard({ card, onEdit, onDelete }) {
 
 function DailyAffirmationHero({ card }) {
   if (!card) return null;
-  const gradient = card.gradient || "135deg, #6366f1 0%, #a78bfa 100%";
+  const gradient = card.gradient || "135deg, #14b8a6 0%, #a78bfa 100%";
   const bgGrad = "linear-gradient(" + gradient + ")";
 
   return (
@@ -596,7 +596,7 @@ function DailyAffirmationHero({ card }) {
         marginBottom: 24,
         position: "relative",
         overflow: "hidden",
-        boxShadow: "0 0 40px rgba(99,102,241,0.3)",
+        boxShadow: "0 0 40px rgba(45, 212, 191,0.3)",
       }}
     >
       {/* Animated glow pulse */}
@@ -647,12 +647,12 @@ function DailyAffirmationHero({ card }) {
 // ─── Gallery Card Modal (add / edit) ─────────────────────────────────────────
 
 const AFFIRMATION_GRADIENTS = [
-  { label: "Indigo Wave", value: "135deg, #6366f1 0%, #a78bfa 100%" },
+  { label: "Indigo Wave", value: "135deg, #14b8a6 0%, #a78bfa 100%" },
   { label: "Rose Gold",   value: "135deg, #f43f5e 0%, #f97316 100%" },
   { label: "Emerald",     value: "135deg, #059669 0%, #06b6d4 100%" },
   { label: "Sunset",      value: "135deg, #f59e0b 0%, #f43f5e 100%" },
   { label: "Violet Night", value: "135deg, #312e81 0%, #7c3aed 100%" },
-  { label: "Ocean",       value: "135deg, #0ea5e9 0%, #6366f1 100%" },
+  { label: "Ocean",       value: "135deg, #0ea5e9 0%, #14b8a6 100%" },
 ];
 
 function GalleryCardModal({ initial, onSave, onClose }) {
@@ -753,8 +753,8 @@ function GalleryCardModal({ initial, onSave, onClose }) {
                 style={{
                   ...BTN,
                   flex: 1,
-                  background: cardType === t ? INDIGO : "rgba(99,102,241,0.1)",
-                  border: "1px solid " + (cardType === t ? INDIGO : "rgba(99,102,241,0.2)"),
+                  background: cardType === t ? INDIGO : "rgba(45, 212, 191,0.1)",
+                  border: "1px solid " + (cardType === t ? INDIGO : "rgba(45, 212, 191,0.2)"),
                   fontSize: 12,
                   padding: "8px 4px",
                   textAlign: "center",
@@ -1081,11 +1081,11 @@ function MasonryGallery({ board, onUpdateBoard }) {
                     padding: "14px 10px",
                     textAlign: "center",
                     cursor: "pointer",
-                    border: "1px solid rgba(99,102,241,0.2)",
+                    border: "1px solid rgba(45, 212, 191,0.2)",
                     transition: "border-color 0.15s, background 0.15s",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = INDIGO; e.currentTarget.style.background = "rgba(99,102,241,0.18)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(99,102,241,0.2)"; e.currentTarget.style.background = "rgba(17,24,39,0.7)"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = INDIGO; e.currentTarget.style.background = "rgba(45, 212, 191,0.18)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(45, 212, 191,0.2)"; e.currentTarget.style.background = "rgba(17,24,39,0.7)"; }}
                 >
                   <div style={{ fontSize: 26, marginBottom: 6 }}>{emoji}</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }}>{label}</div>
@@ -1133,7 +1133,7 @@ function MasonryGallery({ board, onUpdateBoard }) {
 
       {/* Toast notification */}
       {toastMsg && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#6366f1', color: '#fff', padding: '12px 20px', borderRadius: 8, zIndex: 9999, fontSize: 13, fontWeight: 600, fontFamily: "'DM Sans',sans-serif", boxShadow: '0 8px 24px rgba(99,102,241,0.4)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#14b8a6', color: '#fff', padding: '12px 20px', borderRadius: 8, zIndex: 9999, fontSize: 13, fontWeight: 600, fontFamily: "'DM Sans',sans-serif", boxShadow: '0 8px 24px rgba(45, 212, 191,0.4)' }}>
           {toastMsg}
         </div>
       )}
@@ -1194,7 +1194,7 @@ function AddItemPanel({ onAdd, onClose, yearlyGoals }) {
         left: 0,
         zIndex: 200,
         ...CARD_STYLE,
-        border: "1px solid rgba(99,102,241,0.3)",
+        border: "1px solid rgba(45, 212, 191,0.3)",
         boxShadow: "0 16px 48px rgba(0,0,0,0.7)",
         padding: "16px",
         minWidth: 320,
@@ -1209,8 +1209,8 @@ function AddItemPanel({ onAdd, onClose, yearlyGoals }) {
             onClick={() => setActiveType(t.type)}
             style={{
               ...BTN,
-              background: activeType === t.type ? INDIGO : "rgba(99,102,241,0.1)",
-              border: "1px solid " + (activeType === t.type ? INDIGO : "rgba(99,102,241,0.2)"),
+              background: activeType === t.type ? INDIGO : "rgba(45, 212, 191,0.1)",
+              border: "1px solid " + (activeType === t.type ? INDIGO : "rgba(45, 212, 191,0.2)"),
               fontSize: 12,
               padding: "5px 10px",
             }}
@@ -1252,7 +1252,7 @@ function AddItemPanel({ onAdd, onClose, yearlyGoals }) {
                 onClick={() => setShapeType(s)}
                 style={{
                   ...BTN,
-                  background: shapeType === s ? INDIGO : "rgba(99,102,241,0.1)",
+                  background: shapeType === s ? INDIGO : "rgba(45, 212, 191,0.1)",
                   flex: 1,
                   fontSize: 12,
                 }}
@@ -1275,7 +1275,7 @@ function AddItemPanel({ onAdd, onClose, yearlyGoals }) {
                         onClick={() => setSelectedGoal(txt)}
                         style={{
                           ...BTN,
-                          background: selectedGoal === txt ? INDIGO : "rgba(99,102,241,0.08)",
+                          background: selectedGoal === txt ? INDIGO : "rgba(45, 212, 191,0.08)",
                           textAlign: "left",
                           fontSize: 12,
                         }}
@@ -1320,13 +1320,13 @@ function AddItemPanel({ onAdd, onClose, yearlyGoals }) {
                 <div style={{ display: "flex", gap: 8 }}>
                   <button
                     onClick={() => setBold((b) => !b)}
-                    style={{ ...BTN, background: bold ? INDIGO : "rgba(99,102,241,0.1)", fontWeight: 700, padding: "5px 14px" }}
+                    style={{ ...BTN, background: bold ? INDIGO : "rgba(45, 212, 191,0.1)", fontWeight: 700, padding: "5px 14px" }}
                   >
                     B
                   </button>
                   <button
                     onClick={() => setItalic((i) => !i)}
-                    style={{ ...BTN, background: italic ? INDIGO : "rgba(99,102,241,0.1)", fontStyle: "italic", padding: "5px 14px" }}
+                    style={{ ...BTN, background: italic ? INDIGO : "rgba(45, 212, 191,0.1)", fontStyle: "italic", padding: "5px 14px" }}
                   >
                     I
                   </button>
@@ -1348,7 +1348,7 @@ function AddItemPanel({ onAdd, onClose, yearlyGoals }) {
 
 const inputStyle = {
   background: "rgba(15,23,42,0.8)",
-  border: "1px solid rgba(99,102,241,0.25)",
+  border: "1px solid rgba(45, 212, 191,0.25)",
   borderRadius: 8,
   color: "#f1f5f9",
   fontSize: 13,
@@ -1462,7 +1462,7 @@ function BoardItem({ item, selected, onSelect, onUpdate, onDelete, canvasRef }) 
   }
 
   const selectionStyle = selected
-    ? { outline: "2px solid #6366f1", boxShadow: "0 0 0 4px rgba(99,102,241,0.2)" }
+    ? { outline: "2px solid #14b8a6", boxShadow: "0 0 0 4px rgba(45, 212, 191,0.2)" }
     : {};
 
   function renderContent() {
@@ -1502,12 +1502,12 @@ function BoardItem({ item, selected, onSelect, onUpdate, onDelete, canvasRef }) 
             }}
             style={{
               width: "100%", height: "100%", minHeight: 60,
-              background: "rgba(99,102,241,0.08)", border: "2px solid #6366f1",
+              background: "rgba(45, 212, 191,0.08)", border: "2px solid #14b8a6",
               borderRadius: 8, outline: "none", resize: "none",
               color: item.color || "#f1f5f9", fontSize: item.fontSize || 16,
               fontWeight: item.bold ? 700 : 400, fontStyle: item.italic ? "italic" : "normal",
               fontFamily: "inherit", lineHeight: 1.5, padding: "6px 8px",
-              boxShadow: "0 0 0 3px rgba(99,102,241,0.25)", caretColor: "#6366f1",
+              boxShadow: "0 0 0 3px rgba(45, 212, 191,0.25)", caretColor: "#14b8a6",
               boxSizing: "border-box",
             }}
           />
@@ -1689,8 +1689,8 @@ function BoardEditor({ board, onBack, onSave, yearlyGoals }) {
             onClick={() => setActiveView(v)}
             style={{
               ...BTN,
-              background: activeView === v ? INDIGO : "rgba(99,102,241,0.1)",
-              border: "1px solid " + (activeView === v ? INDIGO : "rgba(99,102,241,0.2)"),
+              background: activeView === v ? INDIGO : "rgba(45, 212, 191,0.1)",
+              border: "1px solid " + (activeView === v ? INDIGO : "rgba(45, 212, 191,0.2)"),
               fontSize: 12,
               padding: "5px 12px",
               textTransform: "capitalize",
@@ -1718,13 +1718,13 @@ function BoardEditor({ board, onBack, onSave, yearlyGoals }) {
           </button>
           <button
             onClick={() => updateItem(selectedId, { bold: !selectedItem.bold })}
-            style={{ ...BTN, background: selectedItem.bold ? INDIGO : "rgba(99,102,241,0.1)", fontWeight: 700, padding: "4px 10px" }}
+            style={{ ...BTN, background: selectedItem.bold ? INDIGO : "rgba(45, 212, 191,0.1)", fontWeight: 700, padding: "4px 10px" }}
           >
             B
           </button>
           <button
             onClick={() => updateItem(selectedId, { italic: !selectedItem.italic })}
-            style={{ ...BTN, background: selectedItem.italic ? INDIGO : "rgba(99,102,241,0.1)", fontStyle: "italic", padding: "4px 10px" }}
+            style={{ ...BTN, background: selectedItem.italic ? INDIGO : "rgba(45, 212, 191,0.1)", fontStyle: "italic", padding: "4px 10px" }}
           >
             I
           </button>
@@ -1860,7 +1860,7 @@ function BoardEditor({ board, onBack, onSave, yearlyGoals }) {
 function TemplatePicker({ onCreate, onCancel }) {
   const [titleVal, setTitleVal] = useState("My Vision Board");
   const [chosenTemplate, setChosenTemplate] = useState("blank");
-  const [boardColor, setBoardColor] = useState("#6366f1");
+  const [boardColor, setBoardColor] = useState("#14b8a6");
 
   function handleCreate() {
     const tpl = TEMPLATES.find((t) => t.id === chosenTemplate) || TEMPLATES[2];
@@ -1909,8 +1909,8 @@ function TemplatePicker({ onCreate, onCancel }) {
                 padding: "16px 10px",
                 textAlign: "center",
                 cursor: "pointer",
-                border: "2px solid " + (chosenTemplate === tpl.id ? INDIGO : "rgba(99,102,241,0.15)"),
-                background: chosenTemplate === tpl.id ? "rgba(99,102,241,0.18)" : "rgba(17,24,39,0.5)",
+                border: "2px solid " + (chosenTemplate === tpl.id ? INDIGO : "rgba(45, 212, 191,0.15)"),
+                background: chosenTemplate === tpl.id ? "rgba(45, 212, 191,0.18)" : "rgba(17,24,39,0.5)",
                 transition: "all 0.15s",
               }}
             >
@@ -1947,8 +1947,8 @@ function BoardList({ boards, onSelect, onCreate }) {
         <div>
           {/* Concept explanation banner */}
           <div style={{
-            background: "linear-gradient(135deg, rgba(99,102,241,0.14) 0%, rgba(192,132,252,0.10) 100%)",
-            border: "1px solid rgba(99,102,241,0.25)",
+            background: "linear-gradient(135deg, rgba(45, 212, 191,0.14) 0%, rgba(192,132,252,0.10) 100%)",
+            border: "1px solid rgba(45, 212, 191,0.25)",
             borderRadius: 14,
             padding: "20px 22px",
             marginBottom: 24,
@@ -1981,11 +1981,11 @@ function BoardList({ boards, onSelect, onCreate }) {
                     padding: "16px 10px",
                     textAlign: "center",
                     cursor: "pointer",
-                    border: "1px solid rgba(99,102,241,0.2)",
+                    border: "1px solid rgba(45, 212, 191,0.2)",
                     transition: "border-color 0.15s, background 0.15s",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = INDIGO; e.currentTarget.style.background = "rgba(99,102,241,0.18)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(99,102,241,0.2)"; e.currentTarget.style.background = "rgba(17,24,39,0.7)"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = INDIGO; e.currentTarget.style.background = "rgba(45, 212, 191,0.18)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(45, 212, 191,0.2)"; e.currentTarget.style.background = "rgba(17,24,39,0.7)"; }}
                 >
                   <div style={{ fontSize: 28, marginBottom: 6 }}>{emoji}</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#f1f5f9" }}>{label}</div>
@@ -2036,7 +2036,7 @@ function BoardList({ boards, onSelect, onCreate }) {
                   cursor: "pointer",
                   textAlign: "left",
                   overflow: "hidden",
-                  border: "1px solid rgba(99,102,241,0.18)",
+                  border: "1px solid rgba(45, 212, 191,0.18)",
                 }}
               >
                 {/* Thumbnail */}
@@ -2060,7 +2060,7 @@ function BoardList({ boards, onSelect, onCreate }) {
                         position: "absolute",
                         left: (8 + idx * 18) + "%",
                         top: (12 + (idx % 2) * 30) + "%",
-                        background: item.bgColor || "rgba(99,102,241,0.2)",
+                        background: item.bgColor || "rgba(45, 212, 191,0.2)",
                         borderRadius: 5,
                         padding: "3px 7px",
                         fontSize: 9,
@@ -2246,7 +2246,7 @@ export function VisionBoardDashWidget({ data, onNavigate }) {
                   position: "absolute",
                   left: (8 + idx * 22) + "%",
                   top: (10 + (idx % 2) * 35) + "%",
-                  background: item.bgColor || "rgba(99,102,241,0.2)",
+                  background: item.bgColor || "rgba(45, 212, 191,0.2)",
                   borderRadius: 4,
                   padding: "2px 7px",
                   fontSize: 8,

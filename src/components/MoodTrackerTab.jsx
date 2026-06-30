@@ -17,10 +17,10 @@ const MOODS = [
   { score: 2, emoji: '😕', label: 'Meh',     color: '#f97316' },
   { score: 3, emoji: '😐', label: 'Okay',    color: '#eab308' },
   { score: 4, emoji: '😊', label: 'Good',    color: '#22c55e' },
-  { score: 5, emoji: '😄', label: 'Great',   color: '#6366f1' },
+  { score: 5, emoji: '😄', label: 'Great',   color: '#14b8a6' },
 ];
 
-const MOOD_COLORS = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#6366f1'];
+const MOOD_COLORS = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#14b8a6'];
 
 function scoreColor(score) {
   if (!score) return 'rgba(51,65,85,0.4)';
@@ -449,7 +449,7 @@ function MoodInsights({ moodLogs, workoutHistory, habitLogs, sleepLogs }) {
             text={
               <>
                 Your{' '}
-                <span style={{ color: '#818cf8', fontWeight: 800 }}>sleep sweet spot</span>
+                <span style={{ color: '#2dd4bf', fontWeight: 800 }}>sleep sweet spot</span>
                 {' '}is 8–9 hours — mood averages{' '}
                 <span style={{ color: scoreColor(sleepCorr.sweetSpotAvg), fontWeight: 800 }}>
                   {sleepCorr.sweetSpotAvg}/5
@@ -475,7 +475,7 @@ function MoodInsights({ moodLogs, workoutHistory, habitLogs, sleepLogs }) {
             text={
               <>
                 You feel best after{' '}
-                <span style={{ color: '#818cf8', fontWeight: 800 }}>6–8 hours of sleep</span>
+                <span style={{ color: '#2dd4bf', fontWeight: 800 }}>6–8 hours of sleep</span>
                 {' '}— avg mood{' '}
                 <span style={{ color: scoreColor(sleepCorr.midSleepAvg), fontWeight: 800 }}>
                   {sleepCorr.midSleepAvg}/5
@@ -599,7 +599,7 @@ function MoodHeatmap({ moodLogs }) {
                       borderRadius: 3,
                       background: bg,
                       border: cell.isToday
-                        ? '2px solid rgba(99,102,241,0.9)'
+                        ? '2px solid rgba(45, 212, 191,0.9)'
                         : '1px solid transparent',
                       cursor: cell.score !== null ? 'pointer' : 'default',
                       transition: 'opacity 0.15s',
@@ -811,7 +811,7 @@ export default function MoodTrackerTab({ data, onChange, onNavigateToJournal, on
                   background: 'rgba(129,140,248,0.12)',
                   border: '1px solid rgba(129,140,248,0.35)',
                   borderRadius: 8,
-                  color: '#818cf8',
+                  color: '#2dd4bf',
                   cursor: 'pointer',
                   fontSize: 12,
                   fontWeight: 700,
@@ -921,7 +921,7 @@ export function MoodDashWidget({ data, onNavigate }) {
     { score: 2, emoji: '😕', label: 'Meh',     color: '#f97316' },
     { score: 3, emoji: '😐', label: 'Okay',    color: '#eab308' },
     { score: 4, emoji: '😊', label: 'Good',    color: '#22c55e' },
-    { score: 5, emoji: '😄', label: 'Great',   color: '#6366f1' },
+    { score: 5, emoji: '😄', label: 'Great',   color: '#14b8a6' },
   ];
 
   const today = todayKey();
@@ -948,8 +948,8 @@ export function MoodDashWidget({ data, onNavigate }) {
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: '#818cf8' }}>😊 Mood</span>
-        <span style={{ fontSize: 11, color: 'rgba(99,102,241,0.7)' }}>Log →</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: '#2dd4bf' }}>😊 Mood</span>
+        <span style={{ fontSize: 11, color: 'rgba(45, 212, 191,0.7)' }}>Log →</span>
       </div>
       <div style={{ fontSize: 32, textAlign: 'center', marginBottom: 4 }}>
         {todayMood ? todayMood.emoji : '➕'}
@@ -969,7 +969,7 @@ export function MoodDashWidget({ data, onNavigate }) {
                 height: mood ? `${mood.score * 6 + 6}px` : '6px',
                 borderRadius: 3,
                 background: mood ? `${mood.color}bb` : 'rgba(51,65,85,0.4)',
-                border: isToday ? '1px solid #6366f1' : 'none',
+                border: isToday ? '1px solid #14b8a6' : 'none',
                 transition: 'height 0.2s',
               }}
             />

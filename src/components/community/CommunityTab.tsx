@@ -18,14 +18,14 @@ export default function CommunityTab() {
     <div className="p-4 sm:p-6 max-w-2xl mx-auto space-y-5">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold text-slate-100 font-[Syne]">Community</h1>
-        <p className="text-xs text-slate-500 mt-0.5">
+        <h1 className="text-xl font-bold text-fg font-[Syne]">Community</h1>
+        <p className="text-xs text-fg-muted mt-0.5">
           Track your progress and celebrate your wins
         </p>
       </div>
 
       {/* Sub-tab toggle */}
-      <div className="flex gap-1 p-1 rounded-xl bg-slate-900/50 border border-slate-800/40">
+      <div className="flex gap-1 p-1 rounded-xl bg-surface-1 border border-border">
         {TABS.map(({ id, label, Icon }) => (
           <button
             key={id}
@@ -33,8 +33,8 @@ export default function CommunityTab() {
             className={[
               'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all',
               subTab === id
-                ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
-                : 'text-slate-500 hover:text-slate-300',
+                ? 'bg-accent/15 text-accent-text border border-accent/20'
+                : 'text-fg-muted hover:text-fg-secondary',
             ].join(' ')}
           >
             <Icon size={13} />

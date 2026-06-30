@@ -75,15 +75,15 @@ const LocationRoute = React.memo(function LocationRoute({
   return (
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
-        <Route size={16} className="text-indigo-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Route</h3>
+        <Route size={16} className="text-accent-text" />
+        <h3 className="text-sm font-semibold text-fg-secondary">Route</h3>
         <button
           onClick={() => onRoundTripToggle(!roundTrip)}
           className={[
             'ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-colors',
             roundTrip
-              ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'
-              : 'bg-white/5 text-slate-500 border border-white/10 hover:text-slate-300',
+              ? 'bg-accent/15 text-accent-text border border-accent/30'
+              : 'bg-white/5 text-fg-muted border border-white/10 hover:text-fg-secondary',
           ].join(' ')}
         >
           <RefreshCw size={10} /> Round Trip
@@ -94,7 +94,7 @@ const LocationRoute = React.memo(function LocationRoute({
         <Input containerClassName="flex-1" label="From" value={fromLocation}
           onChange={(e) => onFromChange(e.target.value)} placeholder="e.g. Salt Lake City, UT"
           icon={<MapPin size={14} />} />
-        <div className="hidden sm:flex items-center pb-2.5 text-slate-700"><ArrowRight size={16} /></div>
+        <div className="hidden sm:flex items-center pb-2.5 text-fg-faint"><ArrowRight size={16} /></div>
         <Input containerClassName="flex-1" label="To" value={toLocation}
           onChange={(e) => onToChange(e.target.value)} placeholder="e.g. Denver, CO"
           icon={<MapPin size={14} />} />
@@ -104,10 +104,10 @@ const LocationRoute = React.memo(function LocationRoute({
         <div className="mt-3 space-y-1.5">
           {waypoints.map((w, i) => (
             <div key={w.id} className="flex items-center gap-2 py-1.5 px-2.5 rounded-lg bg-white/[0.03] border border-white/5">
-              <span className="text-[10px] text-indigo-400 font-bold w-4">{i + 1}</span>
-              <span className="text-xs text-slate-300 flex-1 truncate">{w.location}</span>
+              <span className="text-[10px] text-accent-text font-bold w-4">{i + 1}</span>
+              <span className="text-xs text-fg-secondary flex-1 truncate">{w.location}</span>
               <button onClick={() => onRemoveWaypoint(w.id)}
-                className="text-slate-600 hover:text-red-400 transition-colors"><X size={12} /></button>
+                className="text-fg-faint hover:text-red-400 transition-colors"><X size={12} /></button>
             </div>
           ))}
         </div>
@@ -140,23 +140,23 @@ const LocationRoute = React.memo(function LocationRoute({
 
       {distanceMiles > 0 && (
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-          className="mt-3 p-3 rounded-xl bg-indigo-500/8 border border-indigo-500/15">
+          className="mt-3 p-3 rounded-xl bg-accent/8 border border-accent/15">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5 text-sm">
-              <Route size={14} className="text-indigo-400" />
-              <span className="font-bold text-slate-100">{formatNumber(displayDist, 0)}</span>
-              <span className="text-xs text-slate-500">miles{roundTrip ? ' total' : ''}</span>
+              <Route size={14} className="text-accent-text" />
+              <span className="font-bold text-fg">{formatNumber(displayDist, 0)}</span>
+              <span className="text-xs text-fg-muted">miles{roundTrip ? ' total' : ''}</span>
             </div>
             {displayDur > 0 && (
               <div className="flex items-center gap-1.5 text-sm">
-                <Clock size={14} className="text-indigo-400" />
-                <span className="font-bold text-slate-100">{formatDuration(displayDur)}</span>
-                <span className="text-xs text-slate-500">drive{roundTrip ? ' total' : ''}</span>
+                <Clock size={14} className="text-accent-text" />
+                <span className="font-bold text-fg">{formatDuration(displayDur)}</span>
+                <span className="text-xs text-fg-muted">drive{roundTrip ? ' total' : ''}</span>
               </div>
             )}
           </div>
           {roundTrip && (
-            <p className="text-[10px] text-slate-500 mt-1.5">
+            <p className="text-[10px] text-fg-muted mt-1.5">
               {formatNumber(distanceMiles, 0)} mi one-way &middot; {formatDuration(durationHours)} each way
             </p>
           )}

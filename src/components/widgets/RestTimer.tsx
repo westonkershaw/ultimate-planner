@@ -28,7 +28,7 @@ function ControlButton({ onClick, label, children }: ControlButtonProps) {
       whileTap={{ scale: 0.88 }}
       whileHover={{ scale: 1.08 }}
       transition={spring}
-      className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-indigo-400 hover:border-indigo-500/50 transition-colors"
+      className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-1 border border-border text-fg-muted hover:text-accent-text hover:border-accent/50 transition-colors"
     >
       {children}
     </motion.button>
@@ -111,7 +111,7 @@ export default function RestTimer({
           <motion.circle
             cx={CX} cy={CY} r={R}
             fill="none"
-            stroke="#6366f1"
+            stroke="#14b8a6"
             strokeWidth={8}
             strokeLinecap="round"
             strokeDasharray={CIRCUMFERENCE}
@@ -129,7 +129,7 @@ export default function RestTimer({
                 animate={{ scale: [1, 1.15, 1], opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={spring}
-                className="text-xs font-semibold text-indigo-400 tracking-widest uppercase"
+                className="text-xs font-semibold text-accent-text tracking-widest uppercase"
               >
                 Done!
               </motion.span>
@@ -145,7 +145,7 @@ export default function RestTimer({
               </motion.span>
             )}
           </AnimatePresence>
-          <span className="text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">rest</span>
+          <span className="text-[10px] text-fg-muted uppercase tracking-widest mt-0.5">rest</span>
         </div>
       </div>
 
@@ -160,7 +160,7 @@ export default function RestTimer({
           whileTap={{ scale: 0.9 }}
           whileHover={{ scale: 1.06 }}
           transition={spring}
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-lg shadow-indigo-900/40 transition-colors"
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-accent hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-lg transition-colors"
         >
           {running ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
         </motion.button>

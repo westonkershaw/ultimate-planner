@@ -59,12 +59,12 @@ function GoalCard({ goal, onDelete, onDeposit }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-1">
             <div>
-              <div className="text-xs text-slate-600">{catInfo.icon} {catInfo.label}</div>
-              <div className="font-syne text-base font-bold text-slate-100 truncate">{goal.name}</div>
+              <div className="text-xs text-fg-faint">{catInfo.icon} {catInfo.label}</div>
+              <div className="font-syne text-base font-bold text-fg truncate">{goal.name}</div>
             </div>
             <button
               onClick={() => onDelete(goal.id)}
-              className="text-slate-700 hover:text-red-400 transition-colors text-xs flex-shrink-0"
+              className="text-fg-faint hover:text-red-400 transition-colors text-xs flex-shrink-0"
             >
               ✕
             </button>
@@ -73,20 +73,20 @@ function GoalCard({ goal, onDelete, onDeposit }) {
           <div className="flex gap-4 text-sm mb-3">
             <div>
               <div className="text-emerald-400 font-bold">{fmt$(goal.currentAmount || 0)}</div>
-              <div className="text-[10px] text-slate-600">Saved</div>
+              <div className="text-[10px] text-fg-faint">Saved</div>
             </div>
             <div>
-              <div className="text-slate-300 font-bold">{fmt$(goal.targetAmount || 0)}</div>
-              <div className="text-[10px] text-slate-600">Target</div>
+              <div className="text-fg-secondary font-bold">{fmt$(goal.targetAmount || 0)}</div>
+              <div className="text-[10px] text-fg-faint">Target</div>
             </div>
             <div>
-              <div className="text-slate-500 font-bold">{fmt$(remaining)}</div>
-              <div className="text-[10px] text-slate-600">Remaining</div>
+              <div className="text-fg-muted font-bold">{fmt$(remaining)}</div>
+              <div className="text-[10px] text-fg-faint">Remaining</div>
             </div>
           </div>
 
           {goal.deadline && (
-            <div className="text-[10px] text-slate-600 mb-2">
+            <div className="text-[10px] text-fg-faint mb-2">
               {new Date(goal.deadline).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
             </div>
           )}
@@ -122,7 +122,7 @@ function GoalCard({ goal, onDelete, onDeposit }) {
                     value={depositAmt}
                     onChange={(e) => setDepositAmt(e.target.value)}
                     placeholder="Amount"
-                    className="flex-1 rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-emerald-500/60"
+                    className="flex-1 rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-fg-secondary outline-none focus:border-emerald-500/60"
                     onKeyDown={(e) => { if (e.key === 'Enter') handleDeposit(); }}
                     autoFocus
                   />
@@ -130,7 +130,7 @@ function GoalCard({ goal, onDelete, onDeposit }) {
                     value={depositNote}
                     onChange={(e) => setDepositNote(e.target.value)}
                     placeholder="Note"
-                    className="flex-1 rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-emerald-500/60"
+                    className="flex-1 rounded-lg border border-white/10 bg-[#0a1120]/80 px-2 py-1.5 text-xs text-fg-secondary outline-none focus:border-emerald-500/60"
                   />
                   <button
                     onClick={handleDeposit}
@@ -140,7 +140,7 @@ function GoalCard({ goal, onDelete, onDeposit }) {
                   </button>
                   <button
                     onClick={() => setShowDeposit(false)}
-                    className="text-slate-600 hover:text-slate-400 text-xs"
+                    className="text-fg-faint hover:text-fg-muted text-xs"
                   >
                     ✕
                   </button>
@@ -161,10 +161,10 @@ function GoalCard({ goal, onDelete, onDeposit }) {
       {/* Recent deposits */}
       {goal.deposits && goal.deposits.length > 0 && (
         <div className="mt-3 pt-3 border-t border-white/[0.06]">
-          <div className="text-[10px] text-slate-600 uppercase tracking-wider mb-2">Recent Deposits</div>
+          <div className="text-[10px] text-fg-faint uppercase tracking-wider mb-2">Recent Deposits</div>
           {goal.deposits.slice(-3).reverse().map((dep) => (
             <div key={dep.id} className="flex items-center justify-between text-xs py-0.5">
-              <span className="text-slate-500">{dep.note || 'Deposit'}</span>
+              <span className="text-fg-muted">{dep.note || 'Deposit'}</span>
               <span className="text-emerald-400 font-medium">+{fmt$(dep.amount)}</span>
             </div>
           ))}
@@ -212,7 +212,7 @@ const GoalTracker = React.memo(function GoalTracker() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <div className="font-syne text-base font-bold text-slate-100">Savings Goals</div>
+        <div className="font-syne text-base font-bold text-fg">Savings Goals</div>
         <Button size="sm" onClick={() => setShowForm(true)}>+ Add Goal</Button>
       </div>
 
@@ -227,7 +227,7 @@ const GoalTracker = React.memo(function GoalTracker() {
         ))}
         {goals.length === 0 && (
           <div
-            className="rounded-xl border border-dashed border-white/10 py-8 text-center text-slate-600 text-sm cursor-pointer hover:border-indigo-500/30 transition-colors"
+            className="rounded-xl border border-dashed border-white/10 py-8 text-center text-fg-faint text-sm cursor-pointer hover:border-accent/30 transition-colors"
             onClick={() => setShowForm(true)}
           >
             No goals yet. Click to add your first savings goal.
@@ -253,13 +253,13 @@ const GoalTracker = React.memo(function GoalTracker() {
             error={errors.targetAmount}
           />
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+            <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted">
               Category
             </label>
             <select
               value={form.category}
               onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-              className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500/60"
+              className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-fg-secondary outline-none focus:border-accent/60"
             >
               {GOAL_CATEGORIES.map((c) => (
                 <option key={c.id} value={c.id}>{c.icon} {c.label}</option>

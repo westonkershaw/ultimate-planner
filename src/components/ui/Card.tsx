@@ -24,10 +24,9 @@ const Card = React.memo(function Card({
 }: CardProps) {
   const base = [
     'relative',
-    'rounded-[12px]',
-    'bg-slate-900/50',
-    'backdrop-blur-xl',
-    'border border-slate-800',
+    'rounded-card',
+    'bg-surface-1',
+    'border border-border',
     className,
   ].join(' ');
 
@@ -35,7 +34,7 @@ const Card = React.memo(function Card({
     return (
       <motion.div
         onClick={onClick}
-        whileHover={{ y: -1, borderColor: 'rgba(99,102,241,0.25)' }}
+        whileHover={{ y: -1, borderColor: '#2f333b' }}
         transition={APP_SPRING}
         className={[base, 'cursor-pointer'].join(' ')}
         style={style}

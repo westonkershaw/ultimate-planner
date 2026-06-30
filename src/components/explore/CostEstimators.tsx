@@ -45,7 +45,7 @@ export const FoodEstimator = React.memo(function FoodEstimator({
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
         <UtensilsCrossed size={16} className="text-orange-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Food Budget</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">Food Budget</h3>
         <span className="ml-auto text-sm font-bold text-orange-300">{formatUsd(total)}</span>
       </div>
 
@@ -79,7 +79,7 @@ export const FoodEstimator = React.memo(function FoodEstimator({
         />
       </div>
 
-      <div className="mt-3 pt-3 border-t border-white/5 text-xs text-slate-500">
+      <div className="mt-3 pt-3 border-t border-white/5 text-xs text-fg-muted">
         {formatUsd(perMealCost)}/meal x {mealsPerDay}/day x {people} people x {days} days
       </div>
     </Card>
@@ -123,7 +123,7 @@ export const AccommodationEstimator = React.memo(function AccommodationEstimator
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
         <Bed size={16} className="text-blue-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Accommodation</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">Accommodation</h3>
         <span className="ml-auto text-sm font-bold text-blue-300">{formatUsd(total)}</span>
       </div>
 
@@ -166,7 +166,7 @@ export const AccommodationEstimator = React.memo(function AccommodationEstimator
         />
       </div>
 
-      <div className="mt-3 pt-3 border-t border-white/5 text-xs text-slate-500">
+      <div className="mt-3 pt-3 border-t border-white/5 text-xs text-fg-muted">
         {formatUsd(perNightCost)}/night x {rooms} room{rooms > 1 ? 's' : ''} x {nights} night{nights !== 1 ? 's' : ''}
       </div>
     </Card>
@@ -199,7 +199,7 @@ export const EntertainmentEstimator = React.memo(function EntertainmentEstimator
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
         <Ticket size={16} className="text-pink-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Activities & Entertainment</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">Activities & Entertainment</h3>
         <span className="ml-auto text-sm font-bold text-pink-300">{formatUsd(total)}</span>
       </div>
 
@@ -222,7 +222,7 @@ export const EntertainmentEstimator = React.memo(function EntertainmentEstimator
         />
       </div>
 
-      <div className="mt-3 pt-3 border-t border-white/5 text-xs text-slate-500">
+      <div className="mt-3 pt-3 border-t border-white/5 text-xs text-fg-muted">
         {activitiesPerDay}/day x {formatUsd(avgActivityCost)} x {people} people x {days} days
       </div>
     </Card>
@@ -266,10 +266,10 @@ export const CustomCosts = React.memo(function CustomCosts({
   return (
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
-        <Plus size={16} className="text-slate-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Other Costs</h3>
+        <Plus size={16} className="text-fg-muted" />
+        <h3 className="text-sm font-semibold text-fg-secondary">Other Costs</h3>
         {total > 0 && (
-          <span className="ml-auto text-sm font-bold text-slate-300">{formatUsd(total)}</span>
+          <span className="ml-auto text-sm font-bold text-fg-secondary">{formatUsd(total)}</span>
         )}
       </div>
 
@@ -277,12 +277,12 @@ export const CustomCosts = React.memo(function CustomCosts({
         <div className="space-y-1.5 mb-3">
           {costs.map((c) => (
             <div key={c.id} className="flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-white/[0.03] border border-white/5">
-              <span className="text-xs text-slate-300">{c.label}</span>
+              <span className="text-xs text-fg-secondary">{c.label}</span>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate-200">{formatUsd(c.amount)}</span>
+                <span className="text-xs font-medium text-fg-secondary">{formatUsd(c.amount)}</span>
                 <button
                   onClick={() => onRemove(c.id)}
-                  className="text-slate-600 hover:text-red-400 transition-colors"
+                  className="text-fg-faint hover:text-red-400 transition-colors"
                   aria-label="Remove cost"
                 >
                   <X size={12} />

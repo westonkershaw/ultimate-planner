@@ -18,7 +18,7 @@ const SEGMENT_COLORS: Record<SegmentKey, { bg: string; text: string; border: str
   entertainment:  { bg: 'bg-pink-500/15',    text: 'text-pink-400',    border: 'border-pink-500/25' },
   flight:         { bg: 'bg-sky-500/15',     text: 'text-sky-400',     border: 'border-sky-500/25' },
   rentalCar:      { bg: 'bg-amber-500/15',   text: 'text-amber-400',   border: 'border-amber-500/25' },
-  custom:         { bg: 'bg-slate-500/15',   text: 'text-slate-400',   border: 'border-slate-500/25' },
+  custom:         { bg: 'bg-slate-500/15',   text: 'text-fg-muted',   border: 'border-slate-500/25' },
 };
 
 const BAR_COLORS: Record<SegmentKey, string> = {
@@ -51,17 +51,17 @@ const TripSummary = React.memo(function TripSummary({ trip }: TripSummaryProps) 
   return (
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
-        <PieChart size={16} className="text-indigo-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Trip Budget Summary</h3>
+        <PieChart size={16} className="text-accent-text" />
+        <h3 className="text-sm font-semibold text-fg-secondary">Trip Budget Summary</h3>
       </div>
 
       {/* Total */}
       <div className="text-center mb-4">
-        <p className="text-3xl font-bold text-slate-100">{formatUsd(budget.total)}</p>
+        <p className="text-3xl font-bold text-fg">{formatUsd(budget.total)}</p>
         <div className="flex items-center justify-center gap-3 mt-1.5">
-          <span className="text-xs text-slate-300 font-medium">{formatUsd(perPerson)}/person</span>
-          <span className="text-slate-600">&middot;</span>
-          <span className="text-xs text-slate-300 font-medium">{formatUsd(perDay)}/day</span>
+          <span className="text-xs text-fg-secondary font-medium">{formatUsd(perPerson)}/person</span>
+          <span className="text-fg-faint">&middot;</span>
+          <span className="text-xs text-fg-secondary font-medium">{formatUsd(perDay)}/day</span>
         </div>
       </div>
 
@@ -89,10 +89,10 @@ const TripSummary = React.memo(function TripSummary({ trip }: TripSummaryProps) 
             <div key={s.key} className={`flex items-center justify-between p-2.5 rounded-xl ${colors.bg} border ${colors.border}`}>
               <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${BAR_COLORS[s.key]}`} />
-                <span className="text-xs font-medium text-slate-300">{s.label}</span>
+                <span className="text-xs font-medium text-fg-secondary">{s.label}</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[10px] text-slate-400">{pct}%</span>
+                <span className="text-[10px] text-fg-muted">{pct}%</span>
                 <span className={`text-sm font-semibold ${colors.text}`}>{formatUsd(s.amount)}</span>
               </div>
             </div>
@@ -101,7 +101,7 @@ const TripSummary = React.memo(function TripSummary({ trip }: TripSummaryProps) 
       </div>
 
       {budget.total === 0 && (
-        <div className="flex flex-col items-center gap-2 py-6 text-slate-600">
+        <div className="flex flex-col items-center gap-2 py-6 text-fg-faint">
           <TrendingUp size={24} />
           <p className="text-xs">Fill in trip details above to see your budget</p>
         </div>

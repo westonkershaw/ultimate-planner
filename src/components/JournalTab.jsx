@@ -97,7 +97,7 @@ const PROMPTS = [
 ];
 
 const PROMPT_CATEGORY_COLORS = {
-  Reflection: { bg: "rgba(99,102,241,0.18)", border: "rgba(99,102,241,0.45)", text: "#818cf8" },
+  Reflection: { bg: "rgba(45, 212, 191,0.18)", border: "rgba(45, 212, 191,0.45)", text: "#2dd4bf" },
   Gratitude:  { bg: "rgba(245,158,11,0.18)", border: "rgba(245,158,11,0.45)", text: "#fbbf24" },
   Growth:     { bg: "rgba(34,197,94,0.15)",  border: "rgba(34,197,94,0.4)",   text: "#4ade80" },
   Goals:      { bg: "rgba(249,115,22,0.15)", border: "rgba(249,115,22,0.4)",  text: "#fb923c" },
@@ -872,8 +872,8 @@ function TodayEntry({ journals, onChange, initialPromptIndex, prefillText, texta
                   aria-label={m.label}
                   aria-pressed={mood === m.value}
                   style={{
-                    background: mood === m.value ? "rgba(99,102,241,0.2)" : "rgba(255,255,255,0.04)",
-                    border: `1px solid ${mood === m.value ? "rgba(99,102,241,0.5)" : "rgba(255,255,255,0.1)"}`,
+                    background: mood === m.value ? "rgba(45, 212, 191,0.2)" : "rgba(255,255,255,0.04)",
+                    border: `1px solid ${mood === m.value ? "rgba(45, 212, 191,0.5)" : "rgba(255,255,255,0.1)"}`,
                     borderRadius: 20,
                     padding: "5px 10px",
                     fontSize: 16,
@@ -1033,7 +1033,7 @@ function AIInsightCard({ journals, weeklyJournalInsight, onChange }) {
     <motion.div
       style={{
         ...CARD,
-        background: "linear-gradient(135deg, rgba(245,158,11,0.08), rgba(99,102,241,0.08))",
+        background: "linear-gradient(135deg, rgba(245,158,11,0.08), rgba(45, 212, 191,0.08))",
         border: "1px solid rgba(245,158,11,0.25)",
         padding: "18px 20px",
       }}
@@ -1341,8 +1341,8 @@ function WeeklyReviewCard({ journals }) {
     <motion.div
       style={{
         ...CARD,
-        background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(245,158,11,0.06))",
-        border: "1px solid rgba(99,102,241,0.25)",
+        background: "linear-gradient(135deg, rgba(45, 212, 191,0.08), rgba(245,158,11,0.06))",
+        border: "1px solid rgba(45, 212, 191,0.25)",
         padding: "18px 20px",
       }}
       initial={{ opacity: 0, y: 8 }}
@@ -1419,7 +1419,7 @@ function WeeklyReviewCard({ journals }) {
       {review.topTopic && (
         <div style={{ marginBottom: 10, fontSize: 12, color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>
           Your writing this week often touched on{" "}
-          <span style={{ color: "#818cf8", fontWeight: 800 }}>"{review.topTopic}"</span>
+          <span style={{ color: "#2dd4bf", fontWeight: 800 }}>"{review.topTopic}"</span>
         </div>
       )}
 

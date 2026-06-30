@@ -41,7 +41,7 @@ function WaveFill({ width, height, fillY, clipId }: WaveFillProps) {
     <g clipPath={`url(#${clipId})`}>
       <defs>
         <linearGradient id={`wg-${clipId}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6366f1" />
+          <stop offset="0%" stopColor="#14b8a6" />
           <stop offset="100%" stopColor="#a855f7" />
         </linearGradient>
       </defs>
@@ -116,12 +116,12 @@ export default function LiquidProgress({ goalId, width = 200, height = 200, clas
           <span className="text-sm font-semibold text-white truncate max-w-[180px]">
             {goal.name || 'Unnamed Goal'}
           </span>
-          <span className="text-xs text-slate-400">
-            {fmt(goal.currentAmount)} <span className="text-slate-600">/</span> {fmt(goal.targetAmount)}
+          <span className="text-xs text-fg-muted">
+            {fmt(goal.currentAmount)} <span className="text-fg-faint">/</span> {fmt(goal.targetAmount)}
           </span>
         </div>
       ) : (
-        <span className="text-xs text-slate-500">No active goal</span>
+        <span className="text-xs text-fg-muted">No active goal</span>
       )}
     </div>
   );

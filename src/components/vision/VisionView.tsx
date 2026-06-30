@@ -4,13 +4,13 @@ import { Image as ImageIcon, Plus, Trash2, ArrowLeft, Target, Quote, Sparkles, S
 import { useVisionStore, useUIStore } from '@/store';
 import type { VisionBoard, VisionCardType } from '@/types';
 
-const COLORS = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#c084fc', '#06b6d4'];
+const COLORS = ['#14b8a6', '#22c55e', '#f59e0b', '#ef4444', '#c084fc', '#06b6d4'];
 
 const TYPE_META: Record<VisionCardType, { label: string; Icon: React.FC<{ size?: number; className?: string; style?: React.CSSProperties }>; color: string }> = {
   goal:        { label: 'Goal',        Icon: Target,     color: '#22c55e' },
   quote:       { label: 'Quote',       Icon: Quote,      color: '#06b6d4' },
   affirmation: { label: 'Affirmation', Icon: Sparkles,   color: '#c084fc' },
-  note:        { label: 'Note',        Icon: StickyNote, color: '#6366f1' },
+  note:        { label: 'Note',        Icon: StickyNote, color: '#14b8a6' },
 };
 
 const TYPES: VisionCardType[] = ['goal', 'quote', 'affirmation', 'note'];
@@ -22,9 +22,9 @@ function BoardCard({ board, onOpen, onDelete }: { board: VisionBoard; onOpen: ()
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -10 }}
-      className="rounded-xl border border-slate-800/40 bg-slate-900/30 overflow-hidden"
+      className="rounded-xl border border-border bg-surface-1 overflow-hidden"
     >
-      <button onClick={onOpen} className="w-full text-left p-4 flex items-center gap-3 hover:bg-slate-900/50 transition-colors">
+      <button onClick={onOpen} className="w-full text-left p-4 flex items-center gap-3 hover:bg-surface-1 transition-colors">
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
           style={{ background: `${board.color}25`, border: `1px solid ${board.color}55` }}
@@ -32,13 +32,13 @@ function BoardCard({ board, onOpen, onDelete }: { board: VisionBoard; onOpen: ()
           <ImageIcon size={16} style={{ color: board.color }} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-semibold text-slate-100 truncate">{board.name}</div>
-          <div className="text-[11px] text-slate-500">{board.cards.length} {board.cards.length === 1 ? 'card' : 'cards'}</div>
+          <div className="text-sm font-semibold text-fg truncate">{board.name}</div>
+          <div className="text-[11px] text-fg-muted">{board.cards.length} {board.cards.length === 1 ? 'card' : 'cards'}</div>
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
           aria-label={`Delete ${board.name}`}
-          className="text-slate-600 hover:text-rose-400 transition-colors p-1"
+          className="text-fg-faint hover:text-rose-400 transition-colors p-1"
         >
           <Trash2 size={12} />
         </button>
@@ -56,7 +56,7 @@ function AddCardForm({ onAdd }: { onAdd: (type: VisionCardType, content: string)
     setContent('');
   };
   return (
-    <div className="p-3 rounded-xl border border-dashed border-slate-700 bg-slate-950/40 space-y-2">
+    <div className="p-3 rounded-xl border border-dashed border-border-strong bg-surface-0 space-y-2">
       <div className="flex items-center gap-1.5">
         {TYPES.map((t) => {
           const { Icon, label, color } = TYPE_META[t];
@@ -68,7 +68,7 @@ function AddCardForm({ onAdd }: { onAdd: (type: VisionCardType, content: string)
               aria-label={label}
               className={[
                 'flex-1 flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-lg border text-[11px] transition-colors',
-                active ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-300' : 'border-slate-800/40 text-slate-500 hover:text-slate-300',
+                active ? 'border-accent/40 bg-accent/15 text-accent-text' : 'border-border text-fg-muted hover:text-fg-secondary',
               ].join(' ')}
               style={active ? { borderColor: color, color } : undefined}
             >
@@ -82,7 +82,7 @@ function AddCardForm({ onAdd }: { onAdd: (type: VisionCardType, content: string)
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder={`Write your ${TYPE_META[type].label.toLowerCase()}…`}
-          className="flex-1 min-w-0 bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+          className="flex-1 min-w-0 bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg-secondary placeholder:text-fg-faint outline-none focus:border-accent/40"
           onKeyDown={(e) => e.key === 'Enter' && submit()}
         />
         <button
@@ -91,7 +91,7 @@ function AddCardForm({ onAdd }: { onAdd: (type: VisionCardType, content: string)
           aria-label="Add card"
           className={[
             'p-1.5 rounded-md transition-colors',
-            content.trim() ? 'text-indigo-300 hover:bg-indigo-500/15' : 'text-slate-700 cursor-not-allowed',
+            content.trim() ? 'text-accent-text hover:bg-accent/15' : 'text-fg-faint cursor-not-allowed',
           ].join(' ')}
         >
           <Plus size={14} />
@@ -115,7 +115,7 @@ function BoardDetail({ board, onBack }: { board: VisionBoard; onBack: () => void
       exit={{ opacity: 0, x: -12 }}
       className="space-y-4"
     >
-      <button onClick={onBack} className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-300 transition-colors">
+      <button onClick={onBack} className="flex items-center gap-1 text-xs text-fg-muted hover:text-fg-secondary transition-colors">
         <ArrowLeft size={12} /> All boards
       </button>
 
@@ -123,7 +123,7 @@ function BoardDetail({ board, onBack }: { board: VisionBoard; onBack: () => void
         <input
           value={board.name}
           onChange={(e) => renameBoard(board.id, e.target.value)}
-          className="flex-1 bg-transparent font-syne text-lg font-bold text-slate-100 outline-none"
+          className="flex-1 bg-transparent font-syne text-lg font-bold text-fg outline-none"
         />
         <div className="flex items-center gap-1">
           {COLORS.map((c) => (
@@ -151,7 +151,7 @@ function BoardDetail({ board, onBack }: { board: VisionBoard; onBack: () => void
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="p-3 rounded-xl border bg-slate-900/30 relative group"
+                className="p-3 rounded-xl border bg-surface-1 relative group"
                 style={{ borderColor: `${color}33` }}
               >
                 <div className="flex items-center gap-1.5 mb-1.5">
@@ -160,13 +160,13 @@ function BoardDetail({ board, onBack }: { board: VisionBoard; onBack: () => void
                   <button
                     onClick={() => { deleteCard(board.id, c.id); addToast('Card removed', 'warning'); }}
                     aria-label="Delete card"
-                    className="ml-auto text-slate-700 hover:text-rose-400 transition-colors opacity-0 group-hover:opacity-100"
+                    className="ml-auto text-fg-faint hover:text-rose-400 transition-colors opacity-0 group-hover:opacity-100"
                   >
                     <Trash2 size={11} />
                   </button>
                 </div>
                 <p className={[
-                  'text-sm text-slate-200 leading-relaxed whitespace-pre-wrap',
+                  'text-sm text-fg-secondary leading-relaxed whitespace-pre-wrap',
                   c.type === 'quote' || c.type === 'affirmation' ? 'italic' : '',
                 ].join(' ')}>
                   {c.content}
@@ -178,7 +178,7 @@ function BoardDetail({ board, onBack }: { board: VisionBoard; onBack: () => void
       </ul>
 
       {board.cards.length === 0 && (
-        <div className="text-center py-6 text-xs text-slate-500">No cards yet — add your first above.</div>
+        <div className="text-center py-6 text-xs text-fg-muted">No cards yet — add your first above.</div>
       )}
     </motion.div>
   );
@@ -212,8 +212,8 @@ export default function VisionView() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <ImageIcon size={18} className="text-indigo-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Vision Board</h1>
+        <ImageIcon size={18} className="text-accent-text" />
+        <h1 className="font-syne text-lg font-bold text-fg">Vision Board</h1>
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -223,13 +223,13 @@ export default function VisionView() {
           <motion.div key="list" className="space-y-3">
             <button
               onClick={newBoard}
-              className="w-full py-2.5 rounded-xl border border-dashed border-slate-700 text-slate-500 text-sm flex items-center justify-center gap-2 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors"
+              className="w-full py-2.5 rounded-xl border border-dashed border-border-strong text-fg-muted text-sm flex items-center justify-center gap-2 hover:border-accent/30 hover:text-accent-text transition-colors"
             >
               <Plus size={14} /> New vision board
             </button>
 
             {boards.length === 0 ? (
-              <div className="text-center py-10 text-sm text-slate-500">
+              <div className="text-center py-10 text-sm text-fg-muted">
                 No boards yet — create your first above.
               </div>
             ) : (

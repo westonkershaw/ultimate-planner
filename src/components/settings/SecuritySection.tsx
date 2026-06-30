@@ -73,17 +73,17 @@ export default function SecuritySection() {
       aria-labelledby="security-heading"
     >
       <div className="flex items-center gap-2">
-        <Shield size={14} className="text-slate-500" />
-        <h2 id="security-heading" className="text-xs font-medium text-slate-500 uppercase tracking-wider">Security</h2>
+        <Shield size={14} className="text-fg-muted" />
+        <h2 id="security-heading" className="text-xs font-medium text-fg-muted uppercase tracking-wider">Security</h2>
       </div>
 
       {/* Password */}
-      <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/30 space-y-3">
+      <div className="p-4 rounded-xl border border-border bg-surface-1 space-y-3">
         <div className="flex items-center gap-3">
-          <KeyRound size={16} className="text-indigo-400 flex-shrink-0" />
+          <KeyRound size={16} className="text-accent-text flex-shrink-0" />
           <div className="flex-1">
-            <div className="text-sm font-medium text-slate-200">Change password</div>
-            <div className="text-[11px] text-slate-500 mt-0.5">We'll email a secure reset link.</div>
+            <div className="text-sm font-medium text-fg-secondary">Change password</div>
+            <div className="text-[11px] text-fg-muted mt-0.5">We'll email a secure reset link.</div>
           </div>
         </div>
         <button
@@ -92,8 +92,8 @@ export default function SecuritySection() {
           className={[
             'w-full py-2 rounded-lg border text-xs font-medium transition-colors',
             resetting
-              ? 'border-slate-800 text-slate-500 cursor-wait'
-              : 'border-indigo-500/30 bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20',
+              ? 'border-border text-fg-muted cursor-wait'
+              : 'border-accent/30 bg-accent/10 text-accent-text hover:bg-accent/20',
           ].join(' ')}
         >
           {resetting ? 'Sending…' : 'Send password reset email'}
@@ -101,23 +101,23 @@ export default function SecuritySection() {
       </div>
 
       {/* Sessions */}
-      <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/30 space-y-3">
+      <div className="p-4 rounded-xl border border-border bg-surface-1 space-y-3">
         <div className="flex items-center gap-2">
-          <Monitor size={14} className="text-indigo-400" />
-          <span className="text-sm font-medium text-slate-200">Active sessions</span>
+          <Monitor size={14} className="text-accent-text" />
+          <span className="text-sm font-medium text-fg-secondary">Active sessions</span>
         </div>
-        <div className="divide-y divide-slate-800/40">
+        <div className="divide-y divide-border">
           {all.map((s) => (
             <div key={s.id} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
               <span className="text-lg">{s.device}</span>
               <div className="flex-1 min-w-0">
-                <div className="text-xs text-slate-200 font-medium flex items-center gap-2">
+                <div className="text-xs text-fg-secondary font-medium flex items-center gap-2">
                   {s.browser}
                   {s.id === 'current' && (
                     <span className="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 rounded px-1.5 py-0.5">Current</span>
                   )}
                 </div>
-                <div className="text-[10px] text-slate-500 mt-0.5">{s.location} · {s.lastActive}</div>
+                <div className="text-[10px] text-fg-muted mt-0.5">{s.location} · {s.lastActive}</div>
               </div>
               {s.id !== 'current' && (
                 <button
@@ -143,7 +143,7 @@ export default function SecuritySection() {
       {/* Sign out */}
       <button
         onClick={() => doSignOut()}
-        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-800/60 bg-slate-900/40 text-sm text-slate-300 hover:border-rose-500/30 hover:text-rose-300 transition-colors"
+        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border bg-surface-1 text-sm text-fg-secondary hover:border-rose-500/30 hover:text-rose-300 transition-colors"
       >
         <LogOut size={14} /> Sign out
       </button>

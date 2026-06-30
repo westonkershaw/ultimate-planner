@@ -11,7 +11,7 @@ export const EVENT_TYPES = [
 ];
 
 export const COLORS = [
-  "#4f9cf9","#c084fc","#34c98a","#f97b4f","#fbbf24","#f87171","#818cf8","#94a3b8",
+  "#4f9cf9","#c084fc","#34c98a","#f97b4f","#fbbf24","#f87171","#2dd4bf","#94a3b8",
 ];
 
 export const fmtTime = (h, m = 0) => {

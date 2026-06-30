@@ -28,30 +28,29 @@ export interface ButtonProps {
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: [
-    'bg-indigo-500 hover:bg-indigo-400',
+    'bg-accent hover:bg-accent-hover',
     'text-white',
-    'border border-indigo-400/30',
-    'shadow-lg shadow-indigo-500/20',
+    'border border-transparent',
   ].join(' '),
   ghost: [
-    'bg-white/5 hover:bg-white/10',
-    'text-slate-300',
-    'border border-white/10',
+    'bg-surface-2 hover:bg-surface-3',
+    'text-fg-secondary',
+    'border border-border',
   ].join(' '),
   danger: [
-    'bg-red-500/15 hover:bg-red-500/25',
-    'text-red-400',
-    'border border-red-500/30',
+    'bg-danger/15 hover:bg-danger/25',
+    'text-danger-text',
+    'border border-danger/30',
   ].join(' '),
   success: [
-    'bg-emerald-500/15 hover:bg-emerald-500/25',
-    'text-emerald-400',
-    'border border-emerald-500/30',
+    'bg-success/15 hover:bg-success/25',
+    'text-success-text',
+    'border border-success/30',
   ].join(' '),
   amber: [
-    'bg-amber-500/15 hover:bg-amber-500/25',
-    'text-amber-400',
-    'border border-amber-500/30',
+    'bg-warning/15 hover:bg-warning/25',
+    'text-warning-text',
+    'border border-warning/30',
   ].join(' '),
 };
 
@@ -91,12 +90,11 @@ const Button = React.memo(function Button({
       aria-controls={ariaControls}
       onClick={onClick}
       disabled={disabled}
-      whileTap={{ scale: disabled ? 1 : 0.97 }}
-      whileHover={{ scale: disabled ? 1 : 1.02 }}
+      whileTap={{ scale: disabled ? 1 : 0.98 }}
       transition={APP_SPRING}
       className={[
         'inline-flex items-center justify-center',
-        'rounded-[10px] font-medium',
+        'rounded-control font-medium',
         'transition-colors duration-150',
         'select-none cursor-pointer',
         'disabled:opacity-40 disabled:cursor-not-allowed',

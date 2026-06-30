@@ -83,10 +83,10 @@ const S = {
   },
   toast: {
     position: 'fixed', bottom: 24, right: 24,
-    background: '#6366f1', color: '#fff',
+    background: '#14b8a6', color: '#fff',
     padding: '12px 20px', borderRadius: 8, zIndex: 10000,
     fontSize: 13, fontWeight: 600, fontFamily: FONT,
-    boxShadow: '0 8px 24px rgba(99,102,241,0.4)',
+    boxShadow: '0 8px 24px rgba(45, 212, 191,0.4)',
   },
 };
 
@@ -456,9 +456,9 @@ export default function DataExportImport({ data, onChange, onClose }) {
               key={t}
               onClick={() => { setTab(t); setImportPreview(null); }}
               style={{
-                background: tab === t ? 'rgba(99,102,241,0.25)' : 'rgba(255,255,255,0.04)',
+                background: tab === t ? 'rgba(45, 212, 191,0.25)' : 'rgba(255,255,255,0.04)',
                 color: tab === t ? '#a5b4fc' : 'rgba(255,255,255,0.5)',
-                border: `1px solid ${tab === t ? 'rgba(99,102,241,0.35)' : 'rgba(255,255,255,0.07)'}`,
+                border: `1px solid ${tab === t ? 'rgba(45, 212, 191,0.35)' : 'rgba(255,255,255,0.07)'}`,
                 padding: '6px 16px', borderRadius: 20, fontSize: 13,
                 fontWeight: 700, cursor: 'pointer', fontFamily: FONT,
                 transition: 'all 0.2s',
@@ -487,13 +487,13 @@ export default function DataExportImport({ data, onChange, onClose }) {
                         cursor: 'pointer', textAlign: 'left',
                         transition: 'border-color 0.2s',
                       }}
-                      onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(99,102,241,0.4)'}
+                      onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(45, 212, 191,0.4)'}
                       onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(51,65,85,0.35)'}
                     >
                       <div style={{
                         width: 40, height: 40, borderRadius: 10,
-                        background: 'rgba(99,102,241,0.12)',
-                        border: '1px solid rgba(99,102,241,0.25)',
+                        background: 'rgba(45, 212, 191,0.12)',
+                        border: '1px solid rgba(45, 212, 191,0.25)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 18, flexShrink: 0,
                       }}>
@@ -503,7 +503,7 @@ export default function DataExportImport({ data, onChange, onClose }) {
                         <div style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9' }}>{opt.label}</div>
                         <div style={{ fontSize: 12, color: 'rgba(100,116,139,0.7)', marginTop: 2 }}>{opt.desc}</div>
                       </div>
-                      <div style={{ fontSize: 16, color: 'rgba(99,102,241,0.6)' }}>{'\u2192'}</div>
+                      <div style={{ fontSize: 16, color: 'rgba(45, 212, 191,0.6)' }}>{'\u2192'}</div>
                     </button>
                   ))}
                 </div>
@@ -525,7 +525,7 @@ export default function DataExportImport({ data, onChange, onClose }) {
                         cursor: 'pointer', textAlign: 'left',
                         transition: 'border-color 0.2s',
                       }}
-                      onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(99,102,241,0.4)'}
+                      onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(45, 212, 191,0.4)'}
                       onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(51,65,85,0.35)'}
                     >
                       <div style={{
@@ -588,7 +588,7 @@ export default function DataExportImport({ data, onChange, onClose }) {
                               flexWrap: 'wrap',
                             }}
                           >
-                            <div style={{ fontSize: 10, color: 'rgba(99,102,241,0.6)', minWidth: 20, fontWeight: 700 }}>
+                            <div style={{ fontSize: 10, color: 'rgba(45, 212, 191,0.6)', minWidth: 20, fontWeight: 700 }}>
                               {i + 1}
                             </div>
                             {cols.map(([key, val]) => (

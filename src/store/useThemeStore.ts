@@ -31,7 +31,7 @@ export const useThemeStore = create<ThemeStore>()(
   persist(
     (set, get) => ({
       theme: 'dark',
-      accentColor: '#6366f1',
+      accentColor: '#0e9488',
 
       setTheme: (theme) => {
         applyTheme(theme);

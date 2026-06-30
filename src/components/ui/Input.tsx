@@ -27,7 +27,7 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 
 function FieldLabel({ text }: { text: string }) {
   return (
-    <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+    <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted">
       {text}
     </label>
   );
@@ -45,13 +45,13 @@ const Input = React.memo(function Input({
   ...props
 }: InputProps) {
   const fieldBase = [
-    'w-full rounded-xl border bg-slate-900',
-    'py-2.5 text-sm text-slate-200 outline-none',
-    'placeholder:text-slate-600',
+    'w-full rounded-control border bg-surface-2',
+    'py-2.5 text-sm text-fg outline-none',
+    'placeholder:text-fg-faint',
     'transition-all duration-150',
     error
-      ? 'border-red-500/50 focus:border-red-500/60 focus:ring-2 focus:ring-red-500/20'
-      : 'border-slate-800 focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20',
+      ? 'border-danger/50 focus:border-danger/60 focus:ring-2 focus:ring-danger/20'
+      : 'border-border focus:border-accent focus:ring-2 focus:ring-accent/25',
     icon ? 'pl-9 pr-3' : 'px-3',
     className,
   ].join(' ');
@@ -61,13 +61,13 @@ const Input = React.memo(function Input({
       {label && <FieldLabel text={label} />}
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-fg-muted pointer-events-none">
             {icon}
           </span>
         )}
         <input type={type} className={fieldBase} {...props} />
       </div>
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-danger-text">{error}</p>}
     </div>
   );
 });
@@ -86,18 +86,18 @@ export const Textarea = React.memo(function Textarea({
       {label && <FieldLabel text={label} />}
       <textarea
         className={[
-          'w-full rounded-xl border bg-slate-900',
-          'px-3 py-2.5 text-sm text-slate-200 outline-none resize-none',
-          'placeholder:text-slate-600',
+          'w-full rounded-control border bg-surface-2',
+          'px-3 py-2.5 text-sm text-fg outline-none resize-none',
+          'placeholder:text-fg-faint',
           'transition-all duration-150',
           error
-            ? 'border-red-500/50 focus:border-red-500/60 focus:ring-2 focus:ring-red-500/20'
-            : 'border-slate-800 focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20',
+            ? 'border-danger/50 focus:border-danger/60 focus:ring-2 focus:ring-danger/20'
+            : 'border-border focus:border-accent focus:ring-2 focus:ring-accent/25',
           className,
         ].join(' ')}
         {...props}
       />
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-danger-text">{error}</p>}
     </div>
   );
 });
@@ -117,19 +117,19 @@ export const Select = React.memo(function Select({
       {label && <FieldLabel text={label} />}
       <select
         className={[
-          'w-full rounded-xl border bg-slate-900',
-          'px-3 py-2.5 text-sm text-slate-200 outline-none',
+          'w-full rounded-control border bg-surface-2',
+          'px-3 py-2.5 text-sm text-fg outline-none',
           'transition-all duration-150',
           error
-            ? 'border-red-500/50'
-            : 'border-slate-800 focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20',
+            ? 'border-danger/50'
+            : 'border-border focus:border-accent focus:ring-2 focus:ring-accent/25',
           className,
         ].join(' ')}
         {...props}
       >
         {children}
       </select>
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-danger-text">{error}</p>}
     </div>
   );
 });

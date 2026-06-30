@@ -80,7 +80,7 @@ function InlineLockedFeature({ featureName, onUpgradeClick, children }) {
           background: 'rgba(12,17,32,0.88)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
-          border: '1px solid rgba(99,102,241,0.3)',
+          border: '1px solid rgba(45, 212, 191,0.3)',
           borderRadius: '20px',
           padding: '3px 10px 3px 7px',
           whiteSpace: 'nowrap',
@@ -116,15 +116,15 @@ function BannerLockedFeature({ featureName, onUpgradeClick }) {
       animate={{ opacity: 1, y: 0 }}
       transition={SPRING}
       whileHover={{
-        borderColor: 'rgba(99,102,241,0.5)',
-        background: 'rgba(99,102,241,0.12)',
+        borderColor: 'rgba(45, 212, 191,0.5)',
+        background: 'rgba(45, 212, 191,0.12)',
       }}
       style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        background: 'rgba(99,102,241,0.08)',
-        border: '1px solid rgba(99,102,241,0.2)',
+        background: 'rgba(45, 212, 191,0.08)',
+        border: '1px solid rgba(45, 212, 191,0.2)',
         borderRadius: '10px',
         padding: '10px 14px',
         gap: '12px',
@@ -164,7 +164,7 @@ function BannerLockedFeature({ featureName, onUpgradeClick }) {
           borderRadius: '6px',
           fontSize: '13px',
           fontWeight: 700,
-          color: '#818cf8',
+          color: '#2dd4bf',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',

@@ -13,7 +13,7 @@ export default function ThemeToggle() {
 
   return (
     <div className="space-y-2">
-      <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Theme</label>
+      <label className="text-xs font-medium text-fg-muted uppercase tracking-wider">Theme</label>
       <div className="flex gap-2">
         {THEME_OPTIONS.map(({ id, label, Icon }) => (
           <motion.button
@@ -23,8 +23,8 @@ export default function ThemeToggle() {
             className={[
               'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm transition-all',
               theme === id
-                ? 'bg-indigo-500/15 border-indigo-500/40 text-indigo-300'
-                : 'bg-slate-900/30 border-slate-800/40 text-slate-500 hover:text-slate-300 hover:border-slate-700',
+                ? 'bg-accent/15 border-accent/40 text-accent-text'
+                : 'bg-surface-1 border-border text-fg-muted hover:text-fg-secondary hover:border-border-strong',
             ].join(' ')}
           >
             <Icon size={15} />

@@ -31,7 +31,7 @@ import {
 
 const SPRING = { type: "spring", stiffness: 400, damping: 30 };
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const PALETTE = ["#6366f1", "#34c98a", "#f97316", "#c084fc", "#4f9cf9", "#fbbf24", "#f87171"];
+const PALETTE = ["#14b8a6", "#34c98a", "#f97316", "#c084fc", "#4f9cf9", "#fbbf24", "#f87171"];
 
 // ─── data helpers ────────────────────────────────────────────────────────────
 
@@ -183,7 +183,7 @@ function totalDataDays(weekDays) {
 
 // ─── sub-components ─────────────────────────────────────────────────────────
 
-function SectionHeader({ title, sub, icon: Icon, color = "#6366f1" }) {
+function SectionHeader({ title, sub, icon: Icon, color = "#14b8a6" }) {
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
@@ -246,11 +246,11 @@ function ProBlurOverlay({ onUpgrade }) {
           width: 44,
           height: 44,
           borderRadius: 12,
-          background: "linear-gradient(135deg, #6366f1, #818cf8)",
+          background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 8px 24px rgba(99,102,241,0.4)",
+          boxShadow: "0 8px 24px rgba(45, 212, 191,0.4)",
         }}
       >
         <Crown size={20} color="#fff" />
@@ -266,7 +266,7 @@ function ProBlurOverlay({ onUpgrade }) {
       <button
         onClick={onUpgrade}
         style={{
-          background: "linear-gradient(135deg, #6366f1, #818cf8)",
+          background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
           border: "none",
           borderRadius: 10,
           padding: "8px 18px",
@@ -275,7 +275,7 @@ function ProBlurOverlay({ onUpgrade }) {
           fontWeight: 700,
           cursor: "pointer",
           fontFamily: "'DM Sans', sans-serif",
-          boxShadow: "0 4px 16px rgba(99,102,241,0.35)",
+          boxShadow: "0 4px 16px rgba(45, 212, 191,0.35)",
         }}
       >
         Upgrade to Pro
@@ -335,7 +335,7 @@ function HeatmapCell({ count, label }) {
   const color =
     count === 0
       ? "rgba(51,65,85,0.3)"
-      : `rgba(99,102,241,${alpha})`;
+      : `rgba(45, 212, 191,${alpha})`;
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -347,8 +347,8 @@ function HeatmapCell({ count, label }) {
         width: 10,
         height: 10,
         borderRadius: 2,
-        background: hovered ? "#6366f1" : color,
-        border: hovered ? "1px solid rgba(99,102,241,0.8)" : "1px solid transparent",
+        background: hovered ? "#14b8a6" : color,
+        border: hovered ? "1px solid rgba(45, 212, 191,0.8)" : "1px solid transparent",
         cursor: "default",
         transition: "all 0.15s",
         flexShrink: 0,
@@ -422,14 +422,14 @@ function EmptyState({ dataDays }) {
           width: 60,
           height: 60,
           borderRadius: 18,
-          background: "rgba(99,102,241,0.1)",
-          border: "1px solid rgba(99,102,241,0.2)",
+          background: "rgba(45, 212, 191,0.1)",
+          border: "1px solid rgba(45, 212, 191,0.2)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <BarChart2 size={26} color="#6366f1" />
+        <BarChart2 size={26} color="#14b8a6" />
       </div>
       <div>
         <div
@@ -474,7 +474,7 @@ function EmptyState({ dataDays }) {
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{ height: "100%", background: "linear-gradient(90deg, #6366f1, #818cf8)", borderRadius: 99 }}
+            style={{ height: "100%", background: "linear-gradient(90deg, #14b8a6, #2dd4bf)", borderRadius: 99 }}
           />
         </div>
       </div>
@@ -593,7 +593,7 @@ export default function InsightsDashboard({ data, isPro, onUpgrade }) {
               width: 40,
               height: 40,
               borderRadius: 12,
-              background: "linear-gradient(135deg, #6366f1, #818cf8)",
+              background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -631,7 +631,7 @@ export default function InsightsDashboard({ data, isPro, onUpgrade }) {
           title="Productivity Patterns"
           sub="Based on last 30 days"
           icon={BarChart2}
-          color="#6366f1"
+          color="#14b8a6"
         />
         <div style={{ filter: isPro ? "none" : "blur(3px)", pointerEvents: isPro ? "auto" : "none" }}>
           <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 6 }}>
@@ -669,7 +669,7 @@ export default function InsightsDashboard({ data, isPro, onUpgrade }) {
                 dataKey="tasks"
                 name="Tasks done"
                 radius={[4, 4, 0, 0]}
-                fill="#6366f1"
+                fill="#14b8a6"
                 // Highlight best day in green
                 shape={(props) => {
                   const isBest = props.name === bestDayEntry?.name || props?.tasks === bestDayEntry?.tasks;
@@ -680,7 +680,7 @@ export default function InsightsDashboard({ data, isPro, onUpgrade }) {
                       y={props.y}
                       width={props.width}
                       height={props.height}
-                      fill={props.value === bestDayEntry?.tasks && bestDayEntry?.tasks > 0 ? "#34c98a" : "#6366f1"}
+                      fill={props.value === bestDayEntry?.tasks && bestDayEntry?.tasks > 0 ? "#34c98a" : "#14b8a6"}
                       rx={4}
                       ry={4}
                       opacity={0.85}
@@ -758,7 +758,7 @@ export default function InsightsDashboard({ data, isPro, onUpgrade }) {
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10 }}>
           <span style={{ fontSize: 10, color: "rgba(148,163,184,0.4)", fontFamily: "'DM Sans', sans-serif" }}>Less</span>
           {[0.06, 0.25, 0.45, 0.65, 0.85].map((a, i) => (
-            <div key={i} style={{ width: 10, height: 10, borderRadius: 2, background: `rgba(99,102,241,${a})`, border: "1px solid transparent" }} />
+            <div key={i} style={{ width: 10, height: 10, borderRadius: 2, background: `rgba(45, 212, 191,${a})`, border: "1px solid transparent" }} />
           ))}
           <span style={{ fontSize: 10, color: "rgba(148,163,184,0.4)", fontFamily: "'DM Sans', sans-serif" }}>More</span>
         </div>
@@ -824,7 +824,7 @@ export default function InsightsDashboard({ data, isPro, onUpgrade }) {
                 <span style={{ color: "rgba(148,163,184,0.6)", fontSize: 11, fontFamily: "'DM Sans', sans-serif" }}>{value}</span>
               )}
             />
-            <Line type="monotone" dataKey="tasks" name="Tasks done" stroke="#6366f1" strokeWidth={2.5} dot={{ r: 3, fill: "#6366f1" }} activeDot={{ r: 5 }} />
+            <Line type="monotone" dataKey="tasks" name="Tasks done" stroke="#14b8a6" strokeWidth={2.5} dot={{ r: 3, fill: "#14b8a6" }} activeDot={{ r: 5 }} />
             <Line type="monotone" dataKey="habits" name="Habits logged" stroke="#34c98a" strokeWidth={2.5} dot={{ r: 3, fill: "#34c98a" }} activeDot={{ r: 5 }} strokeDasharray="4 2" />
           </LineChart>
         </ResponsiveContainer>
@@ -920,7 +920,7 @@ export function InsightsMiniWidget({ data }) {
         <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(148,163,184,0.5)", letterSpacing: "0.8px", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif", marginBottom: 6 }}>
           Goal Momentum
         </div>
-        <div style={{ fontFamily: "'Syne', serif", fontSize: 18, fontWeight: 800, color: "#6366f1" }}>
+        <div style={{ fontFamily: "'Syne', serif", fontSize: 18, fontWeight: 800, color: "#14b8a6" }}>
           {goalMomentum ? `${goalMomentum.onPace}/${goalMomentum.total}` : "—"}
         </div>
         <div style={{ fontSize: 11, color: "rgba(148,163,184,0.4)", fontFamily: "'DM Sans', sans-serif" }}>

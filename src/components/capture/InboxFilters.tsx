@@ -17,8 +17,8 @@ export default function InboxFilters({ tags, activeTag, onTagSelect }: InboxFilt
         className={[
           'px-2.5 py-1 rounded-lg text-xs whitespace-nowrap transition-colors',
           activeTag === null
-            ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
-            : 'bg-slate-900/40 text-slate-500 border border-slate-800/40 hover:text-slate-300',
+            ? 'bg-accent/20 text-accent-text border border-accent/30'
+            : 'bg-surface-1 text-fg-muted border border-border hover:text-fg-secondary',
         ].join(' ')}
       >
         All
@@ -32,7 +32,7 @@ export default function InboxFilters({ tags, activeTag, onTagSelect }: InboxFilt
             'px-2.5 py-1 rounded-lg text-xs whitespace-nowrap transition-colors',
             activeTag === tag
               ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-              : 'bg-slate-900/40 text-slate-500 border border-slate-800/40 hover:text-slate-300',
+              : 'bg-surface-1 text-fg-muted border border-border hover:text-fg-secondary',
           ].join(' ')}
         >
           #{tag}

@@ -50,7 +50,7 @@ const GasPrices = React.memo(function GasPrices({ prices, onPricesFetched, onSel
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-3">
         <Fuel size={16} className="text-emerald-400" />
-        <h3 className="text-sm font-semibold text-slate-200">National Avg Gas Prices</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">National Avg Gas Prices</h3>
         <Button variant="ghost" size="sm" className="ml-auto" onClick={fetchPrices} disabled={loading}>
           {loading ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
         </Button>
@@ -62,8 +62,8 @@ const GasPrices = React.memo(function GasPrices({ prices, onPricesFetched, onSel
         <>
           {/* Header */}
           <div className="flex items-center justify-between px-3 mb-1">
-            <span className="text-[10px] text-slate-600 font-medium uppercase tracking-wider">Fuel Grade</span>
-            <span className="text-[10px] text-slate-600 font-medium uppercase tracking-wider">Price/gal</span>
+            <span className="text-[10px] text-fg-faint font-medium uppercase tracking-wider">Fuel Grade</span>
+            <span className="text-[10px] text-fg-faint font-medium uppercase tracking-wider">Price/gal</span>
           </div>
           <div className="space-y-1.5">
             {FUEL_ROWS.map((row) => {
@@ -71,25 +71,25 @@ const GasPrices = React.memo(function GasPrices({ prices, onPricesFetched, onSel
               if (!val || val <= 0) return null;
               return (
                 <button key={row.key} onClick={() => onSelectPrice(val)}
-                  className="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/5 hover:border-indigo-500/30 transition-colors group">
+                  className="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/5 hover:border-accent/30 transition-colors group">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-slate-200">{row.label}</span>
-                    {row.octane && <span className="text-[10px] text-slate-600">{row.octane}</span>}
+                    <span className="text-xs font-medium text-fg-secondary">{row.label}</span>
+                    {row.octane && <span className="text-[10px] text-fg-faint">{row.octane}</span>}
                   </div>
-                  <span className="text-sm font-bold text-slate-100 group-hover:text-indigo-400 transition-colors">
+                  <span className="text-sm font-bold text-fg group-hover:text-accent-text transition-colors">
                     {formatUsd(val)}
                   </span>
                 </button>
               );
             })}
           </div>
-          <p className="text-[10px] text-slate-500 mt-2">
+          <p className="text-[10px] text-fg-muted mt-2">
             {age !== null && (age < 1 ? 'Updated just now' : `Updated ${age}h ago`)}
             {' '}&middot; Tap a price to use it in your fuel calculator
           </p>
         </>
       ) : !loading ? (
-        <p className="text-xs text-slate-600 text-center py-3">No price data available</p>
+        <p className="text-xs text-fg-faint text-center py-3">No price data available</p>
       ) : null}
     </Card>
   );

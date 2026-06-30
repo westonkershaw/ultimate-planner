@@ -46,7 +46,7 @@ function fmtDateLong(dateStr) {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const ASSET_CATEGORIES = [
-  { id: "real_estate", label: "Real Estate", icon: "🏠", color: "#6366f1" },
+  { id: "real_estate", label: "Real Estate", icon: "🏠", color: "#14b8a6" },
   { id: "investments", label: "Investments", icon: "📈", color: "#10b981" },
   { id: "cash", label: "Cash", icon: "💵", color: "#22c55e" },
   { id: "retirement", label: "Retirement", icon: "🏦", color: "#f59e0b" },
@@ -89,7 +89,7 @@ const S = {
   },
   heroCard: {
     background: "linear-gradient(135deg,rgba(17,24,39,0.95) 0%,rgba(15,23,42,0.98) 100%)",
-    border: "1px solid rgba(99,102,241,0.25)",
+    border: "1px solid rgba(45, 212, 191,0.25)",
     borderRadius: 20,
     padding: "28px 28px 24px",
     marginBottom: 16,
@@ -136,14 +136,14 @@ const S = {
     gap: 8,
     flexWrap: "wrap",
     padding: "12px 14px",
-    background: "rgba(99,102,241,0.06)",
-    border: "1px dashed rgba(99,102,241,0.25)",
+    background: "rgba(45, 212, 191,0.06)",
+    border: "1px dashed rgba(45, 212, 191,0.25)",
     borderRadius: 10,
     marginBottom: 10,
     alignItems: "center",
   },
   addBtn: {
-    background: "#6366f1",
+    background: "#14b8a6",
     border: "none",
     borderRadius: 9,
     color: "#fff",
@@ -763,11 +763,11 @@ function NetWorthSVGChart({ snapshots }) {
           <defs>
             <linearGradient id="nwLineGrad" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#6366f1" />
+              <stop offset="100%" stopColor="#14b8a6" />
             </linearGradient>
             <linearGradient id="nwFillGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#10b981" stopOpacity="0.22" />
-              <stop offset="100%" stopColor="#6366f1" stopOpacity="0.01" />
+              <stop offset="100%" stopColor="#14b8a6" stopOpacity="0.01" />
             </linearGradient>
             <clipPath id="nwClip">
               <rect x="0" y="0" width={W} height={H} />
@@ -833,7 +833,7 @@ function NetWorthSVGChart({ snapshots }) {
                 cx={points[0][0]}
                 cy={points[0][1]}
                 r={3}
-                fill="#6366f1"
+                fill="#14b8a6"
                 stroke="#0f172a"
                 strokeWidth={2}
               />
@@ -1041,7 +1041,7 @@ function FIScoreBar({ netWorth, data, onChange }) {
     fiScore >= 100 ? "#10b981" :
     fiScore >= 75 ? "#22c55e" :
     fiScore >= 50 ? "#f59e0b" :
-    fiScore >= 25 ? "#6366f1" : "#64748b";
+    fiScore >= 25 ? "#14b8a6" : "#64748b";
 
   return (
     <div style={S.card}>
@@ -1049,7 +1049,7 @@ function FIScoreBar({ netWorth, data, onChange }) {
         <div style={S.sectionTitle}>🏁 Financial Independence Score</div>
         <button
           onClick={() => { setExpInput(String(annualExpenses || "")); setSavInput(String(annualSavings || "")); setEditing(true); }}
-          style={{ fontSize: 11, color: "#6366f1", background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}
+          style={{ fontSize: 11, color: "#14b8a6", background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}
         >
           {annualExpenses ? "Edit" : "Set Expenses"}
         </button>
@@ -1213,14 +1213,14 @@ function MilestoneTimeline({ snapshots, netWorth }) {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
               <div style={{
                 width: 28, height: 28, borderRadius: "50%",
-                background: "linear-gradient(135deg,#10b981,#6366f1)",
+                background: "linear-gradient(135deg,#10b981,#14b8a6)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 13, boxShadow: "0 0 12px #10b98140",
               }}>
                 ✓
               </div>
               {(i < hit.length - 1 || hasDebtFree || next) && (
-                <div style={{ width: 1, flex: 1, minHeight: 12, background: "rgba(99,102,241,0.2)", margin: "3px 0" }} />
+                <div style={{ width: 1, flex: 1, minHeight: 12, background: "rgba(45, 212, 191,0.2)", margin: "3px 0" }} />
               )}
             </div>
             <div style={{ paddingBottom: 4 }}>
@@ -1246,7 +1246,7 @@ function MilestoneTimeline({ snapshots, netWorth }) {
                 🎉
               </div>
               {next && (
-                <div style={{ width: 1, flex: 1, minHeight: 12, background: "rgba(99,102,241,0.2)", margin: "3px 0" }} />
+                <div style={{ width: 1, flex: 1, minHeight: 12, background: "rgba(45, 212, 191,0.2)", margin: "3px 0" }} />
               )}
             </div>
             <div style={{ paddingBottom: 4 }}>
@@ -1263,8 +1263,8 @@ function MilestoneTimeline({ snapshots, netWorth }) {
             <div style={{ flexShrink: 0 }}>
               <div style={{
                 width: 28, height: 28, borderRadius: "50%",
-                background: "rgba(99,102,241,0.15)",
-                border: "2px dashed rgba(99,102,241,0.4)",
+                background: "rgba(45, 212, 191,0.15)",
+                border: "2px dashed rgba(45, 212, 191,0.4)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 13,
               }}>
@@ -1272,7 +1272,7 @@ function MilestoneTimeline({ snapshots, netWorth }) {
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "rgba(99,102,241,0.9)" }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "rgba(45, 212, 191,0.9)" }}>
                 Next: {next.label}
               </div>
               <div style={{ fontSize: 11, color: "rgba(148,163,184,0.5)", marginTop: 2 }}>
@@ -1461,7 +1461,7 @@ export function NetWorthDashWidget({ data, onNavigate }) {
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
       style={{
         background: "rgba(17,24,39,0.75)",
-        border: "1px solid rgba(99,102,241,0.2)",
+        border: "1px solid rgba(45, 212, 191,0.2)",
         borderRadius: 16,
         padding: "16px 18px",
         cursor: "pointer",
@@ -1499,7 +1499,7 @@ export function NetWorthDashWidget({ data, onNavigate }) {
         </div>
       </div>
 
-      <div style={{ fontSize: 11, color: "rgba(99,102,241,0.7)", fontWeight: 600 }}>
+      <div style={{ fontSize: 11, color: "rgba(45, 212, 191,0.7)", fontWeight: 600 }}>
         View details →
       </div>
     </motion.div>

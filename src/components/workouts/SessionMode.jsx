@@ -178,31 +178,31 @@ const SessionMode = React.memo(function SessionMode() {
       >
         <div className="text-5xl">🏆</div>
         <div>
-          <div className="font-syne text-2xl font-bold text-slate-100 mb-1">Workout Complete!</div>
-          <div className="text-slate-500 text-sm">{routineName}</div>
+          <div className="font-syne text-2xl font-bold text-fg mb-1">Workout Complete!</div>
+          <div className="text-fg-muted text-sm">{routineName}</div>
         </div>
 
         <div className="grid grid-cols-3 gap-4 w-full max-w-sm">
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
-            <div className="text-2xl font-bold text-indigo-400">{completedSets}</div>
-            <div className="text-[10px] text-slate-600 uppercase tracking-wider">Sets Done</div>
+            <div className="text-2xl font-bold text-accent-text">{completedSets}</div>
+            <div className="text-[10px] text-fg-faint uppercase tracking-wider">Sets Done</div>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
             <div className="text-2xl font-bold text-emerald-400">{exercises.length}</div>
-            <div className="text-[10px] text-slate-600 uppercase tracking-wider">Exercises</div>
+            <div className="text-[10px] text-fg-faint uppercase tracking-wider">Exercises</div>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
             <div className="text-2xl font-bold text-amber-400">{elapsed}m</div>
-            <div className="text-[10px] text-slate-600 uppercase tracking-wider">Duration</div>
+            <div className="text-[10px] text-fg-faint uppercase tracking-wider">Duration</div>
           </div>
         </div>
 
         {totalVolume > 0 && (
-          <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 px-6 py-3">
-            <div className="font-syne text-xl font-bold text-indigo-400">
+          <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-3">
+            <div className="font-syne text-xl font-bold text-accent-text">
               {totalVolume.toLocaleString()} lbs
             </div>
-            <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Total Volume</div>
+            <div className="text-[10px] text-fg-muted uppercase tracking-wider mt-0.5">Total Volume</div>
           </div>
         )}
 
@@ -214,8 +214,8 @@ const SessionMode = React.memo(function SessionMode() {
                 key={ex.name}
                 className="flex items-center justify-between text-sm px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.06]"
               >
-                <span className="text-slate-300">{ex.name}</span>
-                <span className="text-slate-500 text-xs">{done}/{ex.sets.length} sets</span>
+                <span className="text-fg-secondary">{ex.name}</span>
+                <span className="text-fg-muted text-xs">{done}/{ex.sets.length} sets</span>
               </div>
             );
           })}
@@ -236,16 +236,16 @@ const SessionMode = React.memo(function SessionMode() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <div className="font-syne text-lg font-bold text-slate-100">{routineName}</div>
-          <div className="text-xs text-slate-600">{elapsed}m elapsed</div>
+          <div className="font-syne text-lg font-bold text-fg">{routineName}</div>
+          <div className="text-xs text-fg-faint">{elapsed}m elapsed</div>
         </div>
         <div className="flex items-center gap-3">
           {/* Live volume counter */}
           <div className="text-right">
-            <div className="font-syne text-sm font-bold text-indigo-400">
+            <div className="font-syne text-sm font-bold text-accent-text">
               {totalVolume > 0 ? `${totalVolume.toLocaleString()} lbs` : '—'}
             </div>
-            <div className="text-[9px] text-slate-600 uppercase tracking-wider">volume</div>
+            <div className="text-[9px] text-fg-faint uppercase tracking-wider">volume</div>
           </div>
           <Button variant="ghost" size="sm" onClick={cancelSession}>End</Button>
         </div>
@@ -253,7 +253,7 @@ const SessionMode = React.memo(function SessionMode() {
 
       {/* Progress bar */}
       <div>
-        <div className="flex items-center justify-between text-[10px] text-slate-600 mb-1">
+        <div className="flex items-center justify-between text-[10px] text-fg-faint mb-1">
           <span>{completedSets} of {totalSets} sets</span>
           <span>{Math.round(progressPct)}%</span>
         </div>
@@ -268,7 +268,7 @@ const SessionMode = React.memo(function SessionMode() {
           <motion.div
             className="h-full rounded-full"
             style={{
-              background: 'linear-gradient(90deg, rgba(99,102,241,0.9) 0%, rgba(139,92,246,0.9) 100%)',
+              background: 'linear-gradient(90deg, rgba(45, 212, 191,0.9) 0%, rgba(14, 148, 136,0.9) 100%)',
             }}
             animate={{ width: `${progressPct}%` }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
@@ -291,10 +291,10 @@ const SessionMode = React.memo(function SessionMode() {
               key={ex.name}
               className={`flex-shrink-0 px-3 py-2 rounded-lg border text-xs transition-colors ${
                 isCurrent
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
+                  ? 'border-accent/50 bg-accent/10 text-accent-text'
                   : doneSets === ex.sets.length
                   ? 'border-emerald-500/30 bg-emerald-500/5 text-emerald-400'
-                  : 'border-white/[0.06] bg-white/[0.02] text-slate-500'
+                  : 'border-white/[0.06] bg-white/[0.02] text-fg-muted'
               }`}
             >
               <div className="font-medium truncate max-w-[100px]">{ex.name}</div>
@@ -308,8 +308,8 @@ const SessionMode = React.memo(function SessionMode() {
       {allDone ? (
         <Card className="p-6 text-center">
           <div className="text-3xl mb-3">✅</div>
-          <div className="font-syne text-lg font-bold text-slate-100 mb-1">All sets complete!</div>
-          <div className="text-sm text-slate-500 mb-4">Great workout. Ready to finish?</div>
+          <div className="font-syne text-lg font-bold text-fg mb-1">All sets complete!</div>
+          <div className="text-sm text-fg-muted mb-4">Great workout. Ready to finish?</div>
           <Button onClick={handleFinishWorkout} className="w-full">Finish Workout</Button>
         </Card>
       ) : (
@@ -332,18 +332,18 @@ const SessionMode = React.memo(function SessionMode() {
 
             <FloatingVolBadge value={flashValue} id={flashId} />
 
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-1">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint mb-1">
               Exercise {currentExIndex + 1} of {exercises.length}
             </div>
-            <div className="font-syne text-xl font-bold text-slate-100 mb-0.5">{currentEx.name}</div>
-            <div className="text-xs text-slate-600 capitalize mb-4">
+            <div className="font-syne text-xl font-bold text-fg mb-0.5">{currentEx.name}</div>
+            <div className="text-xs text-fg-faint capitalize mb-4">
               Set {currentSetIndex + 1} of {currentEx.sets.length}
             </div>
 
             {/* Smart Set inputs */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div>
-                <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-1">
+                <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-1">
                   Weight (lb)
                 </label>
                 <input
@@ -351,11 +351,11 @@ const SessionMode = React.memo(function SessionMode() {
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
                   placeholder={String(prevWeight || '0')}
-                  className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-fg-secondary outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20"
                 />
               </div>
               <div>
-                <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-1">
+                <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-1">
                   Reps
                 </label>
                 <input
@@ -363,7 +363,7 @@ const SessionMode = React.memo(function SessionMode() {
                   value={reps}
                   onChange={(e) => setReps(e.target.value)}
                   placeholder={String(prevReps)}
-                  className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-fg-secondary outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20"
                 />
               </div>
             </div>
@@ -374,7 +374,7 @@ const SessionMode = React.memo(function SessionMode() {
 
             <button
               onClick={handleFinishWorkout}
-              className="w-full text-xs text-slate-600 hover:text-slate-400 transition-colors"
+              className="w-full text-xs text-fg-faint hover:text-fg-muted transition-colors"
             >
               Finish early
             </button>
@@ -388,13 +388,13 @@ const SessionMode = React.memo(function SessionMode() {
               className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 flex items-center justify-between"
             >
               <div>
-                <div className="text-[9px] font-semibold uppercase tracking-widest text-slate-600 mb-0.5">
+                <div className="text-[9px] font-semibold uppercase tracking-widest text-fg-faint mb-0.5">
                   Up next
                 </div>
-                <div className="text-sm font-medium text-slate-400">{nextEx.name}</div>
-                <div className="text-[10px] text-slate-600">{nextEx.sets.length} sets</div>
+                <div className="text-sm font-medium text-fg-muted">{nextEx.name}</div>
+                <div className="text-[10px] text-fg-faint">{nextEx.sets.length} sets</div>
               </div>
-              <div className="text-slate-700 text-xl" aria-hidden="true">›</div>
+              <div className="text-fg-faint text-xl" aria-hidden="true">›</div>
             </motion.div>
           )}
         </div>
@@ -409,7 +409,7 @@ const SessionMode = React.memo(function SessionMode() {
             exit={{ opacity: 0, y: 20 }}
           >
             <Card className="p-5">
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 text-center mb-4">
+              <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint text-center mb-4">
                 Rest Timer
               </div>
               <RestTimer

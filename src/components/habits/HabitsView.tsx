@@ -4,7 +4,7 @@ import { Flame, Plus, Trash2, Check, Archive, ArchiveRestore } from 'lucide-reac
 import { useHabitStore, calcHabitStreak, isScheduledToday, todayKey, useUIStore } from '@/store';
 import type { Habit, HabitFrequency } from '@/types';
 
-const COLORS = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+const COLORS = ['#14b8a6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
 const EMOJI = ['🔥', '💧', '📚', '🏃', '🧘', '☀️', '🥗', '😴', '💪', '✍️'];
 const FREQS: { id: HabitFrequency; label: string }[] = [
   { id: 'daily', label: 'Daily' },
@@ -32,8 +32,8 @@ function HabitRow({ habit, onTick, onArchive, onDelete }: {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -10 }}
       className={[
-        'flex items-center gap-3 p-3 rounded-xl border bg-slate-900/30 transition-colors',
-        done ? 'border-emerald-500/30' : 'border-slate-800/40',
+        'flex items-center gap-3 p-3 rounded-xl border bg-surface-1 transition-colors',
+        done ? 'border-emerald-500/30' : 'border-border',
         habit.archived ? 'opacity-50' : '',
       ].join(' ')}
     >
@@ -46,14 +46,14 @@ function HabitRow({ habit, onTick, onArchive, onDelete }: {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-slate-200 truncate">{habit.name}</span>
+          <span className="text-sm font-medium text-fg-secondary truncate">{habit.name}</span>
           {streak > 0 && (
             <span className="flex items-center gap-0.5 text-[10px] text-amber-400">
               <Flame size={10} className="fill-amber-400" />{streak}d
             </span>
           )}
         </div>
-        <div className="text-[10px] text-slate-500 mt-0.5 capitalize">
+        <div className="text-[10px] text-fg-muted mt-0.5 capitalize">
           {habit.frequency}{scheduled ? '' : ' · not today'}
           {target > 1 ? ` · ${count}/${target}` : ''}
         </div>
@@ -68,7 +68,7 @@ function HabitRow({ habit, onTick, onArchive, onDelete }: {
             'w-9 h-9 rounded-xl flex items-center justify-center transition-colors',
             done
               ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300'
-              : 'bg-slate-800/40 border border-slate-700/40 text-slate-500 hover:text-slate-300',
+              : 'bg-surface-2 border border-border-strong text-fg-muted hover:text-fg-secondary',
             (habit.archived || !scheduled) ? 'opacity-40 cursor-not-allowed' : '',
           ].join(' ')}
         >
@@ -77,14 +77,14 @@ function HabitRow({ habit, onTick, onArchive, onDelete }: {
         <button
           onClick={() => onArchive(habit.id, !habit.archived)}
           aria-label={habit.archived ? 'Unarchive' : 'Archive'}
-          className="w-7 h-7 rounded-lg text-slate-600 hover:text-slate-300 transition-colors flex items-center justify-center"
+          className="w-7 h-7 rounded-lg text-fg-faint hover:text-fg-secondary transition-colors flex items-center justify-center"
         >
           {habit.archived ? <ArchiveRestore size={13} /> : <Archive size={13} />}
         </button>
         <button
           onClick={() => onDelete(habit.id)}
           aria-label={`Delete ${habit.name}`}
-          className="w-7 h-7 rounded-lg text-slate-600 hover:text-rose-400 transition-colors flex items-center justify-center"
+          className="w-7 h-7 rounded-lg text-fg-faint hover:text-rose-400 transition-colors flex items-center justify-center"
         >
           <Trash2 size={13} />
         </button>
@@ -115,14 +115,14 @@ function NewHabitForm({ onClose }: { onClose: () => void }) {
       exit={{ opacity: 0, height: 0 }}
       className="overflow-hidden"
     >
-      <div className="p-4 rounded-xl border border-indigo-500/25 bg-indigo-500/[0.04] space-y-3">
+      <div className="p-4 rounded-xl border border-accent/25 bg-accent/[0.04] space-y-3">
         <input
           autoFocus
           value={name}
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && submit()}
           placeholder="New habit name"
-          className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+          className="w-full bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg placeholder:text-fg-faint outline-none focus:border-accent/40"
         />
 
         <div className="flex items-center gap-1.5 flex-wrap">
@@ -130,7 +130,7 @@ function NewHabitForm({ onClose }: { onClose: () => void }) {
             <button
               key={e}
               onClick={() => setEmoji(e)}
-              className={`w-8 h-8 rounded-lg text-base ${emoji === e ? 'bg-indigo-500/20 border border-indigo-500/40' : 'border border-slate-800/40'}`}
+              className={`w-8 h-8 rounded-lg text-base ${emoji === e ? 'bg-accent/20 border border-accent/40' : 'border border-border'}`}
             >{e}</button>
           ))}
         </div>
@@ -155,8 +155,8 @@ function NewHabitForm({ onClose }: { onClose: () => void }) {
               className={[
                 'flex-1 px-2 py-1.5 rounded-lg border text-xs transition-colors',
                 frequency === f.id
-                  ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-300'
-                  : 'border-slate-800/40 text-slate-500 hover:text-slate-300',
+                  ? 'border-accent/40 bg-accent/15 text-accent-text'
+                  : 'border-border text-fg-muted hover:text-fg-secondary',
               ].join(' ')}
             >
               {f.label}
@@ -167,14 +167,14 @@ function NewHabitForm({ onClose }: { onClose: () => void }) {
         <div className="flex gap-2">
           <button
             onClick={onClose}
-            className="flex-1 py-2 rounded-lg border border-slate-800/40 text-xs text-slate-500 hover:text-slate-300 transition-colors"
+            className="flex-1 py-2 rounded-lg border border-border text-xs text-fg-muted hover:text-fg-secondary transition-colors"
           >Cancel</button>
           <button
             onClick={submit}
             disabled={!name.trim()}
             className={[
               'flex-1 py-2 rounded-lg text-xs font-semibold transition-colors',
-              name.trim() ? 'bg-indigo-500 hover:bg-indigo-400 text-white' : 'bg-slate-800/40 text-slate-600 cursor-not-allowed',
+              name.trim() ? 'bg-accent hover:bg-accent-hover text-white' : 'bg-surface-2 text-fg-faint cursor-not-allowed',
             ].join(' ')}
           >Add habit</button>
         </div>
@@ -213,9 +213,9 @@ export default function HabitsView() {
       >
         <div className="flex items-center gap-2">
           <Flame size={18} className="text-amber-400" />
-          <h1 className="font-syne text-lg font-bold text-slate-100">Habits</h1>
+          <h1 className="font-syne text-lg font-bold text-fg">Habits</h1>
         </div>
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-fg-muted">
           {doneToday}/{scheduledToday.length} today
         </span>
       </motion.div>
@@ -227,14 +227,14 @@ export default function HabitsView() {
       {!adding && (
         <button
           onClick={() => setAdding(true)}
-          className="w-full py-2.5 rounded-xl border border-dashed border-slate-700 text-slate-500 text-sm flex items-center justify-center gap-2 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors"
+          className="w-full py-2.5 rounded-xl border border-dashed border-border-strong text-fg-muted text-sm flex items-center justify-center gap-2 hover:border-accent/30 hover:text-accent-text transition-colors"
         >
           <Plus size={14} /> New habit
         </button>
       )}
 
       {active.length === 0 ? (
-        <div className="text-center py-10 text-sm text-slate-500">
+        <div className="text-center py-10 text-sm text-fg-muted">
           No habits yet — add your first one above.
         </div>
       ) : (
@@ -251,7 +251,7 @@ export default function HabitsView() {
         <div className="space-y-2">
           <button
             onClick={() => setShowArchived((v) => !v)}
-            className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+            className="text-xs text-fg-muted hover:text-fg-secondary transition-colors"
           >
             {showArchived ? '− Hide' : '+ Show'} {archived.length} archived
           </button>

@@ -14,7 +14,7 @@ const PARTICLE_COUNT = 24;
  */
 export default function MilestoneCelebration({
   milestone,
-  color = '#6366f1',
+  color = '#14b8a6',
 }: MilestoneCelebrationProps) {
   const [show, setShow] = useState(false);
   const [key, setKey] = useState(0);

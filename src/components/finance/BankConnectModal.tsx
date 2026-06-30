@@ -123,7 +123,7 @@ export default function BankConnectModal({ open, onClose }: Props) {
             />
             <div className="mt-3 max-h-[320px] overflow-auto space-y-1 pr-1">
               {filtered.length === 0 && (
-                <p className="text-xs text-slate-500 text-center py-6">No banks found</p>
+                <p className="text-xs text-fg-muted text-center py-6">No banks found</p>
               )}
               {filtered.map((bank) => (
                 <button
@@ -131,11 +131,11 @@ export default function BankConnectModal({ open, onClose }: Props) {
                   onClick={() => handleSelectBank(bank)}
                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors text-left group"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-indigo-500/15 flex items-center justify-center shrink-0">
-                    <Building2 size={14} className="text-indigo-400" />
+                  <div className="w-8 h-8 rounded-lg bg-accent/15 flex items-center justify-center shrink-0">
+                    <Building2 size={14} className="text-accent-text" />
                   </div>
-                  <span className="text-sm text-slate-200 flex-1 truncate">{bank.name}</span>
-                  <ChevronRight size={14} className="text-slate-600 group-hover:text-slate-400 transition-colors" />
+                  <span className="text-sm text-fg-secondary flex-1 truncate">{bank.name}</span>
+                  <ChevronRight size={14} className="text-fg-faint group-hover:text-fg-muted transition-colors" />
                 </button>
               ))}
             </div>
@@ -145,12 +145,12 @@ export default function BankConnectModal({ open, onClose }: Props) {
         {step === 'credentials' && selectedBank && (
           <motion.div key="creds" initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 12 }} transition={APP_SPRING}>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-indigo-500/15 flex items-center justify-center">
-                <Building2 size={14} className="text-indigo-400" />
+              <div className="w-8 h-8 rounded-lg bg-accent/15 flex items-center justify-center">
+                <Building2 size={14} className="text-accent-text" />
               </div>
               <div>
-                <p className="text-sm font-medium text-slate-200">{selectedBank.name}</p>
-                <p className="text-[10px] text-slate-500">OFX Direct Connect</p>
+                <p className="text-sm font-medium text-fg-secondary">{selectedBank.name}</p>
+                <p className="text-[10px] text-fg-muted">OFX Direct Connect</p>
               </div>
             </div>
 
@@ -168,7 +168,7 @@ export default function BankConnectModal({ open, onClose }: Props) {
               )}
             </div>
 
-            <p className="text-[10px] text-slate-500 mt-3 leading-relaxed">
+            <p className="text-[10px] text-fg-muted mt-3 leading-relaxed">
               Credentials are encrypted and stored only in your browser. They are never sent to our servers.
             </p>
 
@@ -185,14 +185,14 @@ export default function BankConnectModal({ open, onClose }: Props) {
           <motion.div key="test" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={APP_SPRING} className="flex flex-col items-center py-6 gap-4">
             {testStatus === 'testing' && (
               <>
-                <Loader2 size={32} className="text-indigo-400 animate-spin" />
-                <p className="text-sm text-slate-300">Connecting to {selectedBank?.name}...</p>
+                <Loader2 size={32} className="text-accent-text animate-spin" />
+                <p className="text-sm text-fg-secondary">Connecting to {selectedBank?.name}...</p>
               </>
             )}
             {testStatus === 'success' && (
               <>
                 <CheckCircle2 size={32} className="text-emerald-400" />
-                <p className="text-sm text-slate-300">Connection successful!</p>
+                <p className="text-sm text-fg-secondary">Connection successful!</p>
                 <div className="flex gap-2 w-full">
                   <Button variant="ghost" size="sm" onClick={() => setStep('credentials')}>Back</Button>
                   <Button size="sm" onClick={handleSave} className="flex-1">Save & Link Account</Button>
@@ -203,8 +203,8 @@ export default function BankConnectModal({ open, onClose }: Props) {
               <>
                 <AlertCircle size={32} className="text-red-400" />
                 <div className="text-center">
-                  <p className="text-sm text-slate-300">Connection failed</p>
-                  <p className="text-xs text-slate-500 mt-1 max-w-[280px]">{testError}</p>
+                  <p className="text-sm text-fg-secondary">Connection failed</p>
+                  <p className="text-xs text-fg-muted mt-1 max-w-[280px]">{testError}</p>
                 </div>
                 <div className="flex gap-2 w-full">
                   <Button variant="ghost" size="sm" onClick={() => setStep('credentials')}>Back</Button>

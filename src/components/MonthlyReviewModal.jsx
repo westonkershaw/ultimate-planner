@@ -131,9 +131,9 @@ function StepDots({ total, current }) {
             borderRadius: 99,
             background:
               i === current
-                ? "#6366f1"
+                ? "#14b8a6"
                 : i < current
-                ? "rgba(99,102,241,0.4)"
+                ? "rgba(45, 212, 191,0.4)"
                 : "rgba(51,65,85,0.6)",
             transition: "all 0.35s ease",
           }}
@@ -359,15 +359,15 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
             display: "inline-flex",
             alignItems: "center",
             gap: 6,
-            background: "rgba(99,102,241,0.12)",
-            border: "1px solid rgba(99,102,241,0.3)",
+            background: "rgba(45, 212, 191,0.12)",
+            border: "1px solid rgba(45, 212, 191,0.3)",
             borderRadius: 20,
             padding: "4px 12px",
             marginBottom: 12,
           }}
         >
-          <Calendar size={12} color="#6366f1" />
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#6366f1", letterSpacing: "0.6px", fontFamily: "'DM Sans', sans-serif" }}>
+          <Calendar size={12} color="#14b8a6" />
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#14b8a6", letterSpacing: "0.6px", fontFamily: "'DM Sans', sans-serif" }}>
             YOUR MONTH AT A GLANCE
           </span>
         </div>
@@ -389,7 +389,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         <StatCard icon={CheckCircle2} label="Tasks completed" value={stats.tasksCompleted} color="#34c98a" />
-        <StatCard icon={Target} label="Goals with progress" value={stats.goalsWithProgress} color="#6366f1" />
+        <StatCard icon={Target} label="Goals with progress" value={stats.goalsWithProgress} color="#14b8a6" />
         <StatCard
           icon={Flame}
           label={stats.topHabit ? `Top habit: ${stats.topHabit}` : "Top habit"}
@@ -436,7 +436,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
             placeholder="What are you most proud of?"
             value={wins}
             onChange={(e) => setWins(e.target.value)}
-            onFocus={(e) => (e.target.style.borderColor = "rgba(99,102,241,0.5)")}
+            onFocus={(e) => (e.target.style.borderColor = "rgba(45, 212, 191,0.5)")}
             onBlur={(e) => (e.target.style.borderColor = "rgba(51,65,85,0.5)")}
           />
           <div style={{ fontSize: 10, color: "#34c98a", fontFamily: "'DM Sans', sans-serif", marginTop: 4, paddingLeft: 2 }}>
@@ -451,7 +451,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
             placeholder="What was hardest?"
             value={struggles}
             onChange={(e) => setStruggles(e.target.value)}
-            onFocus={(e) => (e.target.style.borderColor = "rgba(99,102,241,0.5)")}
+            onFocus={(e) => (e.target.style.borderColor = "rgba(45, 212, 191,0.5)")}
             onBlur={(e) => (e.target.style.borderColor = "rgba(51,65,85,0.5)")}
           />
           <div style={{ fontSize: 10, color: "#f87171", fontFamily: "'DM Sans', sans-serif", marginTop: 4, paddingLeft: 2 }}>
@@ -508,7 +508,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     style={{
                       height: "100%",
-                      background: pct >= 80 ? "#34c98a" : pct >= 50 ? "#6366f1" : "#f87171",
+                      background: pct >= 80 ? "#34c98a" : pct >= 50 ? "#14b8a6" : "#f87171",
                       borderRadius: 99,
                     }}
                   />
@@ -531,8 +531,8 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
                   alignItems: "center",
                   gap: 10,
                   padding: "9px 12px",
-                  background: focusGoalId === goal.id ? "rgba(99,102,241,0.12)" : "rgba(8,9,13,0.4)",
-                  border: `1px solid ${focusGoalId === goal.id ? "rgba(99,102,241,0.4)" : "rgba(51,65,85,0.3)"}`,
+                  background: focusGoalId === goal.id ? "rgba(45, 212, 191,0.12)" : "rgba(8,9,13,0.4)",
+                  border: `1px solid ${focusGoalId === goal.id ? "rgba(45, 212, 191,0.4)" : "rgba(51,65,85,0.3)"}`,
                   borderRadius: 10,
                   cursor: "pointer",
                   transition: "all 0.2s",
@@ -544,7 +544,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
                   value={goal.id}
                   checked={focusGoalId === goal.id}
                   onChange={() => setFocusGoalId(goal.id)}
-                  style={{ accentColor: "#6366f1" }}
+                  style={{ accentColor: "#14b8a6" }}
                 />
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#e2e8f0" }}>
                   {goal.name ?? goal.title ?? "Unnamed goal"}
@@ -558,7 +558,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
             placeholder="What specifically needs to change?"
             value={attentionNote}
             onChange={(e) => setAttentionNote(e.target.value)}
-            onFocus={(e) => (e.target.style.borderColor = "rgba(99,102,241,0.5)")}
+            onFocus={(e) => (e.target.style.borderColor = "rgba(45, 212, 191,0.5)")}
             onBlur={(e) => (e.target.style.borderColor = "rgba(51,65,85,0.5)")}
           />
         </>
@@ -578,8 +578,8 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
 
       <div style={{ marginBottom: 18 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Star size={13} color="#6366f1" />
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(45, 212, 191,0.15)", border: "1px solid rgba(45, 212, 191,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Star size={13} color="#14b8a6" />
           </div>
           <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, color: "#e2e8f0" }}>
             Your ONE big focus
@@ -591,7 +591,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
           placeholder="What matters most next month?"
           value={nextFocus}
           onChange={(e) => setNextFocus(e.target.value)}
-          onFocus={(e) => (e.target.style.borderColor = "rgba(99,102,241,0.5)")}
+          onFocus={(e) => (e.target.style.borderColor = "rgba(45, 212, 191,0.5)")}
           onBlur={(e) => (e.target.style.borderColor = "rgba(51,65,85,0.5)")}
         />
       </div>
@@ -608,8 +608,8 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {milestones.map((m, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 22, height: 22, borderRadius: 6, background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ fontSize: 10, fontWeight: 800, color: "#6366f1", fontFamily: "'DM Sans', sans-serif" }}>
+              <div style={{ width: 22, height: 22, borderRadius: 6, background: "rgba(45, 212, 191,0.1)", border: "1px solid rgba(45, 212, 191,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span style={{ fontSize: 10, fontWeight: 800, color: "#14b8a6", fontFamily: "'DM Sans', sans-serif" }}>
                   {i + 1}
                 </span>
               </div>
@@ -619,7 +619,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
                 placeholder={`Milestone ${i + 1}`}
                 value={m}
                 onChange={(e) => updateMilestone(i, e.target.value)}
-                onFocus={(e) => (e.target.style.borderColor = "rgba(99,102,241,0.5)")}
+                onFocus={(e) => (e.target.style.borderColor = "rgba(45, 212, 191,0.5)")}
                 onBlur={(e) => (e.target.style.borderColor = "rgba(51,65,85,0.5)")}
               />
             </div>
@@ -628,8 +628,8 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
         <div
           style={{
             marginTop: 12,
-            background: "rgba(99,102,241,0.07)",
-            border: "1px solid rgba(99,102,241,0.15)",
+            background: "rgba(45, 212, 191,0.07)",
+            border: "1px solid rgba(45, 212, 191,0.15)",
             borderRadius: 10,
             padding: "9px 12px",
             fontSize: 11,
@@ -684,7 +684,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
             display: "flex",
             flexDirection: "column",
             scrollbarWidth: "thin",
-            scrollbarColor: "rgba(99,102,241,0.2) transparent",
+            scrollbarColor: "rgba(45, 212, 191,0.2) transparent",
           }}
         >
           {/* Header */}
@@ -704,7 +704,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
                   width: 36,
                   height: 36,
                   borderRadius: 10,
-                  background: "linear-gradient(135deg, #6366f1, #818cf8)",
+                  background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -806,7 +806,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
                   display: "flex",
                   alignItems: "center",
                   gap: 6,
-                  background: "linear-gradient(135deg, #6366f1, #818cf8)",
+                  background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
                   border: "none",
                   borderRadius: 10,
                   padding: "9px 20px",
@@ -816,7 +816,7 @@ export default function MonthlyReviewModal({ data, onChange, onClose, addToast }
                   cursor: "pointer",
                   fontFamily: "'DM Sans', sans-serif",
                   letterSpacing: "-0.1px",
-                  boxShadow: "0 4px 20px rgba(99,102,241,0.35)",
+                  boxShadow: "0 4px 20px rgba(45, 212, 191,0.35)",
                 }}
               >
                 Continue

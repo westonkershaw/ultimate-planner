@@ -78,26 +78,26 @@ const CommandPalette = React.memo(function CommandPalette() {
             exit={{ opacity: 0, y: -20, scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#0d1424] shadow-2xl overflow-hidden"
-            style={{ boxShadow: '0 0 60px rgba(99,102,241,0.15)' }}
+            style={{ boxShadow: '0 0 60px rgba(45, 212, 191,0.15)' }}
           >
             {/* Search input */}
             <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.06]">
-              <span className="text-slate-500 text-lg">⌘</span>
+              <span className="text-fg-muted text-lg">⌘</span>
               <input
                 ref={inputRef}
                 value={query}
                 onChange={(e) => { setQuery(e.target.value); setSelected(0); }}
                 onKeyDown={handleKeyDown}
                 placeholder="Search actions..."
-                className="flex-1 bg-transparent text-slate-200 text-sm placeholder:text-slate-600 outline-none"
+                className="flex-1 bg-transparent text-fg-secondary text-sm placeholder:text-fg-faint outline-none"
               />
-              <kbd className="text-[10px] text-slate-600 border border-white/10 rounded px-1.5 py-0.5">ESC</kbd>
+              <kbd className="text-[10px] text-fg-faint border border-white/10 rounded px-1.5 py-0.5">ESC</kbd>
             </div>
 
             {/* Results */}
             <div className="py-2 max-h-80 overflow-auto">
               {filtered.length === 0 && (
-                <div className="px-4 py-8 text-center text-slate-600 text-sm">No actions found</div>
+                <div className="px-4 py-8 text-center text-fg-faint text-sm">No actions found</div>
               )}
               {filtered.map((action, i) => (
                 <motion.button
@@ -107,17 +107,17 @@ const CommandPalette = React.memo(function CommandPalette() {
                   className={`
                     w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors
                     ${i === selected
-                      ? 'bg-indigo-500/20 text-slate-100'
-                      : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
+                      ? 'bg-accent/20 text-fg'
+                      : 'text-fg-muted hover:bg-white/[0.04] hover:text-fg-secondary'
                     }
                   `}
                 >
-                  <span className={`text-lg w-6 text-center ${i === selected ? 'text-indigo-400' : 'text-slate-600'}`}>
+                  <span className={`text-lg w-6 text-center ${i === selected ? 'text-accent-text' : 'text-fg-faint'}`}>
                     {action.icon}
                   </span>
                   <span className="flex-1">{action.label}</span>
                   {action.type === 'nav' && (
-                    <span className="text-[10px] text-slate-600 border border-white/10 rounded px-1.5 py-0.5">
+                    <span className="text-[10px] text-fg-faint border border-white/10 rounded px-1.5 py-0.5">
                       ↵
                     </span>
                   )}
@@ -126,7 +126,7 @@ const CommandPalette = React.memo(function CommandPalette() {
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2 border-t border-white/[0.06] flex gap-4 text-[10px] text-slate-600">
+            <div className="px-4 py-2 border-t border-white/[0.06] flex gap-4 text-[10px] text-fg-faint">
               <span><kbd className="border border-white/10 rounded px-1">↑↓</kbd> navigate</span>
               <span><kbd className="border border-white/10 rounded px-1">↵</kbd> select</span>
               <span><kbd className="border border-white/10 rounded px-1">esc</kbd> close</span>

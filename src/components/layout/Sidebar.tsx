@@ -137,21 +137,21 @@ function NavItem({ item, active, onClick }: { item: NavItemDef; active: boolean;
         'px-3 py-2 rounded-lg text-sm font-medium',
         'transition-colors duration-150 select-none text-left',
         active
-          ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'
-          : 'text-slate-500 hover:text-slate-300 hover:bg-white/[0.04] border border-transparent',
+          ? 'bg-accent/10 text-accent-text border border-accent/20'
+          : 'text-fg-muted hover:text-fg hover:bg-surface-2 border border-transparent',
       ].join(' ')}
     >
       {active && (
         <motion.span
           layoutId="sidebar-active-pill"
           transition={APP_SPRING}
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full bg-indigo-400"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full bg-accent-text"
         />
       )}
       <item.Icon
         size={16}
         strokeWidth={active ? 2 : 1.75}
-        className={active ? 'text-indigo-400 flex-shrink-0' : 'flex-shrink-0'}
+        className={active ? 'text-accent-text flex-shrink-0' : 'flex-shrink-0'}
       />
       <span className="hidden lg:block truncate">{item.label}</span>
     </motion.button>
@@ -175,18 +175,18 @@ const Sidebar = React.memo(function Sidebar({ activeView, onNavigate, onSearchOp
       className={[
         'hidden sm:flex flex-col flex-shrink-0',
         'w-16 lg:w-56',
-        'bg-[#08090d]',
-        'border-r border-slate-800/80',
+        'bg-surface-0',
+        'border-r border-border',
       ].join(' ')}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-3 py-5 border-b border-slate-800/60">
-        <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-sm font-bold flex-shrink-0">
-          ✦
+      <div className="flex items-center gap-2.5 px-3 py-5 border-b border-border">
+        <div className="w-8 h-8 rounded-card bg-accent flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+          U
         </div>
         <div className="hidden lg:block">
-          <div className="text-sm font-semibold text-slate-100 tracking-tight">Ultimate Life</div>
-          <div className="text-[10px] text-slate-600 -mt-0.5">Planner</div>
+          <div className="text-sm font-semibold text-fg tracking-tight">Ultimate Life</div>
+          <div className="text-[10px] text-fg-faint -mt-0.5">Planner</div>
         </div>
       </div>
 
@@ -203,7 +203,7 @@ const Sidebar = React.memo(function Sidebar({ activeView, onNavigate, onSearchOp
                   className={[
                     'hidden lg:flex items-center justify-between',
                     'px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider',
-                    'text-slate-600 hover:text-slate-400 transition-colors',
+                    'text-fg-faint hover:text-fg-muted transition-colors',
                   ].join(' ')}
                 >
                   <span>{group.label}</span>
@@ -246,15 +246,15 @@ const Sidebar = React.memo(function Sidebar({ activeView, onNavigate, onSearchOp
           onClick={onSearchOpen}
           className={[
             'w-full flex items-center gap-2 px-3 py-2',
-            'rounded-xl border border-slate-800',
-            'text-slate-600 text-xs',
-            'hover:text-slate-400 hover:border-slate-700',
+            'rounded-control border border-border',
+            'text-fg-muted text-xs',
+            'hover:text-fg-secondary hover:border-border-strong',
             'transition-colors duration-150',
           ].join(' ')}
         >
           <Search size={12} className="flex-shrink-0" />
           <span className="flex-1 text-left">Search...</span>
-          <kbd className="text-[10px] border border-slate-700 rounded px-1.5 py-0.5 text-slate-600">
+          <kbd className="text-[10px] border border-border-strong rounded px-1.5 py-0.5 text-fg-muted">
             ⌘K
           </kbd>
         </button>

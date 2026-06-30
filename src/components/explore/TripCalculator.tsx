@@ -56,7 +56,7 @@ const TripCalculator = React.memo(function TripCalculator({
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
         <Route size={16} className="text-emerald-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Fuel Cost Calculator</h3>
+        <h3 className="text-sm font-semibold text-fg-secondary">Fuel Cost Calculator</h3>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -85,10 +85,10 @@ const TripCalculator = React.memo(function TripCalculator({
       {/* City/Highway mix slider */}
       <div className="mt-4">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted">
             Driving Mix
           </span>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-fg-muted">
             {cityPercent}% city / {100 - cityPercent}% highway
           </span>
         </div>
@@ -98,9 +98,9 @@ const TripCalculator = React.memo(function TripCalculator({
           max={100}
           value={cityPercent}
           onChange={handleCityPct}
-          className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-slate-800 accent-indigo-500"
+          className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-surface-2 accent-accent"
         />
-        <div className="flex justify-between text-[10px] text-slate-600 mt-1">
+        <div className="flex justify-between text-[10px] text-fg-faint mt-1">
           <span>All Highway</span>
           <span>All City</span>
         </div>
@@ -125,7 +125,7 @@ const TripCalculator = React.memo(function TripCalculator({
             label="Trip MPG"
             value={formatNumber(result.effectiveMpg)}
             icon={<Fuel size={14} />}
-            color="text-indigo-400"
+            color="text-accent-text"
           />
           <ResultCard
             label="Gallons"
@@ -137,13 +137,13 @@ const TripCalculator = React.memo(function TripCalculator({
             label="CO2 (lbs)"
             value={formatNumber(result.co2Pounds, 0)}
             icon={<Leaf size={14} />}
-            color="text-slate-400"
+            color="text-fg-muted"
           />
         </motion.div>
       )}
 
       {!vehicleMpg && (
-        <p className="text-xs text-slate-600 mt-4 text-center">
+        <p className="text-xs text-fg-faint mt-4 text-center">
           Select a vehicle above to calculate fuel costs
         </p>
       )}
@@ -174,10 +174,10 @@ function ResultCard({
         : 'bg-white/[0.03] border border-white/5',
     ].join(' ')}>
       <span className={`${color}`}>{icon}</span>
-      <span className={`text-lg font-bold ${highlight ? 'text-emerald-300' : 'text-slate-100'}`}>
+      <span className={`text-lg font-bold ${highlight ? 'text-emerald-300' : 'text-fg'}`}>
         {value}
       </span>
-      <span className="text-[10px] uppercase tracking-widest text-slate-500">{label}</span>
+      <span className="text-[10px] uppercase tracking-widest text-fg-muted">{label}</span>
     </div>
   );
 }

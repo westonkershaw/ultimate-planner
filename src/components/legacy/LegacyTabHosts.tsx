@@ -20,7 +20,7 @@ const CommunityTab      = React.lazy(() => import('../community/CommunityTab'));
 function Loading() {
   return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-8 h-8 rounded-full border-2 border-indigo-500/30 border-t-indigo-400 animate-spin" />
+      <div className="w-8 h-8 rounded-full border-2 border-accent/30 border-t-accent-text animate-spin" />
     </div>
   );
 }

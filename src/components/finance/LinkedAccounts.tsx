@@ -101,7 +101,7 @@ export default function LinkedAccounts() {
 
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">
+      <h3 className="text-xs font-semibold uppercase tracking-widest text-fg-muted mb-2">
         Linked Accounts
       </h3>
       <AnimatePresence>
@@ -113,17 +113,17 @@ export default function LinkedAccounts() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={APP_SPRING}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.03] border border-slate-800/60"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.03] border border-border"
           >
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 flex items-center justify-center shrink-0">
-              <Building2 size={14} className="text-indigo-400" />
+            <div className="w-8 h-8 rounded-lg bg-accent/15 flex items-center justify-center shrink-0">
+              <Building2 size={14} className="text-accent-text" />
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-slate-200 truncate">{acct.bankName}</p>
-              <div className="flex items-center gap-2 text-[10px] text-slate-500">
+              <p className="text-sm text-fg-secondary truncate">{acct.bankName}</p>
+              <div className="flex items-center gap-2 text-[10px] text-fg-muted">
                 <span>{ACCOUNT_LABELS[acct.accountType] ?? acct.accountType}</span>
-                <span className="text-slate-700">|</span>
+                <span className="text-fg-faint">|</span>
                 <Clock size={10} className="inline" />
                 <span>{formatLastSynced(acct.lastSynced)}</span>
               </div>

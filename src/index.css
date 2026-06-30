@@ -1,50 +1,76 @@
 @import "tailwindcss";
 
-/* ── Design Tokens ─────────────────────────────────────────────────────────── */
+/* ── Design Tokens (Tailwind v4 @theme → utilities + CSS vars) ──────────────────
+   Single source of truth. Edit a value here and it cascades through every
+   `bg-surface-1`, `text-fg-muted`, `bg-accent`, `rounded-card`, … utility.
+   To re-skin the accent, change --color-accent / --color-accent-text only. */
+
+@theme {
+  /* Surfaces — solid, layered. Depth = layer + 1px border, never blur/glow. */
+  --color-surface-0: #0a0b0e;   /* page */
+  --color-surface-1: #141619;   /* card / raised */
+  --color-surface-2: #1b1e24;   /* hover / input / inset */
+  --color-surface-3: #23262d;   /* popover / active fill */
+
+  /* Borders */
+  --color-border:        #23262d;   /* default hairline */
+  --color-border-strong: #2f333b;   /* hover / emphasis */
+
+  /* Text ramp */
+  --color-fg:           #eceef2;   /* primary */
+  --color-fg-secondary: #c4cad4;   /* secondary */
+  --color-fg-muted:     #8b929e;   /* muted / captions */
+  --color-fg-faint:     #5b626d;   /* faint / disabled */
+
+  /* Accent — deep teal. Primary actions + active state only. */
+  --color-accent:       #0e9488;   /* solid fill */
+  --color-accent-hover: #12a899;
+  --color-accent-text:  #2dd4bf;   /* accent text / icons on dark */
+
+  /* Status — muted, never neon */
+  --color-success:      #41b27a;
+  --color-success-text: #4cc38a;
+  --color-warning:      #d9a441;
+  --color-warning-text: #e3b15a;
+  --color-danger:       #e2685f;
+  --color-danger-text:  #f08a82;
+
+  /* Radius — quiet + consistent */
+  --radius-control: 6px;    /* buttons, inputs, chips */
+  --radius-card:    8px;    /* cards, list groups */
+  --radius-panel:   12px;   /* modals, sheets */
+}
+
+/* ── Legacy monolith theme vars (App.jsx consumes these — keep until retired) ── */
 
 :root {
-  --color-surface:        #08090d;
-  --color-surface-raised: #0d0f17;
-  --color-surface-card:   rgba(15, 23, 42, 0.5);
-  --color-primary:        #6366f1;
-  --color-primary-hover:  #818cf8;
-  --color-primary-dim:    rgba(99, 102, 241, 0.15);
-  --color-border:         #1e293b;
-  --color-border-subtle:  rgba(255, 255, 255, 0.06);
-  --color-text:           #e2e8f0;
-  --color-text-muted:     #64748b;
-  --color-text-faint:     #334155;
-  --color-danger:         #f87171;
-  --color-danger-dim:     rgba(248, 113, 113, 0.15);
-  --color-success:        #34d399;
-  --color-success-dim:    rgba(52, 211, 153, 0.15);
-  --color-warning:        #fbbf24;
-  --color-warning-dim:    rgba(251, 191, 36, 0.15);
-  --radius-card:          12px;
-  --radius-btn:           10px;
-  --blur-glass:           blur(20px);
-  /* Theme colors (dark default) */
   --bg: #070d1a;
-  --card: rgba(15,23,42,0.6);
+  --card: rgba(15, 23, 42, 0.6);
   --text: #f1f5f9;
-  --text-muted: rgba(148,163,184,0.6);
-  --border: rgba(51,65,85,0.4);
+  --text-muted: rgba(148, 163, 184, 0.6);
+  --border: rgba(51, 65, 85, 0.4);
 }
 
 [data-theme="light"] {
+  /* New token light overrides */
+  --color-surface-0: #f7f8fa;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f1f3f5;
+  --color-surface-3: #e9ecef;
+  --color-border:        #e4e7eb;
+  --color-border-strong: #d4d8de;
+  --color-fg:           #111317;
+  --color-fg-secondary: #3a3f48;
+  --color-fg-muted:     #6b7280;
+  --color-fg-faint:     #9aa0ab;
+  --color-accent-text:  #0e9488;
+
+  /* Legacy light overrides */
   --bg: #f8fafc;
   --card: #ffffff;
   --text: #0f172a;
   --text-muted: #64748b;
-  --border: rgba(226,232,240,0.8);
-  --color-surface: #f8fafc;
-  --color-surface-raised: #f1f5f9;
-  --color-surface-card: rgba(255, 255, 255, 0.9);
-  --color-border: #e2e8f0;
-  --color-border-subtle: rgba(0, 0, 0, 0.06);
-  --color-text: #0f172a;
-  --color-text-muted: #64748b;
-  --color-text-faint: #94a3b8;
+  --border: rgba(226, 232, 240, 0.8);
 }
 
 /* ── Reset ─────────────────────────────────────────────────────────────────── */
@@ -55,8 +81,8 @@
 
 html, body {
   height: 100%;
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: var(--color-surface-0);
+  color: var(--color-fg);
   font-family: Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -93,7 +119,7 @@ html, body {
 /* ── Accessibility: placeholder contrast ───────────────────────────────────── */
 
 ::placeholder {
-  color: rgba(148, 163, 184, 0.6) !important;
+  color: var(--color-fg-muted) !important;
 }
 
 /* ── Input resets ──────────────────────────────────────────────────────────── */
@@ -107,19 +133,10 @@ input[type="number"]::-webkit-outer-spin-button {
   opacity: 0.3;
 }
 input[type="range"] {
-  accent-color: var(--color-primary);
+  accent-color: var(--color-accent);
   cursor: pointer;
 }
 select option {
-  background: #0f1829;
-  color: #e2e8f0;
-}
-
-/* ── Glass card base ───────────────────────────────────────────────────────── */
-
-.glass {
-  background: var(--color-surface-card);
-  backdrop-filter: var(--blur-glass);
-  -webkit-backdrop-filter: var(--blur-glass);
-  border: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-2);
+  color: var(--color-fg);
 }

@@ -16,7 +16,7 @@ const CATEGORY_OPTIONS: { id: TransactionCategory; label: string }[] = [
 ];
 
 const COLOR_OPTIONS = [
-  '#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+  '#14b8a6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
   '#ec4899', '#3b82f6', '#14b8a6', '#f97316', '#64748b',
 ];
 
@@ -39,7 +39,7 @@ export default function EnvelopeFormModal({
     initial?.mappedCategories ?? [],
   );
   const [keywords, setKeywords] = useState(initial?.keywords?.join(', ') ?? '');
-  const [color, setColor] = useState(initial?.color ?? '#6366f1');
+  const [color, setColor] = useState(initial?.color ?? '#14b8a6');
   const [rollover, setRollover] = useState(initial?.rollover ?? false);
 
   const toggleCategory = useCallback((cat: TransactionCategory) => {
@@ -86,7 +86,7 @@ export default function EnvelopeFormModal({
 
         {/* Category mapping */}
         <div>
-          <div className="text-xs font-semibold text-slate-300 mb-2">
+          <div className="text-xs font-semibold text-fg-secondary mb-2">
             Linked Categories
           </div>
           <div className="flex flex-wrap gap-2">
@@ -97,8 +97,8 @@ export default function EnvelopeFormModal({
                 onClick={() => toggleCategory(id)}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                   categories.includes(id)
-                    ? 'bg-indigo-500/25 text-indigo-300 border border-indigo-500/40'
-                    : 'bg-white/5 text-slate-400 border border-slate-700/50 hover:bg-white/10'
+                    ? 'bg-accent/25 text-accent-text border border-accent/40'
+                    : 'bg-white/5 text-fg-muted border border-border-strong hover:bg-white/10'
                 }`}
               >
                 {label}
@@ -116,7 +116,7 @@ export default function EnvelopeFormModal({
 
         {/* Color picker */}
         <div>
-          <div className="text-xs font-semibold text-slate-300 mb-2">Color</div>
+          <div className="text-xs font-semibold text-fg-secondary mb-2">Color</div>
           <div className="flex gap-2">
             {COLOR_OPTIONS.map((c) => (
               <button
@@ -143,7 +143,7 @@ export default function EnvelopeFormModal({
             aria-checked={rollover}
             onClick={() => setRollover(!rollover)}
             className={`relative w-10 h-5 rounded-full transition-colors ${
-              rollover ? 'bg-indigo-500' : 'bg-slate-700'
+              rollover ? 'bg-accent' : 'bg-surface-3'
             }`}
           >
             <span
@@ -152,7 +152,7 @@ export default function EnvelopeFormModal({
               }`}
             />
           </button>
-          <span className="text-xs text-slate-300">
+          <span className="text-xs text-fg-secondary">
             Roll unspent budget to next month
           </span>
         </label>

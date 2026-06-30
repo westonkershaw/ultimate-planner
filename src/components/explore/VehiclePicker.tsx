@@ -143,19 +143,19 @@ const VehiclePicker = React.memo(function VehiclePicker({
       <Card className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center flex-shrink-0">
-              <Car size={18} className="text-indigo-400" />
+            <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/25 flex items-center justify-center flex-shrink-0">
+              <Car size={18} className="text-accent-text" />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-slate-100 truncate">
+              <p className="text-sm font-semibold text-fg truncate">
                 {vehicle.year} {vehicle.make} {vehicle.model}
               </p>
-              <p className="text-xs text-slate-500 truncate">{vehicle.optionLabel}</p>
+              <p className="text-xs text-fg-muted truncate">{vehicle.optionLabel}</p>
             </div>
           </div>
           <button
             onClick={onClear}
-            className="p-1.5 rounded-lg text-slate-600 hover:text-slate-400 hover:bg-white/5 transition-colors"
+            className="p-1.5 rounded-lg text-fg-faint hover:text-fg-muted hover:bg-white/5 transition-colors"
             aria-label="Remove vehicle"
           >
             <X size={14} />
@@ -181,12 +181,12 @@ const VehiclePicker = React.memo(function VehiclePicker({
   return (
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
-        <Car size={16} className="text-indigo-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Select Vehicle</h3>
+        <Car size={16} className="text-accent-text" />
+        <h3 className="text-sm font-semibold text-fg-secondary">Select Vehicle</h3>
         <AnimatePresence>
           {loadingStep && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <Loader2 size={12} className="text-indigo-400 animate-spin" />
+              <Loader2 size={12} className="text-accent-text animate-spin" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -233,7 +233,7 @@ const VehiclePicker = React.memo(function VehiclePicker({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="flex items-center gap-2 mt-3 text-xs text-slate-500"
+            className="flex items-center gap-2 mt-3 text-xs text-fg-muted"
           >
             <Loader2 size={12} className="animate-spin" />
             Loading vehicle data...
@@ -249,18 +249,18 @@ const VehiclePicker = React.memo(function VehiclePicker({
 function MpgBadge({ label, value, icon }: { label: string; value: number; icon: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
-      <span className="text-[10px] uppercase tracking-widest text-slate-500 flex items-center gap-1">
+      <span className="text-[10px] uppercase tracking-widest text-fg-muted flex items-center gap-1">
         {icon} {label}
       </span>
-      <span className="text-lg font-bold text-slate-100">{value}</span>
-      <span className="text-[10px] text-slate-600">mpg</span>
+      <span className="text-lg font-bold text-fg">{value}</span>
+      <span className="text-[10px] text-fg-faint">mpg</span>
     </div>
   );
 }
 
 function InfoChip({ label }: { label: string }) {
   return (
-    <span className="text-[10px] px-2 py-1 rounded-lg bg-white/5 border border-white/5 text-slate-400">
+    <span className="text-[10px] px-2 py-1 rounded-lg bg-white/5 border border-white/5 text-fg-muted">
       {label}
     </span>
   );

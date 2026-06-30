@@ -10,7 +10,7 @@ const FONT_HEAD = "'Syne',serif";
 
 const QUALITY_EMOJI = ['', '\uD83D\uDE34', '\uD83D\uDCA4', '\uD83D\uDE10', '\uD83D\uDE0A', '\u2B50'];
 const QUALITY_LABEL = ['', 'Poor', 'Fair', 'Okay', 'Good', 'Great'];
-const QUALITY_COLOR = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#6366f1'];
+const QUALITY_COLOR = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#14b8a6'];
 
 const DUR_COLOR = (h) => {
   if (h < 6) return '#ef4444';
@@ -44,7 +44,7 @@ const INPUT_STYLE = {
 };
 
 const BTN_PRIMARY = {
-  background: 'linear-gradient(135deg,#6366f1,#818cf8)',
+  background: 'linear-gradient(135deg,#14b8a6,#2dd4bf)',
   border: 'none', borderRadius: 10, color: '#fff',
   padding: '11px', cursor: 'pointer', fontSize: 13,
   fontWeight: 700, fontFamily: FONT, width: '100%',
@@ -248,13 +248,13 @@ function SleepBarChart({ entries, range }) {
           {avg > 0 && (
             <line
               x1={PAD_L} y1={toY(avg)} x2={PAD_L + chartW} y2={toY(avg)}
-              stroke="#818cf8" strokeWidth="1.5" strokeDasharray="6,4" opacity="0.7"
+              stroke="#2dd4bf" strokeWidth="1.5" strokeDasharray="6,4" opacity="0.7"
             />
           )}
           {avg > 0 && (
             <text
               x={PAD_L + chartW + 2} y={toY(avg) + 3}
-              fontSize="7" fill="#818cf8" opacity="0.9" fontFamily={FONT}
+              fontSize="7" fill="#2dd4bf" opacity="0.9" fontFamily={FONT}
             >
               avg
             </text>
@@ -302,7 +302,7 @@ function SleepBarChart({ entries, range }) {
           { color: '#22c55e', label: 'Good (4-5)' },
           { color: '#eab308', label: 'Okay (3)' },
           { color: '#ef4444', label: 'Poor (1-2)' },
-          { color: '#818cf8', label: 'Average', dash: true },
+          { color: '#2dd4bf', label: 'Average', dash: true },
         ].map(({ color, label, dash }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <div style={{
@@ -518,9 +518,9 @@ export default function SleepTrends() {
             key={r}
             onClick={() => setRange(r)}
             style={{
-              background: range === r ? 'rgba(99,102,241,0.25)' : 'rgba(255,255,255,0.04)',
+              background: range === r ? 'rgba(45, 212, 191,0.25)' : 'rgba(255,255,255,0.04)',
               color: range === r ? '#a5b4fc' : 'rgba(255,255,255,0.5)',
-              border: `1px solid ${range === r ? 'rgba(99,102,241,0.35)' : 'rgba(255,255,255,0.07)'}`,
+              border: `1px solid ${range === r ? 'rgba(45, 212, 191,0.35)' : 'rgba(255,255,255,0.07)'}`,
               padding: '6px 14px', borderRadius: 20, fontSize: 13,
               fontWeight: 700, cursor: 'pointer', fontFamily: FONT,
               transition: 'all 0.2s',

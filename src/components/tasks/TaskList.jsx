@@ -5,6 +5,7 @@ import React, {
   useRef,
 } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Inbox } from 'lucide-react';
 import TaskItem from './TaskItem';
 
 // ── Mock data for standalone testing ──────────────────────────────────────
@@ -53,9 +54,9 @@ function LockedItem() {
         display: 'flex',
         alignItems: 'center',
         gap: 10,
-        background: 'rgba(255,255,255,0.02)',
-        border: '1px dashed rgba(255,255,255,0.07)',
-        borderRadius: 12,
+        background: 'var(--color-surface-1)',
+        border: '1px dashed var(--color-border)',
+        borderRadius: 8,
         padding: '12px 14px',
         cursor: 'not-allowed',
         opacity: 0.6,
@@ -67,11 +68,11 @@ function LockedItem() {
           width: 18,
           height: 18,
           borderRadius: 6,
-          border: '2px solid rgba(100,116,139,0.3)',
+          border: '2px solid var(--color-border-strong)',
           flexShrink: 0,
         }}
       />
-      <span style={{ fontSize: 14, color: 'rgba(148,163,184,0.5)', flex: 1 }}>
+      <span style={{ fontSize: 14, color: 'var(--color-fg-muted)', flex: 1 }}>
         Recurring Tasks
       </span>
       <span
@@ -79,8 +80,8 @@ function LockedItem() {
           fontSize: 10,
           fontWeight: 600,
           letterSpacing: '0.04em',
-          color: '#818cf8',
-          background: 'rgba(99,102,241,0.15)',
+          color: 'var(--color-accent-text)',
+          background: 'color-mix(in srgb, var(--color-accent) 15%, transparent)',
           borderRadius: 6,
           padding: '2px 7px',
         }}
@@ -107,22 +108,12 @@ function EmptyState({ prefersReduced }) {
         gap: 8,
       }}
     >
-      <span
-        style={{
-          fontSize: 28,
-          color: 'rgba(148,163,184,0.2)',
-          lineHeight: 1,
-          userSelect: 'none',
-        }}
-        aria-hidden="true"
-      >
-        ✦
-      </span>
+      <Inbox size={28} className="text-fg-faint" aria-hidden="true" />
       <p
         style={{
           fontSize: 15,
           fontWeight: 600,
-          color: 'rgba(148,163,184,0.5)',
+          color: 'var(--color-fg-muted)',
           margin: 0,
         }}
       >
@@ -131,7 +122,7 @@ function EmptyState({ prefersReduced }) {
       <p
         style={{
           fontSize: 13,
-          color: 'rgba(100,116,139,0.5)',
+          color: 'var(--color-fg-faint)',
           margin: 0,
         }}
       >
@@ -263,10 +254,10 @@ const TaskList = React.memo(function TaskList({
           position: 'sticky',
           top: 0,
           zIndex: 10,
-          background: 'rgba(8,9,13,0.85)',
+          background: 'color-mix(in srgb, var(--color-surface-0) 85%, transparent)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid var(--color-border)',
           padding: '12px 0 12px 0',
           marginBottom: 8,
         }}
@@ -284,8 +275,8 @@ const TaskList = React.memo(function TaskList({
             <h2
               style={{
                 fontSize: 16,
-                fontWeight: 700,
-                color: '#e2e8f0',
+                fontWeight: 600,
+                color: 'var(--color-fg)',
                 margin: 0,
                 lineHeight: 1.2,
               }}
@@ -295,7 +286,7 @@ const TaskList = React.memo(function TaskList({
             <span
               style={{
                 fontSize: 12,
-                color: 'rgba(100,116,139,0.7)',
+                color: 'var(--color-fg-muted)',
                 fontWeight: 400,
               }}
             >
@@ -321,20 +312,20 @@ const TaskList = React.memo(function TaskList({
               style={{
                 width: '100%',
                 boxSizing: 'border-box',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 8,
+                background: 'var(--color-surface-2)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 6,
                 padding: '7px 12px',
                 fontSize: 13,
-                color: '#e2e8f0',
+                color: 'var(--color-fg)',
                 outline: 'none',
                 transition: 'border-color 0.15s ease',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(99,102,241,0.5)';
+                e.currentTarget.style.borderColor = 'var(--color-accent)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                e.currentTarget.style.borderColor = 'var(--color-border)';
               }}
             />
           </motion.div>
@@ -385,7 +376,7 @@ const TaskList = React.memo(function TaskList({
               border: 'none',
               cursor: 'pointer',
               padding: '4px 0',
-              color: 'rgba(100,116,139,0.6)',
+              color: 'var(--color-fg-muted)',
               fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.04em',
@@ -394,10 +385,10 @@ const TaskList = React.memo(function TaskList({
               marginBottom: 6,
             }}
             onFocus={(e) => {
-              e.currentTarget.style.color = 'rgba(148,163,184,0.8)';
+              e.currentTarget.style.color = 'var(--color-fg-secondary)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.color = 'rgba(100,116,139,0.6)';
+              e.currentTarget.style.color = 'var(--color-fg-muted)';
             }}
           >
             <Chevron open={completedOpen} prefersReduced={prefersReduced} />

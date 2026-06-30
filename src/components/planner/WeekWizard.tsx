@@ -75,21 +75,21 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        className="bg-[#0d1424] rounded-2xl border border-indigo-500/20 w-full max-w-[680px] max-h-[92vh] overflow-hidden flex flex-col"
-        style={{ boxShadow: '0 0 80px rgba(99,102,241,0.1)' }}
+        className="bg-[#0d1424] rounded-panel border border-accent/20 w-full max-w-[680px] max-h-[92vh] overflow-hidden flex flex-col"
+        style={{ boxShadow: '0 0 80px rgba(45, 212, 191,0.1)' }}
       >
         {/* Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-slate-800/40 flex-shrink-0 space-y-3">
+        <div className="px-6 pt-5 pb-4 border-b border-border flex-shrink-0 space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[11px] text-indigo-400 uppercase tracking-[2px] font-bold mb-0.5">
+              <div className="text-[11px] text-accent-text uppercase tracking-[2px] font-bold mb-0.5">
                 {step === 0
                   ? 'Week Overview'
                   : step <= 7
                     ? `Day ${step} of 7`
                     : 'Week Summary'}
               </div>
-              <h2 className="text-xl font-bold text-slate-100 font-[Syne]">
+              <h2 className="text-xl font-bold text-fg font-[Syne]">
                 {step === 0
                   ? formatWeekRange(mondayDate)
                   : step <= 7
@@ -99,7 +99,7 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
             </div>
             <button
               onClick={onClose}
-              className="text-slate-600 hover:text-slate-400 transition-colors p-1"
+              className="text-fg-faint hover:text-fg-muted transition-colors p-1"
               aria-label="Close"
             >
               <X size={20} />
@@ -107,10 +107,10 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
           </div>
 
           {/* Progress bar */}
-          <div className="bg-slate-900/80 rounded-full h-1.5 overflow-hidden">
+          <div className="bg-surface-1 rounded-full h-1.5 overflow-hidden">
             <motion.div
               className="h-full rounded-full"
-              style={{ background: 'linear-gradient(90deg, #6366f1, #34d399)' }}
+              style={{ background: 'linear-gradient(90deg, #14b8a6, #34d399)' }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
             />
@@ -123,8 +123,8 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
               className={[
                 'px-2.5 py-1 rounded-full text-[11px] font-medium transition-all flex-shrink-0',
                 step === 0
-                  ? 'bg-indigo-500 text-white'
-                  : 'bg-white/5 text-slate-500 hover:text-slate-300',
+                  ? 'bg-accent text-white'
+                  : 'bg-white/5 text-fg-muted hover:text-fg-secondary',
               ].join(' ')}
             >
               Overview
@@ -139,8 +139,8 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
                   className={[
                     'px-2.5 py-1 rounded-full text-[11px] font-medium transition-all flex-shrink-0',
                     step === i + 1
-                      ? 'bg-indigo-500 text-white'
-                      : 'bg-white/5 text-slate-500 hover:text-slate-300',
+                      ? 'bg-accent text-white'
+                      : 'bg-white/5 text-fg-muted hover:text-fg-secondary',
                   ].join(' ')}
                 >
                   {d} {filled ? <Check size={10} className="inline ml-0.5" /> : ''}
@@ -153,7 +153,7 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
                 'px-2.5 py-1 rounded-full text-[11px] font-medium transition-all flex-shrink-0',
                 step === 8
                   ? 'bg-emerald-500 text-white'
-                  : 'bg-white/5 text-slate-500 hover:text-slate-300',
+                  : 'bg-white/5 text-fg-muted hover:text-fg-secondary',
               ].join(' ')}
             >
               Summary
@@ -190,7 +190,7 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
         </div>
 
         {/* Footer nav */}
-        <div className="px-6 py-4 border-t border-slate-800/40 flex items-center justify-between flex-shrink-0 bg-[#08090d]/60">
+        <div className="px-6 py-4 border-t border-border flex items-center justify-between flex-shrink-0 bg-[#08090d]/60">
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={goPrev}
@@ -198,15 +198,15 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
             className={[
               'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all',
               step === 0
-                ? 'opacity-30 cursor-not-allowed text-slate-500'
-                : 'bg-white/5 text-slate-300 hover:bg-white/10',
+                ? 'opacity-30 cursor-not-allowed text-fg-muted'
+                : 'bg-white/5 text-fg-secondary hover:bg-white/10',
             ].join(' ')}
           >
             <ChevronLeft size={16} />
             {step === 1 ? 'Overview' : step > 1 && step <= 7 ? DAY_SHORT[step - 2] : 'Back'}
           </motion.button>
 
-          <span className="text-xs text-slate-600">
+          <span className="text-xs text-fg-faint">
             {step >= 1 && step <= 7
               ? `${weekPlans[step - 1]?.topPriorities?.length ?? 0} priorities`
               : ''}
@@ -225,7 +225,7 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={goNext}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/30 transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-accent/20 text-accent-text border border-accent/30 hover:bg-accent/30 transition-all"
             >
               {step === 0 ? 'Start Planning' : step < 7 ? DAY_SHORT[step] : 'Summary'}
               <ChevronRight size={16} />
@@ -252,8 +252,8 @@ function SummaryStep({ mondayDate, weekPlans }: SummaryStepProps) {
     <div className="space-y-5">
       <div className="text-center space-y-2">
         <div className="text-4xl">&#127775;</div>
-        <h3 className="text-lg font-bold text-slate-100 font-[Syne]">Week Planned</h3>
-        <p className="text-xs text-slate-500">
+        <h3 className="text-lg font-bold text-fg font-[Syne]">Week Planned</h3>
+        <p className="text-xs text-fg-muted">
           {filledDays} day{filledDays !== 1 ? 's' : ''} with intentions &middot; {totalPriorities} priorities set
         </p>
       </div>
@@ -265,24 +265,24 @@ function SummaryStep({ mondayDate, weekPlans }: SummaryStepProps) {
           return (
             <div
               key={date}
-              className="flex items-start gap-3 p-3 rounded-xl border border-slate-800/40 bg-slate-900/30"
+              className="flex items-start gap-3 p-3 rounded-xl border border-border bg-surface-1"
             >
               <div className="w-10 text-center flex-shrink-0">
-                <span className="text-[10px] font-bold text-slate-500 uppercase">{DAY_SHORT[i]}</span>
+                <span className="text-[10px] font-bold text-fg-muted uppercase">{DAY_SHORT[i]}</span>
               </div>
               <div className="flex-1 min-w-0">
                 {plan?.intention ? (
                   <div className="flex items-start gap-1.5">
-                    <Sparkles size={11} className="text-indigo-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-slate-300 truncate">{plan.intention}</span>
+                    <Sparkles size={11} className="text-accent-text mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-fg-secondary truncate">{plan.intention}</span>
                   </div>
                 ) : (
-                  <span className="text-sm text-slate-700 italic">No intention</span>
+                  <span className="text-sm text-fg-faint italic">No intention</span>
                 )}
                 {(plan?.topPriorities?.length ?? 0) > 0 && (
                   <div className="flex items-center gap-1 mt-1">
-                    <Target size={10} className="text-indigo-400/60" />
-                    <span className="text-[10px] text-slate-500">
+                    <Target size={10} className="text-accent-text/60" />
+                    <span className="text-[10px] text-fg-muted">
                       {plan!.topPriorities.length} priorit{plan!.topPriorities.length === 1 ? 'y' : 'ies'}
                     </span>
                   </div>
@@ -294,8 +294,8 @@ function SummaryStep({ mondayDate, weekPlans }: SummaryStepProps) {
                     key={lvl}
                     className={`w-1.5 h-4 rounded-full ${
                       lvl <= (plan?.energyLevel ?? 0)
-                        ? 'bg-indigo-400/60'
-                        : 'bg-slate-800/40'
+                        ? 'bg-accent-hover/60'
+                        : 'bg-surface-2'
                     }`}
                   />
                 ))}

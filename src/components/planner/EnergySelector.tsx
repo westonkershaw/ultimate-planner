@@ -16,7 +16,7 @@ const ENERGY_LEVELS = [
 export default function EnergySelector({ value, onChange }: EnergySelectorProps) {
   return (
     <div className="space-y-2">
-      <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Energy Level</label>
+      <label className="text-xs font-medium text-fg-muted uppercase tracking-wider">Energy Level</label>
       <div className="flex gap-2">
         {ENERGY_LEVELS.map(({ level, emoji, label }) => (
           <motion.button
@@ -26,12 +26,12 @@ export default function EnergySelector({ value, onChange }: EnergySelectorProps)
             className={[
               'flex flex-col items-center gap-1 p-2 rounded-xl border transition-all flex-1',
               value === level
-                ? 'bg-indigo-500/15 border-indigo-500/40 scale-105'
-                : 'bg-slate-900/30 border-slate-800/40 hover:border-slate-700',
+                ? 'bg-accent/15 border-accent/40 scale-105'
+                : 'bg-surface-1 border-border hover:border-border-strong',
             ].join(' ')}
           >
             <span className="text-lg">{emoji}</span>
-            <span className="text-[9px] text-slate-500">{label}</span>
+            <span className="text-[9px] text-fg-muted">{label}</span>
           </motion.button>
         ))}
       </div>

@@ -14,7 +14,7 @@ export default function CaptureButton({ onClick }: CaptureButtonProps) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
-      className="fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-40 w-12 h-12 rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 flex items-center justify-center hover:bg-indigo-400 transition-colors"
+      className="fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-40 w-12 h-12 rounded-full bg-accent text-white shadow-lg flex items-center justify-center hover:bg-accent-hover transition-colors"
       aria-label="Quick capture"
     >
       <Plus size={22} strokeWidth={2.5} />

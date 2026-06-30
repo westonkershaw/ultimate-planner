@@ -8,7 +8,7 @@ const S = {
   card: { background: "rgba(15,23,42,0.8)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: 18, marginBottom: 14 },
   label: { fontSize: 10, color: "rgba(148,163,184,0.5)", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 6 },
   input: { width: "100%", background: "rgba(15,23,42,0.9)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "9px 12px", color: "#f1f5f9", fontSize: 13, fontFamily: "'DM Sans',sans-serif", boxSizing: "border-box", outline: "none" },
-  btn: { background: "#6366f1", border: "none", borderRadius: 10, color: "#fff", padding: "9px 18px", cursor: "pointer", fontSize: 13, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" },
+  btn: { background: "#14b8a6", border: "none", borderRadius: 10, color: "#fff", padding: "9px 18px", cursor: "pointer", fontSize: 13, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" },
   row: { display: "flex", gap: 10, alignItems: "flex-end" },
   statBox: { flex: 1, background: "rgba(15,23,42,0.6)", borderRadius: 12, padding: "10px 12px", border: "1px solid rgba(255,255,255,0.05)" },
   statVal: { fontSize: 18, fontWeight: 800, color: "#f1f5f9", fontFamily: "'DM Sans',sans-serif" },
@@ -92,12 +92,12 @@ function WeightTab({ data, upd, addToast }) {
           <div style={S.label}>Last {last14.length} Entries</div>
           <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 48 }}>
             {weights.map((w, i) => (
-              <div key={i} title={`${last14[i].date}: ${w} lbs`} style={{ flex: 1, borderRadius: "3px 3px 0 0", background: `rgba(99,102,241,${0.35 + ((w - mn) / rng) * 0.65})`, height: `${Math.max(6, Math.round(((w - mn) / rng) * 40) + 8)}px`, minWidth: 0 }} />
+              <div key={i} title={`${last14[i].date}: ${w} lbs`} style={{ flex: 1, borderRadius: "3px 3px 0 0", background: `rgba(45, 212, 191,${0.35 + ((w - mn) / rng) * 0.65})`, height: `${Math.max(6, Math.round(((w - mn) / rng) * 40) + 8)}px`, minWidth: 0 }} />
             ))}
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: "rgba(100,116,139,0.6)", marginTop: 4 }}>
             <span>{last14[0]?.date?.slice(5)}</span>
-            <span style={{ color: "#818cf8", fontWeight: 700 }}>{weights[weights.length - 1]} lbs</span>
+            <span style={{ color: "#2dd4bf", fontWeight: 700 }}>{weights[weights.length - 1]} lbs</span>
             <span>{last14[last14.length - 1]?.date?.slice(5)}</span>
           </div>
         </div>
@@ -168,7 +168,7 @@ function BodyFatTab({ data, upd, addToast }) {
             </div>
           ))}
         </div>
-        <button style={{ ...S.btn, background: "rgba(99,102,241,0.15)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)" }} onClick={calcNavy}>Calculate →</button>
+        <button style={{ ...S.btn, background: "rgba(45, 212, 191,0.15)", color: "#2dd4bf", border: "1px solid rgba(45, 212, 191,0.25)" }} onClick={calcNavy}>Calculate →</button>
       </div>
       {current != null && (
         <div style={{ ...S.card, textAlign: "center" }}>
@@ -240,7 +240,7 @@ function OneRMTab({ data }) {
               <div style={{ fontSize: 11, color: "rgba(100,116,139,0.6)", marginTop: 2 }}>{rec.date ? new Date(rec.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "—"}</div>
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 20, fontWeight: 900, color: "#818cf8", fontFamily: "'DM Sans',sans-serif" }}>{rec.best}</div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: "#2dd4bf", fontFamily: "'DM Sans',sans-serif" }}>{rec.best}</div>
               <div style={{ fontSize: 10, color: "rgba(148,163,184,0.4)" }}>est. 1RM lbs</div>
             </div>
           </div>
@@ -325,7 +325,7 @@ export default function BodyMetrics({ data, upd, addToast }) {
     <div style={{ fontFamily: "'DM Sans',sans-serif" }}>
       <div style={{ display: "flex", gap: 6, marginBottom: 18, flexWrap: "wrap" }}>
         {TABS.map(([id, lbl]) => (
-          <button key={id} onClick={() => setTab(id)} style={{ padding: "7px 16px", borderRadius: 20, border: "none", background: tab === id ? "#6366f1" : "rgba(15,23,42,0.6)", color: tab === id ? "#fff" : "rgba(148,163,184,0.6)", cursor: "pointer", fontSize: 12, fontWeight: tab === id ? 700 : 400, fontFamily: "'DM Sans',sans-serif", transition: "all 0.15s" }}>
+          <button key={id} onClick={() => setTab(id)} style={{ padding: "7px 16px", borderRadius: 20, border: "none", background: tab === id ? "#14b8a6" : "rgba(15,23,42,0.6)", color: tab === id ? "#fff" : "rgba(148,163,184,0.6)", cursor: "pointer", fontSize: 12, fontWeight: tab === id ? 700 : 400, fontFamily: "'DM Sans',sans-serif", transition: "all 0.15s" }}>
             {lbl}
           </button>
         ))}

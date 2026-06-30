@@ -7,7 +7,7 @@ export default function BankLinkModal({ onClose, onImport, addToast }) {
   const [txCount, setTxCount] = useState(0);
   const S = {
     overlay: { position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(7,9,13,0.92)', backdropFilter: 'blur(20px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 },
-    card: { background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 20, padding: '32px 28px', maxWidth: 420, width: '100%' },
+    card: { background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(45, 212, 191,0.2)', borderRadius: 20, padding: '32px 28px', maxWidth: 420, width: '100%' },
     title: { fontFamily: "'Syne',serif", fontSize: 22, fontWeight: 800, color: '#f1f5f9', margin: '0 0 8px' },
     sub: { fontSize: 13, color: 'rgba(100,116,139,0.85)', margin: '0 0 24px', lineHeight: 1.6 },
     btn: (bg, color) => ({ background: bg, border: 'none', borderRadius: 12, padding: '12px 20px', color, fontFamily: "'DM Sans',sans-serif", fontSize: 14, fontWeight: 700, cursor: 'pointer', width: '100%', marginTop: 8 }),
@@ -96,13 +96,13 @@ export default function BankLinkModal({ onClose, onImport, addToast }) {
                   { icon: '🏷️', text: 'Auto-categorizes spending' },
                   { icon: '🔄', text: 'Re-sync anytime from Finance settings' },
                 ].map(({ icon, text }) => (
-                  <div key={text} style={{ display: 'flex', gap: 10, alignItems: 'center', padding: '8px 12px', background: 'rgba(99,102,241,0.06)', borderRadius: 10 }}>
+                  <div key={text} style={{ display: 'flex', gap: 10, alignItems: 'center', padding: '8px 12px', background: 'rgba(45, 212, 191,0.06)', borderRadius: 10 }}>
                     <span style={{ fontSize: 18 }}>{icon}</span>
                     <span style={{ fontSize: 13, color: '#cbd5e1' }}>{text}</span>
                   </div>
                 ))}
               </div>
-              <button style={S.btn('#6366f1', '#fff')} onClick={startLink}>Connect Bank Account →</button>
+              <button style={S.btn('#14b8a6', '#fff')} onClick={startLink}>Connect Bank Account →</button>
               <button style={{ ...S.btn('transparent', 'rgba(100,116,139,0.6)'), border: '1px solid rgba(51,65,85,0.4)', marginTop: 8 }} onClick={onClose}>Not now</button>
             </motion.div>
           )}
@@ -128,7 +128,7 @@ export default function BankLinkModal({ onClose, onImport, addToast }) {
                   <span style={{ color: '#34d399', fontWeight: 700 }}>${(a.balances?.current || 0).toLocaleString()}</span>
                 </div>
               ))}
-              <button style={{ ...S.btn('#6366f1', '#fff'), marginTop: 16 }} onClick={onClose}>Done →</button>
+              <button style={{ ...S.btn('#14b8a6', '#fff'), marginTop: 16 }} onClick={onClose}>Done →</button>
             </motion.div>
           )}
         </AnimatePresence>

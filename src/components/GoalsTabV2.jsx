@@ -37,22 +37,22 @@ const STYLES = {
   header: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 20, flexWrap: "wrap" },
   h1: { fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: 0, fontFamily: "'Syne',serif" },
   sub: { fontSize: 12, color: "rgba(148,163,184,0.75)", marginTop: 4 },
-  betaBadge: { display: "inline-block", marginLeft: 8, padding: "2px 8px", borderRadius: 999, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: "#a5b4fc", fontSize: 10, fontWeight: 700, verticalAlign: "middle" },
-  primaryBtn: { background: "linear-gradient(135deg,#6366f1,#8b5cf6)", border: "none", borderRadius: 10, color: "#fff", padding: "9px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" },
+  betaBadge: { display: "inline-block", marginLeft: 8, padding: "2px 8px", borderRadius: 999, background: "rgba(45, 212, 191,0.15)", border: "1px solid rgba(45, 212, 191,0.4)", color: "#a5b4fc", fontSize: 10, fontWeight: 700, verticalAlign: "middle" },
+  primaryBtn: { background: "linear-gradient(135deg,#14b8a6,#8b5cf6)", border: "none", borderRadius: 10, color: "#fff", padding: "9px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" },
   card: { background: "rgba(15,23,42,0.6)", border: "1px solid rgba(51,65,85,0.5)", borderRadius: 14, padding: 16, marginBottom: 12 },
   modalBackdrop: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 },
-  modal: { background: "#0f172a", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 16, padding: 24, maxWidth: 480, width: "100%", maxHeight: "90vh", overflowY: "auto" },
+  modal: { background: "#0f172a", border: "1px solid rgba(45, 212, 191,0.3)", borderRadius: 16, padding: 24, maxWidth: 480, width: "100%", maxHeight: "90vh", overflowY: "auto" },
   label: { display: "block", fontSize: 11, fontWeight: 600, color: "rgba(148,163,184,0.8)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.5px" },
   input: { width: "100%", background: "rgba(8,9,13,0.8)", border: "1px solid rgba(51,65,85,0.6)", borderRadius: 8, color: "#f1f5f9", padding: "10px 12px", fontSize: 14, outline: "none", boxSizing: "border-box", fontFamily: "'DM Sans',sans-serif" },
   pill: (active, color) => ({ padding: "5px 12px", borderRadius: 999, fontSize: 11, fontWeight: active ? 700 : 500, cursor: "pointer", border: `1px solid ${active ? color : "rgba(255,255,255,0.1)"}`, background: active ? `${color}22` : "transparent", color: active ? color : "rgba(148,163,184,0.75)" }),
-  ghostBtn: { background: "transparent", border: "1px solid rgba(99,102,241,0.4)", borderRadius: 8, color: "#a5b4fc", padding: "6px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer" },
+  ghostBtn: { background: "transparent", border: "1px solid rgba(45, 212, 191,0.4)", borderRadius: 8, color: "#a5b4fc", padding: "6px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer" },
   dangerBtn: { background: "transparent", border: "1px solid rgba(248,113,113,0.35)", borderRadius: 8, color: "#f87171", padding: "5px 10px", fontSize: 11, fontWeight: 600, cursor: "pointer" },
 };
 
 function PaceBadge({ pace }) {
   const map = {
     "ahead":    { color: "#34c98a", bg: "rgba(52,201,138,0.12)", label: "Ahead of pace" },
-    "on-track": { color: "#a5b4fc", bg: "rgba(99,102,241,0.12)", label: "On track" },
+    "on-track": { color: "#a5b4fc", bg: "rgba(45, 212, 191,0.12)", label: "On track" },
     "behind":   { color: "#f87171", bg: "rgba(248,113,113,0.12)", label: "Behind pace" },
     "unknown":  { color: "rgba(148,163,184,0.7)", bg: "rgba(71,85,105,0.18)", label: "No deadline" },
   };
@@ -258,8 +258,8 @@ function NewGoalModal({ onClose, onCreate }) {
             ].map((o) => (
               <button key={o.id} onClick={() => upd("kind", o.id)} style={{
                 flex: 1, padding: "10px 12px", borderRadius: 10, cursor: "pointer", textAlign: "left",
-                background: form.kind === o.id ? "rgba(99,102,241,0.15)" : "rgba(8,9,13,0.4)",
-                border: `1px solid ${form.kind === o.id ? "#6366f1" : "rgba(51,65,85,0.5)"}`,
+                background: form.kind === o.id ? "rgba(45, 212, 191,0.15)" : "rgba(8,9,13,0.4)",
+                border: `1px solid ${form.kind === o.id ? "#14b8a6" : "rgba(51,65,85,0.5)"}`,
                 color: form.kind === o.id ? "#a5b4fc" : "rgba(148,163,184,0.85)",
               }}>
                 <div style={{ fontWeight: 700, fontSize: 13 }}>{o.label}</div>

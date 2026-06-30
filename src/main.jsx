@@ -27,17 +27,17 @@ if ('serviceWorker' in navigator && window.ReactNativeWebView) {
 }
 
 // ── Shell selector ─────────────────────────────────────────────────────────
-// During the App.tsx migration we support running both shells in parallel.
-// Opt into the new TS shell with ?next=1 (persists in localStorage) or
-// ?next=0 to revert. Default: legacy.
+// The redesigned TS shell (App.tsx) is now the default. The legacy monolith
+// (App.jsx) remains available as an escape hatch via ?next=0 (persists in
+// localStorage); ?next=1 re-opts into the new shell.
 const SHELL_KEY = 'up_shell';
 const params = new URLSearchParams(window.location.search);
 if (params.has('next')) {
   const v = params.get('next');
-  if (v === '0' || v === 'off') localStorage.removeItem(SHELL_KEY);
+  if (v === '0' || v === 'off') localStorage.setItem(SHELL_KEY, 'legacy');
   else localStorage.setItem(SHELL_KEY, 'next');
 }
-const useNextShell = localStorage.getItem(SHELL_KEY) === 'next';
+const useNextShell = localStorage.getItem(SHELL_KEY) !== 'legacy';
 
 async function mount() {
   const AppModule = useNextShell

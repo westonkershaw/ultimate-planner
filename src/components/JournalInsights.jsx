@@ -67,7 +67,7 @@ const TIER_COLORS = {
   emerald: { bg: "rgba(16,185,129,0.14)", border: "rgba(16,185,129,0.45)", text: "#10b981" },
 };
 
-const TOPIC_COLORS = ["#f59e0b", "#6366f1", "#4ade80", "#f87171", "#c084fc", "#38bdf8"];
+const TOPIC_COLORS = ["#f59e0b", "#14b8a6", "#4ade80", "#f87171", "#c084fc", "#38bdf8"];
 
 // ─── On This Day Card ────────────────────────────────────────────────────────
 
@@ -81,8 +81,8 @@ export function OnThisDayCard({ journals }) {
     <motion.div
       style={{
         ...CARD,
-        background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(245,158,11,0.06))",
-        border: "1px solid rgba(99,102,241,0.25)",
+        background: "linear-gradient(135deg, rgba(45, 212, 191,0.08), rgba(245,158,11,0.06))",
+        border: "1px solid rgba(45, 212, 191,0.25)",
       }}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
@@ -114,7 +114,7 @@ export function OnThisDayCard({ journals }) {
             >
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 12, fontWeight: 800, color: "#818cf8" }}>{fb.label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 800, color: "#2dd4bf" }}>{fb.label}</span>
                   <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>{fmtDate(fb.entry.date)}</span>
                 </div>
                 {fb.entry.rating > 0 && (
@@ -518,7 +518,7 @@ export function GoalCorrelationCard({ journals, weekDays, customHabits }) {
       {/* Legend */}
       <div style={{ display: "flex", gap: 14, marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-          <div style={{ width: 16, height: 2, background: "#818cf8", borderRadius: 1 }} />
+          <div style={{ width: 16, height: 2, background: "#2dd4bf", borderRadius: 1 }} />
           <span style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>Sentiment</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -536,7 +536,7 @@ export function GoalCorrelationCard({ journals, weekDays, customHabits }) {
         <line x1={PAD.l} y1={sentToY(0)} x2={W - PAD.r} y2={sentToY(0)} stroke="rgba(255,255,255,0.06)" strokeWidth="1" strokeDasharray="3 3" />
 
         {/* Lines */}
-        {sentPath && <polyline points={sentPath} fill="none" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round" />}
+        {sentPath && <polyline points={sentPath} fill="none" stroke="#2dd4bf" strokeWidth="1.5" strokeLinecap="round" />}
         {taskPath && <polyline points={taskPath} fill="none" stroke="#4ade80" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />}
         {habitPath && <polyline points={habitPath} fill="none" stroke={GOLD} strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />}
 
@@ -554,7 +554,7 @@ export function GoalCorrelationCard({ journals, weekDays, customHabits }) {
       {correlationNote && (
         <div style={{
           marginTop: 8, padding: "8px 12px", background: "rgba(15,23,42,0.5)",
-          borderRadius: 8, borderLeft: "3px solid #818cf8",
+          borderRadius: 8, borderLeft: "3px solid #2dd4bf",
           fontSize: 12, color: "rgba(255,255,255,0.55)", fontWeight: 600, lineHeight: 1.5,
         }}>
           💡 {correlationNote}

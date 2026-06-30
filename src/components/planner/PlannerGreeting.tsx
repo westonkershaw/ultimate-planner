@@ -18,9 +18,9 @@ export default function PlannerGreeting() {
     >
       <div className="flex items-center gap-2">
         <Icon size={20} className="text-amber-400" />
-        <h1 className="font-syne text-xl font-bold text-slate-100">{greeting}</h1>
+        <h1 className="font-syne text-xl font-bold text-fg">{greeting}</h1>
       </div>
-      <p className="text-sm text-slate-500">{dateStr}</p>
+      <p className="text-sm text-fg-muted">{dateStr}</p>
     </motion.div>
   );
 }

@@ -159,8 +159,8 @@ const FocusInput = React.forwardRef(function FocusInput(
 
   const focusStyle = focused
     ? {
-        borderColor: "rgba(99,102,241,0.6)",
-        boxShadow: "0 0 0 3px rgba(99,102,241,0.15)",
+        borderColor: "rgba(45, 212, 191,0.6)",
+        boxShadow: "0 0 0 3px rgba(45, 212, 191,0.15)",
       }
     : {};
 
@@ -177,8 +177,8 @@ const FocusInput = React.forwardRef(function FocusInput(
       onBlur={() => setFocused(false)}
       style={{ ...S.inputBase, ...focusStyle }}
       whileFocus={{
-        borderColor: "rgba(99,102,241,0.6)",
-        boxShadow: "0 0 0 3px rgba(99,102,241,0.15)",
+        borderColor: "rgba(45, 212, 191,0.6)",
+        boxShadow: "0 0 0 3px rgba(45, 212, 191,0.15)",
       }}
       {...rest}
     />
@@ -522,7 +522,7 @@ export default function LoginPage({ onAuth, defaultMode = "login" }) {
                   background:
                     submitState === "success"
                       ? "linear-gradient(135deg, #10b981, #059669)"
-                      : "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                      : "linear-gradient(135deg, #14b8a6, #8b5cf6)",
                   border: "none",
                   borderRadius: 12,
                   color: "white",
@@ -773,7 +773,7 @@ export default function LoginPage({ onAuth, defaultMode = "login" }) {
                   style={{
                     background: "none",
                     border: "none",
-                    color: "#818cf8",
+                    color: "#2dd4bf",
                     fontWeight: 700,
                     cursor: "pointer",
                     fontSize: 13,
@@ -797,7 +797,7 @@ export default function LoginPage({ onAuth, defaultMode = "login" }) {
                   style={{
                     background: "none",
                     border: "none",
-                    color: "#818cf8",
+                    color: "#2dd4bf",
                     fontWeight: 700,
                     cursor: "pointer",
                     fontSize: 13,

@@ -34,10 +34,10 @@ export default function InboxView() {
     <div className="p-4 sm:p-6 max-w-2xl mx-auto space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Inbox size={18} className="text-indigo-400" />
-          <h1 className="font-syne text-lg font-bold text-slate-100">Inbox</h1>
+          <Inbox size={18} className="text-accent-text" />
+          <h1 className="font-syne text-lg font-bold text-fg">Inbox</h1>
           {activeItems.length > 0 && (
-            <span className="text-xs text-slate-600 bg-slate-900/60 px-2 py-0.5 rounded-full">
+            <span className="text-xs text-fg-faint bg-surface-1 px-2 py-0.5 rounded-full">
               {activeItems.length}
             </span>
           )}
@@ -46,7 +46,7 @@ export default function InboxView() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleBulkConvert}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs hover:bg-indigo-500/20 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 text-accent-text text-xs hover:bg-accent/20 transition-colors"
           >
             <CheckCheck size={13} />
             Convert all
@@ -75,7 +75,7 @@ export default function InboxView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-12 text-slate-600"
+            className="text-center py-12 text-fg-faint"
           >
             <Inbox size={32} className="mx-auto mb-3 opacity-40" />
             <p className="text-sm">Inbox zero! Capture something with the input above.</p>

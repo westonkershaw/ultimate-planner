@@ -23,13 +23,13 @@ function BookCard({ book, onStatus, onDelete, onProgress }: {
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -10 }}
-      className="p-3 rounded-xl border border-slate-800/40 bg-slate-900/30 space-y-2"
+      className="p-3 rounded-xl border border-border bg-surface-1 space-y-2"
     >
       <div className="flex items-start gap-3">
         <span className="text-2xl flex-shrink-0">{book.emoji ?? '📚'}</span>
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium text-slate-200 truncate">{book.title}</div>
-          {book.author && <div className="text-[11px] text-slate-500 truncate">{book.author}</div>}
+          <div className="text-sm font-medium text-fg-secondary truncate">{book.title}</div>
+          {book.author && <div className="text-[11px] text-fg-muted truncate">{book.author}</div>}
         </div>
         {book.status === 'done' && book.rating > 0 && (
           <div className="flex items-center gap-0.5">
@@ -41,7 +41,7 @@ function BookCard({ book, onStatus, onDelete, onProgress }: {
         <button
           onClick={() => onDelete(book.id)}
           aria-label={`Delete ${book.title}`}
-          className="text-slate-600 hover:text-rose-400 transition-colors p-1"
+          className="text-fg-faint hover:text-rose-400 transition-colors p-1"
         >
           <Trash2 size={12} />
         </button>
@@ -49,15 +49,15 @@ function BookCard({ book, onStatus, onDelete, onProgress }: {
 
       {book.status === 'reading' && (
         <>
-          <div className="relative h-1.5 rounded-full bg-slate-800 overflow-hidden">
+          <div className="relative h-1.5 rounded-full bg-surface-2 overflow-hidden">
             <motion.div
-              className="absolute inset-y-0 left-0 bg-indigo-500"
+              className="absolute inset-y-0 left-0 bg-accent"
               initial={false}
               animate={{ width: `${pct}%` }}
               transition={{ type: 'spring', stiffness: 200, damping: 25 }}
             />
           </div>
-          <div className="flex items-center justify-between text-[11px] text-slate-500">
+          <div className="flex items-center justify-between text-[11px] text-fg-muted">
             <input
               type="range"
               min={0}
@@ -65,7 +65,7 @@ function BookCard({ book, onStatus, onDelete, onProgress }: {
               value={pct}
               onChange={(e) => onProgress(book.id, parseInt(e.target.value))}
               aria-label={`${book.title} progress`}
-              className="flex-1 mr-2 accent-indigo-500"
+              className="flex-1 mr-2 accent-accent"
             />
             <span className="w-10 text-right">{pct}%</span>
           </div>
@@ -80,8 +80,8 @@ function BookCard({ book, onStatus, onDelete, onProgress }: {
             className={[
               'flex-1 px-2 py-1 rounded-md text-[10px] font-medium border transition-colors',
               book.status === s.id
-                ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-300'
-                : 'border-slate-800/40 text-slate-600 hover:text-slate-400',
+                ? 'border-accent/40 bg-accent/15 text-accent-text'
+                : 'border-border text-fg-faint hover:text-fg-muted',
             ].join(' ')}
           >
             {s.label}
@@ -113,19 +113,19 @@ function NewBookForm({ onClose }: { onClose: () => void }) {
       exit={{ opacity: 0, height: 0 }}
       className="overflow-hidden"
     >
-      <div className="p-4 rounded-xl border border-indigo-500/25 bg-indigo-500/[0.04] space-y-3">
+      <div className="p-4 rounded-xl border border-accent/25 bg-accent/[0.04] space-y-3">
         <input
           autoFocus
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Book title"
-          className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+          className="w-full bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg placeholder:text-fg-faint outline-none focus:border-accent/40"
         />
         <input
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
           placeholder="Author (optional)"
-          className="w-full bg-slate-950/40 border border-slate-800/40 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40"
+          className="w-full bg-surface-0 border border-border rounded-lg px-3 py-2 text-sm text-fg placeholder:text-fg-faint outline-none focus:border-accent/40"
         />
         <div className="flex items-center gap-1.5">
           {SHELVES.map((s) => (
@@ -135,8 +135,8 @@ function NewBookForm({ onClose }: { onClose: () => void }) {
               className={[
                 'flex-1 px-2 py-1.5 rounded-lg border text-xs transition-colors',
                 status === s.id
-                  ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-300'
-                  : 'border-slate-800/40 text-slate-500 hover:text-slate-300',
+                  ? 'border-accent/40 bg-accent/15 text-accent-text'
+                  : 'border-border text-fg-muted hover:text-fg-secondary',
               ].join(' ')}
             >
               {s.label}
@@ -144,13 +144,13 @@ function NewBookForm({ onClose }: { onClose: () => void }) {
           ))}
         </div>
         <div className="flex gap-2">
-          <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-slate-800/40 text-xs text-slate-500 hover:text-slate-300 transition-colors">Cancel</button>
+          <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-border text-xs text-fg-muted hover:text-fg-secondary transition-colors">Cancel</button>
           <button
             onClick={submit}
             disabled={!title.trim()}
             className={[
               'flex-1 py-2 rounded-lg text-xs font-semibold transition-colors',
-              title.trim() ? 'bg-indigo-500 hover:bg-indigo-400 text-white' : 'bg-slate-800/40 text-slate-600 cursor-not-allowed',
+              title.trim() ? 'bg-accent hover:bg-accent-hover text-white' : 'bg-surface-2 text-fg-faint cursor-not-allowed',
             ].join(' ')}
           >Add book</button>
         </div>
@@ -169,20 +169,20 @@ function GoalCard() {
   const [draft, setDraft] = useState(goal.target);
 
   return (
-    <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/30 space-y-2">
+    <div className="p-4 rounded-xl border border-border bg-surface-1 space-y-2">
       <div className="flex items-center gap-2">
         <Target size={14} className="text-emerald-400" />
-        <span className="text-[10px] uppercase tracking-wider text-slate-500">{goal.year} reading goal</span>
-        <button onClick={() => { setDraft(goal.target); setEditing((v) => !v); }} className="ml-auto text-[10px] text-slate-500 hover:text-slate-300 transition-colors">
+        <span className="text-[10px] uppercase tracking-wider text-fg-muted">{goal.year} reading goal</span>
+        <button onClick={() => { setDraft(goal.target); setEditing((v) => !v); }} className="ml-auto text-[10px] text-fg-muted hover:text-fg-secondary transition-colors">
           {editing ? 'Cancel' : 'Edit'}
         </button>
       </div>
-      <div className="text-sm text-slate-200">
+      <div className="text-sm text-fg-secondary">
         <span className="font-semibold text-emerald-400">{doneThisYear}</span>
-        <span className="text-slate-500"> / </span>
+        <span className="text-fg-muted"> / </span>
         <span>{goal.target} books</span>
       </div>
-      <div className="relative h-1.5 rounded-full bg-slate-800 overflow-hidden">
+      <div className="relative h-1.5 rounded-full bg-surface-2 overflow-hidden">
         <motion.div
           className="absolute inset-y-0 left-0 bg-emerald-500"
           initial={false}
@@ -197,11 +197,11 @@ function GoalCard() {
             min={1}
             value={draft}
             onChange={(e) => setDraft(parseInt(e.target.value) || 1)}
-            className="w-20 bg-slate-950/40 border border-slate-800/40 rounded-lg px-2 py-1 text-xs text-slate-100 outline-none focus:border-indigo-500/40"
+            className="w-20 bg-surface-0 border border-border rounded-lg px-2 py-1 text-xs text-fg outline-none focus:border-accent/40"
           />
           <button
             onClick={() => { setGoal(draft); setEditing(false); }}
-            className="px-3 py-1 rounded-lg bg-indigo-500/15 border border-indigo-500/30 text-xs text-indigo-300 hover:bg-indigo-500/25"
+            className="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 text-xs text-accent-text hover:bg-accent/25"
           >Save</button>
         </div>
       )}
@@ -238,8 +238,8 @@ export default function ReadingView() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <Library size={18} className="text-indigo-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Reading</h1>
+        <Library size={18} className="text-accent-text" />
+        <h1 className="font-syne text-lg font-bold text-fg">Reading</h1>
       </motion.div>
 
       <GoalCard />
@@ -251,7 +251,7 @@ export default function ReadingView() {
       {!adding && (
         <button
           onClick={() => setAdding(true)}
-          className="w-full py-2.5 rounded-xl border border-dashed border-slate-700 text-slate-500 text-sm flex items-center justify-center gap-2 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors"
+          className="w-full py-2.5 rounded-xl border border-dashed border-border-strong text-fg-muted text-sm flex items-center justify-center gap-2 hover:border-accent/30 hover:text-accent-text transition-colors"
         >
           <Plus size={14} /> Add a book
         </button>
@@ -265,18 +265,18 @@ export default function ReadingView() {
             className={[
               'flex-1 px-3 py-2 rounded-lg border text-xs font-medium transition-colors flex items-center justify-center gap-2',
               shelf === s.id
-                ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-300'
-                : 'border-slate-800/40 text-slate-500 hover:text-slate-300',
+                ? 'border-accent/40 bg-accent/15 text-accent-text'
+                : 'border-border text-fg-muted hover:text-fg-secondary',
             ].join(' ')}
           >
             {s.label}
-            <span className="text-[10px] text-slate-500">{counts[s.id]}</span>
+            <span className="text-[10px] text-fg-muted">{counts[s.id]}</span>
           </button>
         ))}
       </div>
 
       {shelfBooks.length === 0 ? (
-        <div className="text-center py-10 text-sm text-slate-500">
+        <div className="text-center py-10 text-sm text-fg-muted">
           Nothing on this shelf yet.
         </div>
       ) : (

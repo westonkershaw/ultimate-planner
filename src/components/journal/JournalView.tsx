@@ -28,7 +28,7 @@ function StarRow({ value, onChange }: { value: JournalRating; onChange: (n: Jour
         >
           <Star
             size={18}
-            className={value >= n ? 'fill-amber-400 text-amber-400' : 'text-slate-700'}
+            className={value >= n ? 'fill-amber-400 text-amber-400' : 'text-fg-faint'}
           />
         </button>
       ))}
@@ -38,10 +38,10 @@ function StarRow({ value, onChange }: { value: JournalRating; onChange: (n: Jour
 
 function StatPill({ Icon, label, value }: { Icon: React.FC<{ size?: number }>; label: string; value: string | number }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800/40 bg-slate-900/30">
+    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border bg-surface-1">
       <Icon size={14} />
-      <span className="text-[10px] uppercase tracking-wider text-slate-500">{label}</span>
-      <span className="text-sm font-semibold text-slate-200 ml-auto">{value}</span>
+      <span className="text-[10px] uppercase tracking-wider text-fg-muted">{label}</span>
+      <span className="text-sm font-semibold text-fg-secondary ml-auto">{value}</span>
     </div>
   );
 }
@@ -74,10 +74,10 @@ function TodayComposer() {
     <motion.section
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-3 p-4 rounded-2xl border border-slate-800/40 bg-slate-900/30"
+      className="space-y-3 p-4 rounded-panel border border-border bg-surface-1"
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-xs font-medium uppercase tracking-wider text-slate-500">
+        <h2 className="text-xs font-medium uppercase tracking-wider text-fg-muted">
           Today · {fmtDate(today)}
         </h2>
         <StarRow value={rating} onChange={setRating} />
@@ -88,7 +88,7 @@ function TodayComposer() {
         onChange={(e) => setText(e.target.value)}
         placeholder="What's on your mind?"
         rows={6}
-        className="w-full resize-none bg-slate-950/40 border border-slate-800/40 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/40 transition-colors leading-relaxed"
+        className="w-full resize-none bg-surface-0 border border-border rounded-xl p-3 text-sm text-fg placeholder:text-fg-faint outline-none focus:border-accent/40 transition-colors leading-relaxed"
       />
 
       <div className="flex items-center gap-2 flex-wrap">
@@ -100,8 +100,8 @@ function TodayComposer() {
             className={[
               'w-9 h-9 rounded-xl border text-lg transition-colors flex items-center justify-center',
               mood === m
-                ? 'border-indigo-500/40 bg-indigo-500/15'
-                : 'border-slate-800/40 bg-slate-950/40 hover:border-slate-700',
+                ? 'border-accent/40 bg-accent/15'
+                : 'border-border bg-surface-0 hover:border-border-strong',
             ].join(' ')}
           >
             {m}
@@ -117,8 +117,8 @@ function TodayComposer() {
             className={[
               'text-[11px] px-2 py-1 rounded-full border transition-colors',
               tags.includes(t)
-                ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-300'
-                : 'border-slate-800/40 text-slate-500 hover:text-slate-300',
+                ? 'border-accent/40 bg-accent/15 text-accent-text'
+                : 'border-border text-fg-muted hover:text-fg-secondary',
             ].join(' ')}
           >
             {t}
@@ -126,16 +126,16 @@ function TodayComposer() {
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800/40">
-        <span className="text-[11px] text-slate-500">{wc} {wc === 1 ? 'word' : 'words'}</span>
+      <div className="flex items-center justify-between pt-2 border-t border-border">
+        <span className="text-[11px] text-fg-muted">{wc} {wc === 1 ? 'word' : 'words'}</span>
         <button
           onClick={save}
           disabled={!text.trim()}
           className={[
             'px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors',
             text.trim()
-              ? 'bg-indigo-500 hover:bg-indigo-400 text-white'
-              : 'bg-slate-800/40 text-slate-600 cursor-not-allowed',
+              ? 'bg-accent hover:bg-accent-hover text-white'
+              : 'bg-surface-2 text-fg-faint cursor-not-allowed',
           ].join(' ')}
         >
           {existing ? 'Update' : 'Save entry'}
@@ -152,11 +152,11 @@ function EntryItem({ entry, onDelete }: { entry: JournalEntry; onDelete: (id: st
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -10 }}
-      className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/20 space-y-2"
+      className="p-4 rounded-xl border border-border bg-surface-1 space-y-2"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-slate-300">{fmtDate(entry.date)}</span>
+          <span className="text-xs font-semibold text-fg-secondary">{fmtDate(entry.date)}</span>
           {entry.mood && <span className="text-sm">{entry.mood}</span>}
         </div>
         <div className="flex items-center gap-2">
@@ -170,17 +170,17 @@ function EntryItem({ entry, onDelete }: { entry: JournalEntry; onDelete: (id: st
           <button
             onClick={() => onDelete(entry.id)}
             aria-label={`Delete entry from ${entry.date}`}
-            className="text-slate-600 hover:text-rose-400 transition-colors p-1"
+            className="text-fg-faint hover:text-rose-400 transition-colors p-1"
           >
             <Trash2 size={12} />
           </button>
         </div>
       </div>
-      <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{entry.text}</p>
+      <p className="text-sm text-fg-secondary leading-relaxed whitespace-pre-wrap">{entry.text}</p>
       {entry.tags.length > 0 && (
         <div className="flex items-center gap-1.5 flex-wrap pt-1">
           {entry.tags.map((t) => (
-            <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800/60 text-slate-500">
+            <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full bg-surface-2 text-fg-muted">
               {t}
             </span>
           ))}
@@ -213,13 +213,13 @@ export default function JournalView() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <BookOpen size={18} className="text-indigo-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Journal</h1>
+        <BookOpen size={18} className="text-accent-text" />
+        <h1 className="font-syne text-lg font-bold text-fg">Journal</h1>
       </motion.div>
 
       <div className="grid grid-cols-3 gap-2">
         <StatPill Icon={({ size }) => <Flame size={size} className="text-amber-400" />} label="Streak" value={`${streak}d`} />
-        <StatPill Icon={({ size }) => <BookOpen size={size} className="text-indigo-400" />} label="Entries" value={entries.length} />
+        <StatPill Icon={({ size }) => <BookOpen size={size} className="text-accent-text" />} label="Entries" value={entries.length} />
         <StatPill Icon={({ size }) => <Hash size={size} className="text-emerald-400" />} label="Words" value={totalWords.toLocaleString()} />
       </div>
 
@@ -227,7 +227,7 @@ export default function JournalView() {
 
       {history.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-xs font-medium uppercase tracking-wider text-slate-500">Past entries</h2>
+          <h2 className="text-xs font-medium uppercase tracking-wider text-fg-muted">Past entries</h2>
           <ul className="space-y-2">
             <AnimatePresence initial={false}>
               {history.map((e) => (

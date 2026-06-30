@@ -16,7 +16,7 @@ const MOOD_COLORS = [
   "rgba(249,115,22,0.5)",
   "rgba(234,179,8,0.4)",
   "rgba(34,197,94,0.5)",
-  "rgba(99,102,241,0.7)"
+  "rgba(45, 212, 191,0.7)"
 ];
 
 const SECTION_LABEL = {
@@ -544,7 +544,7 @@ function WellnessTrends({ data }) {
   const tooltipStyle = {
     contentStyle: {
       background: "#0f172a",
-      border: "1px solid rgba(99,102,241,0.3)",
+      border: "1px solid rgba(45, 212, 191,0.3)",
       borderRadius: 8,
       fontSize: 11,
       color: "#f1f5f9",
@@ -587,15 +587,15 @@ function WellnessTrends({ data }) {
 
         {/* Sleep */}
         <div style={sparklineStyle}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#818cf8", marginBottom: 8 }}>😴 Sleep (hours/night)</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#2dd4bf", marginBottom: 8 }}>😴 Sleep (hours/night)</div>
           <ResponsiveContainer width="100%" height={60}>
             <LineChart data={last14} margin={{ top: 2, right: 4, left: -32, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
               <XAxis dataKey="day" tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 9 }} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={{ fill: "rgba(255,255,255,0.25)", fontSize: 9 }} axisLine={false} tickLine={false} domain={[0, 10]} />
               <Tooltip {...tooltipStyle} formatter={(v) => [v > 0 ? v + "h" : "–", "Sleep"]} />
-              <ReferenceLine y={8} stroke="rgba(99,102,241,0.3)" strokeDasharray="3 2" />
-              <Line type="monotone" dataKey="sleep" stroke="#6366f1" strokeWidth={2} dot={false} connectNulls />
+              <ReferenceLine y={8} stroke="rgba(45, 212, 191,0.3)" strokeDasharray="3 2" />
+              <Line type="monotone" dataKey="sleep" stroke="#14b8a6" strokeWidth={2} dot={false} connectNulls />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -789,7 +789,7 @@ function MoodTab({ data, onChange }) {
             </div>
             <button
               onClick={() => { setSelectedMood(todayEntry.mood); setNote(todayEntry.note || ""); setEditing(true); }}
-              style={{ marginLeft: "auto", background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", cursor: "pointer", fontSize: 12, fontWeight: 700, padding: "5px 12px", fontFamily: FONT }}
+              style={{ marginLeft: "auto", background: "rgba(45, 212, 191,0.1)", border: "1px solid rgba(45, 212, 191,0.3)", borderRadius: 8, color: "#2dd4bf", cursor: "pointer", fontSize: 12, fontWeight: 700, padding: "5px 12px", fontFamily: FONT }}
             >
               Edit
             </button>
@@ -809,7 +809,7 @@ function MoodTab({ data, onChange }) {
                     cursor: "pointer",
                     padding: 4,
                     borderRadius: 10,
-                    boxShadow: selectedMood === m ? "0 0 0 3px #6366f1" : "none",
+                    boxShadow: selectedMood === m ? "0 0 0 3px #14b8a6" : "none",
                     transition: "box-shadow 0.15s",
                     lineHeight: 1,
                     opacity: selectedMood && selectedMood !== m ? 0.45 : 1
@@ -820,7 +820,7 @@ function MoodTab({ data, onChange }) {
               ))}
             </div>
             {selectedMood > 0 && (
-              <div style={{ marginBottom: 10, textAlign: "center", fontSize: 12, color: "#818cf8", fontWeight: 700 }}>
+              <div style={{ marginBottom: 10, textAlign: "center", fontSize: 12, color: "#2dd4bf", fontWeight: 700 }}>
                 {MOOD_EMOJIS[selectedMood]} {MOOD_LABELS[selectedMood]}
               </div>
             )}
@@ -834,7 +834,7 @@ function MoodTab({ data, onChange }) {
             <button
               onClick={logMood}
               disabled={!selectedMood}
-              style={{ width: "100%", background: selectedMood ? "linear-gradient(135deg,#6366f1,#818cf8)" : "rgba(30,40,60,0.5)", border: "none", borderRadius: 10, color: selectedMood ? "#fff" : "rgba(255,255,255,0.25)", padding: "11px", cursor: selectedMood ? "pointer" : "default", fontSize: 13, fontWeight: 700, fontFamily: FONT, transition: "all 0.2s" }}
+              style={{ width: "100%", background: selectedMood ? "linear-gradient(135deg,#14b8a6,#2dd4bf)" : "rgba(30,40,60,0.5)", border: "none", borderRadius: 10, color: selectedMood ? "#fff" : "rgba(255,255,255,0.25)", padding: "11px", cursor: selectedMood ? "pointer" : "default", fontSize: 13, fontWeight: 700, fontFamily: FONT, transition: "all 0.2s" }}
             >
               {editing ? "Update Mood" : "Log Mood"}
             </button>
@@ -858,7 +858,7 @@ function MoodTab({ data, onChange }) {
         </div>
         {avgMood && (
           <div style={{ marginTop: 12, fontSize: 13, color: "rgba(255,255,255,0.6)", fontWeight: 600 }}>
-            This week avg: <span style={{ color: "#818cf8", fontWeight: 800 }}>{MOOD_EMOJIS[Math.round(Number(avgMood))]} {avgMood}</span>
+            This week avg: <span style={{ color: "#2dd4bf", fontWeight: 800 }}>{MOOD_EMOJIS[Math.round(Number(avgMood))]} {avgMood}</span>
           </div>
         )}
       </div>
@@ -1120,10 +1120,10 @@ export default function WellnessTab({ data, onChange }) {
             key={t.id}
             onClick={() => setSubTab(t.id)}
             style={{
-              background: subTab === t.id ? "rgba(99,102,241,0.2)" : "transparent",
-              border: subTab === t.id ? "1px solid rgba(99,102,241,0.4)" : "1px solid rgba(51,65,85,0.4)",
+              background: subTab === t.id ? "rgba(45, 212, 191,0.2)" : "transparent",
+              border: subTab === t.id ? "1px solid rgba(45, 212, 191,0.4)" : "1px solid rgba(51,65,85,0.4)",
               borderRadius: 20,
-              color: subTab === t.id ? "#818cf8" : "rgba(148,163,184,0.6)",
+              color: subTab === t.id ? "#2dd4bf" : "rgba(148,163,184,0.6)",
               cursor: "pointer",
               fontSize: 13,
               fontWeight: subTab === t.id ? 700 : 500,
@@ -1175,11 +1175,11 @@ export function WellnessDashWidget({ data, onNavigate }) {
   return (
     <div
       onClick={onNavigate}
-      style={{ background: "rgba(17,24,39,0.7)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: 16, padding: "16px 20px", cursor: "pointer", marginBottom: 14 }}
+      style={{ background: "rgba(17,24,39,0.7)", border: "1px solid rgba(45, 212, 191,0.2)", borderRadius: 16, padding: "16px 20px", cursor: "pointer", marginBottom: 14 }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: "#818cf8" }}>🌿 Wellness</span>
-        <span style={{ fontSize: 11, color: "rgba(99,102,241,0.7)" }}>View all →</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#2dd4bf" }}>🌿 Wellness</span>
+        <span style={{ fontSize: 11, color: "rgba(45, 212, 191,0.7)" }}>View all →</span>
       </div>
       <div style={{ display: "flex", gap: 10 }}>
         <div style={{ flex: 1, background: "rgba(15,23,42,0.5)", borderRadius: 10, padding: "10px 12px", textAlign: "center" }}>

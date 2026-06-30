@@ -88,7 +88,7 @@ const Shell = React.memo(function Shell({ children }: ShellProps) {
   }, [toggleCommandPalette]);
 
   return (
-    <div className="flex overflow-hidden bg-[#08090d] text-slate-200" style={{ height: '100dvh' }}>
+    <div className="flex overflow-hidden bg-surface-0 text-fg-secondary" style={{ height: '100dvh' }}>
       {/* Desktop Sidebar */}
       <Sidebar
         activeView={activeView}
@@ -103,17 +103,17 @@ const Shell = React.memo(function Shell({ children }: ShellProps) {
           className={[
             'sm:hidden flex items-center justify-between',
             'px-4 py-3',
-            'border-b border-slate-800/60',
-            'bg-[#08090d]/95 backdrop-blur-sm',
+            'border-b border-border',
+            'bg-surface-0/95 backdrop-blur-sm',
           ].join(' ')}
           style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
         >
-          <span className="font-semibold text-base text-slate-100 tracking-tight">
-            ✦ {VIEW_LABELS[activeView] ?? 'Life Planner'}
+          <span className="font-semibold text-base text-fg tracking-tight">
+            {VIEW_LABELS[activeView] ?? 'Life Planner'}
           </span>
           <button
             onClick={toggleCommandPalette}
-            className="p-2 rounded-lg border border-slate-800 text-slate-500 hover:text-slate-300 transition-colors"
+            className="p-2 rounded-control border border-border text-fg-muted hover:text-fg transition-colors"
             aria-label="Open command palette"
           >
             <Search size={14} />
@@ -140,8 +140,8 @@ const Shell = React.memo(function Shell({ children }: ShellProps) {
         <nav
           className={[
             'sm:hidden flex',
-            'border-t border-slate-800/60',
-            'bg-[#08090d]/95 backdrop-blur-sm',
+            'border-t border-border',
+            'bg-surface-0/95 backdrop-blur-sm',
           ].join(' ')}
           style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
@@ -153,8 +153,8 @@ const Shell = React.memo(function Shell({ children }: ShellProps) {
                 'flex-1 flex flex-col items-center gap-0.5 py-2.5 text-xs',
                 'transition-colors duration-150',
                 activeView === id
-                  ? 'text-indigo-400'
-                  : 'text-slate-600 hover:text-slate-400',
+                  ? 'text-accent-text'
+                  : 'text-fg-muted hover:text-fg-secondary',
               ].join(' ')}
               aria-label={label}
             >

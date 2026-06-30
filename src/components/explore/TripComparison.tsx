@@ -34,10 +34,10 @@ const TripComparison = React.memo(function TripComparison({
   return (
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
-        <BarChart3 size={16} className="text-indigo-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Compare Trips</h3>
+        <BarChart3 size={16} className="text-accent-text" />
+        <h3 className="text-sm font-semibold text-fg-secondary">Compare Trips</h3>
         {selected.length > 0 && (
-          <button onClick={onClear} className="ml-auto text-xs text-slate-500 hover:text-slate-300 transition-colors">
+          <button onClick={onClear} className="ml-auto text-xs text-fg-muted hover:text-fg-secondary transition-colors">
             Clear
           </button>
         )}
@@ -52,8 +52,8 @@ const TripComparison = React.memo(function TripComparison({
               className={[
                 'px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-colors',
                 active
-                  ? 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30'
-                  : 'bg-white/5 text-slate-500 border-white/10 hover:text-slate-300',
+                  ? 'bg-accent/15 text-accent-text border-accent/30'
+                  : 'bg-white/5 text-fg-muted border-white/10 hover:text-fg-secondary',
               ].join(' ')}>
               {t.name}
             </button>
@@ -68,11 +68,11 @@ const TripComparison = React.memo(function TripComparison({
             {budgets.map(({ trip, budget }) => (
               <div key={trip.id} className="rounded-xl bg-white/[0.02] border border-white/5 p-3">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-slate-200 truncate">{trip.name}</span>
+                  <span className="text-xs font-semibold text-fg-secondary truncate">{trip.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-slate-100">{formatUsd(budget.total)}</span>
+                    <span className="text-sm font-bold text-fg">{formatUsd(budget.total)}</span>
                     <button onClick={() => onToggle(trip.id)}
-                      className="text-slate-700 hover:text-red-400 transition-colors"><X size={10} /></button>
+                      className="text-fg-faint hover:text-red-400 transition-colors"><X size={10} /></button>
                   </div>
                 </div>
                 {/* Stacked bar */}
@@ -84,7 +84,7 @@ const TripComparison = React.memo(function TripComparison({
                     return <div key={key} className={`${CATEGORY_COLORS[key]} h-full`} style={{ width: `${pct}%` }} />;
                   })}
                 </div>
-                <div className="flex items-center gap-1 mt-1.5 text-[10px] text-slate-500">
+                <div className="flex items-center gap-1 mt-1.5 text-[10px] text-fg-muted">
                   <span>{formatNumber(trip.distanceMiles, 0)} mi</span>
                   <span>·</span>
                   <span>{trip.days}d {trip.nights}n</span>
@@ -99,7 +99,7 @@ const TripComparison = React.memo(function TripComparison({
               {(Object.entries(CATEGORY_COLORS) as [keyof typeof CATEGORY_COLORS, string][]).map(([key, color]) => (
                 <div key={key} className="flex items-center gap-1">
                   <div className={`w-2 h-2 rounded-full ${color}`} />
-                  <span className="text-[10px] text-slate-500 capitalize">{key === 'rentalCar' ? 'Rental' : key}</span>
+                  <span className="text-[10px] text-fg-muted capitalize">{key === 'rentalCar' ? 'Rental' : key}</span>
                 </div>
               ))}
             </div>
@@ -108,7 +108,7 @@ const TripComparison = React.memo(function TripComparison({
       </AnimatePresence>
 
       {selected.length === 0 && (
-        <p className="text-xs text-slate-600 text-center py-3">Select 2+ trips to compare</p>
+        <p className="text-xs text-fg-faint text-center py-3">Select 2+ trips to compare</p>
       )}
     </Card>
   );

@@ -43,11 +43,11 @@ const QUOTES = [
 const WDAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 
 // Slide accent colors: amber, indigo, teal
-const SLIDE_ACCENTS = ["#f59e0b", "#6366f1", "#14b8a6"];
-const SLIDE_ACCENT_DIMS = ["rgba(245,158,11,0.15)", "rgba(99,102,241,0.15)", "rgba(20,184,166,0.15)"];
+const SLIDE_ACCENTS = ["#f59e0b", "#14b8a6", "#14b8a6"];
+const SLIDE_ACCENT_DIMS = ["rgba(245,158,11,0.15)", "rgba(45, 212, 191,0.15)", "rgba(20,184,166,0.15)"];
 const SLIDE_GRADIENT_STOPS = [
   ["rgba(245,158,11,0.12)", "rgba(251,191,36,0.04)"],
-  ["rgba(99,102,241,0.12)", "rgba(129,140,248,0.04)"],
+  ["rgba(45, 212, 191,0.12)", "rgba(129,140,248,0.04)"],
   ["rgba(20,184,166,0.12)", "rgba(45,212,191,0.04)"],
 ];
 
@@ -107,7 +107,7 @@ const S = {
   },
   mitInput: {
     background:   "rgba(15,23,42,0.7)",
-    border:       "1.5px solid rgba(99,102,241,0.35)",
+    border:       "1.5px solid rgba(45, 212, 191,0.35)",
     borderRadius: 12,
     padding:      "12px 14px",
     color:        "#f1f5f9",
@@ -147,7 +147,7 @@ const S = {
     width:          18,
     height:         18,
     borderRadius:   5,
-    border:         "1.5px solid rgba(99,102,241,0.4)",
+    border:         "1.5px solid rgba(45, 212, 191,0.4)",
     flexShrink:     0,
     display:        "flex",
     alignItems:     "center",
@@ -165,7 +165,7 @@ const S = {
   navLink: {
     background:          "transparent",
     border:              "none",
-    color:               "#818cf8",
+    color:               "#2dd4bf",
     fontFamily:          "'DM Sans', sans-serif",
     fontSize:            13,
     fontWeight:          600,
@@ -217,7 +217,7 @@ const S = {
     transition:   "background 0.15s, border-color 0.15s",
   },
   primaryBtn: {
-    background:   "#6366f1",
+    background:   "#14b8a6",
     color:        "#fff",
     border:       "none",
     borderRadius: 12,
@@ -362,7 +362,7 @@ function StreakBadge({ streak }) {
 
 function TaskRow({ task, todayName, onChange, reduced }) {
   const isDone = task.done === true;
-  const color  = CAT_COLORS[task.category] || "#6366f1";
+  const color  = CAT_COLORS[task.category] || "#14b8a6";
   const iV     = itemV(reduced);
 
   function toggle() {
@@ -393,8 +393,8 @@ function TaskRow({ task, todayName, onChange, reduced }) {
       <div
         style={{
           ...S.checkbox,
-          background:  isDone ? "#6366f1" : "transparent",
-          borderColor: isDone ? "#6366f1" : "rgba(99,102,241,0.4)",
+          background:  isDone ? "#14b8a6" : "transparent",
+          borderColor: isDone ? "#14b8a6" : "rgba(45, 212, 191,0.4)",
         }}
         aria-hidden="true"
       >
@@ -446,7 +446,7 @@ function MITField({ index, value, accent, onChange }) {
         onBlur={() => setFocused(false)}
         style={{
           ...S.mitInput,
-          borderColor: focused ? accent : "rgba(99,102,241,0.35)",
+          borderColor: focused ? accent : "rgba(45, 212, 191,0.35)",
           boxShadow:   focused ? `0 0 0 3px ${accent}22` : "none",
         }}
         aria-label={`Top priority ${index + 1} for today`}
@@ -589,7 +589,7 @@ function Slide2({ data, todayName, onChange, reduced, onNavigate, onClose }) {
 
       {/* Top 3 priorities */}
       <motion.div variants={iV} style={{ marginBottom: 20 }}>
-        <SectionLabel accent="rgba(99,102,241,0.7)">Top 3 Priorities</SectionLabel>
+        <SectionLabel accent="rgba(45, 212, 191,0.7)">Top 3 Priorities</SectionLabel>
         <div style={CARD}>
           <p style={{ margin: "0 0 12px", fontSize: 13, color: "rgba(100,116,139,0.7)" }}>
             Set your three most important tasks for today.
@@ -608,7 +608,7 @@ function Slide2({ data, todayName, onChange, reduced, onNavigate, onClose }) {
 
       {/* Today's tasks */}
       <motion.div variants={iV}>
-        <SectionLabel accent="rgba(99,102,241,0.7)">Today's Tasks</SectionLabel>
+        <SectionLabel accent="rgba(45, 212, 191,0.7)">Today's Tasks</SectionLabel>
         {todayTasks.length === 0 ? (
           <div style={S.emptyState}>
             <div>No tasks planned for today.</div>

@@ -31,7 +31,7 @@ const EnvelopeCard = memo(function EnvelopeCard({
             className="w-3 h-3 rounded-full flex-shrink-0"
             style={{ background: envelope.color }}
           />
-          <span className="text-sm font-semibold text-slate-100">
+          <span className="text-sm font-semibold text-fg">
             {envelope.name}
           </span>
         </div>
@@ -57,7 +57,7 @@ const EnvelopeCard = memo(function EnvelopeCard({
           />
         </div>
         <div className="flex items-center justify-between text-[11px]">
-          <span className="text-slate-400">
+          <span className="text-fg-muted">
             {fmt$(spent)} / {fmt$(envelope.budgetAmount)}
           </span>
           <span style={{ color }}>
@@ -73,13 +73,13 @@ const EnvelopeCard = memo(function EnvelopeCard({
         {envelope.mappedCategories.map((cat) => (
           <span
             key={cat}
-            className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/5 text-slate-400"
+            className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/5 text-fg-muted"
           >
             {cat}
           </span>
         ))}
         {envelope.rollover && (
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-indigo-500/15 text-indigo-300">
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-accent/15 text-accent-text">
             Rollover
           </span>
         )}

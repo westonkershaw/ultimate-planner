@@ -11,7 +11,7 @@ import {
 import { fmt$ } from '@/utils/financeEngine';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  housing: '#6366f1',
+  housing: '#14b8a6',
   food: '#10b981',
   transport: '#f59e0b',
   health: '#ef4444',
@@ -56,10 +56,10 @@ export default function MonthlyReportCard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-100">
+          <h3 className="text-sm font-bold text-fg">
             Monthly Report
           </h3>
-          <p className="text-[11px] text-slate-500">{report.monthLabel}</p>
+          <p className="text-[11px] text-fg-muted">{report.monthLabel}</p>
         </div>
         <Button variant="ghost" size="sm" onClick={handleCopy}>
           <Copy className="w-3.5 h-3.5 mr-1" />
@@ -69,7 +69,7 @@ export default function MonthlyReportCard() {
 
       {/* Stats row */}
       <div className="grid grid-cols-3 gap-3">
-        <StatCell label="Income" value={fmt$(report.totalIncome)} color="#6366f1" />
+        <StatCell label="Income" value={fmt$(report.totalIncome)} color="#14b8a6" />
         <StatCell label="Spent" value={fmt$(report.totalSpent)} color="#ef4444" />
         <StatCell
           label="Saved"
@@ -91,14 +91,14 @@ export default function MonthlyReportCard() {
 
       {/* Top categories */}
       <div className="space-y-2">
-        <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+        <div className="text-[11px] font-semibold text-fg-muted uppercase tracking-wider">
           Top Categories
         </div>
         {report.topCategories.map((cat) => (
           <div key={cat.category} className="space-y-1">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-300 capitalize">{cat.category}</span>
-              <span className="text-slate-400">
+              <span className="text-fg-secondary capitalize">{cat.category}</span>
+              <span className="text-fg-muted">
                 {fmt$(cat.amount)} ({cat.pct}%)
               </span>
             </div>
@@ -119,7 +119,7 @@ export default function MonthlyReportCard() {
 
       {/* Envelope adherence */}
       {report.envelopeAdherence < 100 && (
-        <div className="text-xs text-slate-400">
+        <div className="text-xs text-fg-muted">
           Envelope adherence:{' '}
           <span
             className="font-semibold"
@@ -134,11 +134,11 @@ export default function MonthlyReportCard() {
 
       {/* Insights */}
       {report.insights.length > 0 && (
-        <div className="space-y-1.5 pt-1 border-t border-slate-800/50">
+        <div className="space-y-1.5 pt-1 border-t border-border">
           {report.insights.map((insight, i) => (
-            <div key={i} className="text-[11px] text-slate-400">
-              <span className="text-slate-500">{insight.label}:</span>{' '}
-              <span className="text-slate-300">{insight.value}</span>
+            <div key={i} className="text-[11px] text-fg-muted">
+              <span className="text-fg-muted">{insight.label}:</span>{' '}
+              <span className="text-fg-secondary">{insight.value}</span>
             </div>
           ))}
         </div>
@@ -161,7 +161,7 @@ function StatCell({
       <div className="text-base font-bold" style={{ color }}>
         {value}
       </div>
-      <div className="text-[10px] text-slate-500 mt-0.5">{label}</div>
+      <div className="text-[10px] text-fg-muted mt-0.5">{label}</div>
     </div>
   );
 }

@@ -142,7 +142,7 @@ function CircularTimer({ progress, size = 240, strokeWidth = 10, children }) {
         />
         <defs>
           <linearGradient id="focusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6366f1" />
+            <stop offset="0%" stopColor="#14b8a6" />
             <stop offset="100%" stopColor="#22c55e" />
           </linearGradient>
         </defs>
@@ -472,7 +472,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
       {/* Quick Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 18 }}>
         <div style={{ ...CARD, textAlign: "center", marginBottom: 0 }}>
-          <div style={{ fontSize: 22, fontWeight: 800, color: "#6366f1" }}>
+          <div style={{ fontSize: 22, fontWeight: 800, color: "#14b8a6" }}>
             {todayFocusMinutes}m
           </div>
           <div style={{ fontSize: 10, color: "rgba(148,163,184,0.6)", fontWeight: 600 }}>Today</div>
@@ -493,7 +493,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
 
       {/* Active Block Indicator */}
       {activeBlock && (
-        <div style={{ ...CARD, borderLeft: "3px solid #6366f1", display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ ...CARD, borderLeft: "3px solid #14b8a6", display: "flex", alignItems: "center", gap: 12 }}>
           <span style={{ fontSize: 24 }}>{activeBlock.icon}</span>
           <div>
             <div style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9" }}>{activeBlock.name}</div>
@@ -521,11 +521,11 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
               padding: "8px 16px",
               fontSize: 13,
               background: (d.value === 0 ? selectedDuration === 0 : selectedDuration === d.value)
-                ? "rgba(99,102,241,0.2)" : "rgba(15,23,42,0.5)",
+                ? "rgba(45, 212, 191,0.2)" : "rgba(15,23,42,0.5)",
               color: (d.value === 0 ? selectedDuration === 0 : selectedDuration === d.value)
-                ? "#818cf8" : "rgba(148,163,184,0.6)",
+                ? "#2dd4bf" : "rgba(148,163,184,0.6)",
               border: (d.value === 0 ? selectedDuration === 0 : selectedDuration === d.value)
-                ? "1px solid rgba(99,102,241,0.4)" : "1px solid rgba(51,65,85,0.4)",
+                ? "1px solid rgba(45, 212, 191,0.4)" : "1px solid rgba(51,65,85,0.4)",
             }}
           >
             {d.label}
@@ -589,7 +589,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
               </div>
               <button
                 onClick={showNativeAppPicker}
-                style={{ ...BTN, width: "100%", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)", color: "#818cf8", padding: "10px 16px", fontSize: 13, borderRadius: 10 }}
+                style={{ ...BTN, width: "100%", background: "rgba(45, 212, 191,0.15)", border: "1px solid rgba(45, 212, 191,0.4)", color: "#2dd4bf", padding: "10px 16px", fontSize: 13, borderRadius: 10 }}
               >
                 📱 {nativeAppCount > 0 ? "Change Blocked Apps" : "Select Apps to Block"}
               </button>
@@ -613,12 +613,12 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
         style={{
           ...BTN,
           width: "100%",
-          background: "linear-gradient(135deg, #6366f1, #4f46e5)",
+          background: "linear-gradient(135deg, #14b8a6, #0e9488)",
           color: "#fff",
           padding: "14px 20px",
           fontSize: 16,
           borderRadius: 14,
-          boxShadow: "0 4px 20px rgba(99,102,241,0.3)",
+          boxShadow: "0 4px 20px rgba(45, 212, 191,0.3)",
         }}
       >
         {isNativeApp && nativeAuthStatus === "approved" && nativeAppCount > 0
@@ -660,7 +660,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
 
   const renderBlocks = () => (
     <motion.div initial={false} animate={{ opacity: 1 }}>
-      <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#818cf8", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
+      <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#2dd4bf", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
         ← Back
       </button>
       <p style={SECTION_LABEL}>Focus Blocks (Schedules)</p>
@@ -690,8 +690,8 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
 
       {/* New Block Form */}
       {newBlockForm ? (
-        <div style={{ ...CARD, borderColor: "rgba(99,102,241,0.3)" }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#818cf8", marginBottom: 10 }}>New Focus Block</p>
+        <div style={{ ...CARD, borderColor: "rgba(45, 212, 191,0.3)" }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#2dd4bf", marginBottom: 10 }}>New Focus Block</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <input
               value={newBlockForm.name}
@@ -742,8 +742,8 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
                     fontSize: 11,
                     fontWeight: 600,
                     cursor: "pointer",
-                    background: newBlockForm.days.includes(i) ? "rgba(99,102,241,0.3)" : "rgba(51,65,85,0.3)",
-                    color: newBlockForm.days.includes(i) ? "#818cf8" : "rgba(148,163,184,0.5)",
+                    background: newBlockForm.days.includes(i) ? "rgba(45, 212, 191,0.3)" : "rgba(51,65,85,0.3)",
+                    color: newBlockForm.days.includes(i) ? "#2dd4bf" : "rgba(148,163,184,0.5)",
                   }}
                 >
                   {d}
@@ -770,7 +770,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
                   setFocusData((prev) => ({ ...prev, blocks: [...prev.blocks, block] }));
                   setNewBlockForm(null);
                 }}
-                style={{ ...BTN, background: "rgba(99,102,241,0.2)", color: "#818cf8", padding: "8px 14px", fontSize: 12 }}
+                style={{ ...BTN, background: "rgba(45, 212, 191,0.2)", color: "#2dd4bf", padding: "8px 14px", fontSize: 12 }}
               >
                 Save Block
               </button>
@@ -789,9 +789,9 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
           style={{
             ...BTN,
             width: "100%",
-            background: "rgba(99,102,241,0.1)",
-            color: "#818cf8",
-            border: "1px dashed rgba(99,102,241,0.3)",
+            background: "rgba(45, 212, 191,0.1)",
+            color: "#2dd4bf",
+            border: "1px dashed rgba(45, 212, 191,0.3)",
             padding: "12px 20px",
           }}
         >
@@ -803,7 +803,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
 
   const renderBlocklist = () => (
     <motion.div initial={false} animate={{ opacity: 1 }}>
-      <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#818cf8", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
+      <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#2dd4bf", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
         ← Back
       </button>
       <p style={SECTION_LABEL}>Website Blocklist</p>
@@ -839,7 +839,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
                 height: 22,
                 borderRadius: 11,
                 border: "none",
-                background: isActive ? "#6366f1" : "rgba(51,65,85,0.6)",
+                background: isActive ? "#14b8a6" : "rgba(51,65,85,0.6)",
                 cursor: "pointer",
                 position: "relative",
                 transition: "background 0.2s",
@@ -889,7 +889,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
               setCustomDomainInput("");
             }
           }}
-          style={{ ...BTN, background: "rgba(99,102,241,0.2)", color: "#818cf8", padding: "8px 14px", fontSize: 12 }}
+          style={{ ...BTN, background: "rgba(45, 212, 191,0.2)", color: "#2dd4bf", padding: "8px 14px", fontSize: 12 }}
         >
           Add
         </button>
@@ -988,7 +988,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
     const sortedSessions = [...focusData.sessions].sort((a, b) => (b.startTime || 0) - (a.startTime || 0));
     return (
       <motion.div initial={false} animate={{ opacity: 1 }}>
-        <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#818cf8", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
+        <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#2dd4bf", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
           ← Back
         </button>
         <p style={SECTION_LABEL}>Session History</p>
@@ -996,7 +996,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
         {/* Summary Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
           <div style={{ ...CARD, textAlign: "center", marginBottom: 0 }}>
-            <div style={{ fontSize: 20, fontWeight: 800, color: "#6366f1" }}>
+            <div style={{ fontSize: 20, fontWeight: 800, color: "#14b8a6" }}>
               {Math.round(todayFocusMinutes)}m
             </div>
             <div style={{ fontSize: 10, color: "rgba(148,163,184,0.6)", fontWeight: 600 }}>Today's Focus</div>
@@ -1052,7 +1052,7 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
 
   const renderSettings = () => (
     <motion.div initial={false} animate={{ opacity: 1 }}>
-      <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#818cf8", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
+      <button onClick={() => setView("home")} style={{ ...BTN, background: "transparent", color: "#2dd4bf", padding: "4px 0", marginBottom: 12, fontSize: 13 }}>
         ← Back
       </button>
       <p style={SECTION_LABEL}>Difficulty Setting</p>
@@ -1073,13 +1073,13 @@ export default function FocusMode({ data, onChange, isPro, onSessionStart, onSes
             textAlign: "left",
             cursor: "pointer",
             fontFamily: FONT,
-            borderColor: focusData.difficulty === level.id ? "rgba(99,102,241,0.5)" : "rgba(51,65,85,0.3)",
-            background: focusData.difficulty === level.id ? "rgba(99,102,241,0.1)" : "rgba(17,24,39,0.7)",
+            borderColor: focusData.difficulty === level.id ? "rgba(45, 212, 191,0.5)" : "rgba(51,65,85,0.3)",
+            background: focusData.difficulty === level.id ? "rgba(45, 212, 191,0.1)" : "rgba(17,24,39,0.7)",
           }}
         >
           <span style={{ fontSize: 20 }}>{level.icon}</span>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: focusData.difficulty === level.id ? "#818cf8" : "#f1f5f9" }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: focusData.difficulty === level.id ? "#2dd4bf" : "#f1f5f9" }}>
               {level.label}
             </div>
             <div style={{ fontSize: 11, color: "rgba(148,163,184,0.5)" }}>{level.desc}</div>
@@ -1148,7 +1148,7 @@ export function FocusDashWidget({ data, onNavigate }) {
       onClick={onNavigate}
       style={{
         background: "rgba(17,24,39,0.7)",
-        border: "1px solid rgba(99,102,241,0.2)",
+        border: "1px solid rgba(45, 212, 191,0.2)",
         borderRadius: 16,
         padding: "16px 20px",
         cursor: "pointer",
@@ -1156,8 +1156,8 @@ export function FocusDashWidget({ data, onNavigate }) {
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: "#818cf8" }}>🎯 Focus</span>
-        <span style={{ fontSize: 11, color: "rgba(99,102,241,0.7)" }}>View all →</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#2dd4bf" }}>🎯 Focus</span>
+        <span style={{ fontSize: 11, color: "rgba(45, 212, 191,0.7)" }}>View all →</span>
       </div>
       <div style={{ display: "flex", gap: 10 }}>
         <div style={{ flex: 1, background: "rgba(15,23,42,0.5)", borderRadius: 10, padding: "10px 12px", textAlign: "center" }}>

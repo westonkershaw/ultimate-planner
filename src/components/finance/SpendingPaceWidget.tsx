@@ -59,15 +59,15 @@ export default function SpendingPaceWidget() {
           </svg>
           {/* Center text */}
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-1">
-            <div className="text-xl font-bold text-slate-100">{pace.spentPct}%</div>
-            <div className="text-[10px] text-slate-500">of budget used</div>
+            <div className="text-xl font-bold text-fg">{pace.spentPct}%</div>
+            <div className="text-[10px] text-fg-muted">of budget used</div>
           </div>
         </div>
 
         {/* Stats */}
         <div className="flex-1 space-y-3">
           <div>
-            <div className="text-sm font-bold text-slate-100 mb-1">Spending Pace</div>
+            <div className="text-sm font-bold text-fg mb-1">Spending Pace</div>
             <div className="text-xs" style={{ color: pace.statusColor }}>
               {message}
             </div>
@@ -78,7 +78,7 @@ export default function SpendingPaceWidget() {
             <ProgressRow
               label={`Day ${pace.daysElapsed} of ${pace.daysInMonth}`}
               pct={pace.daysPct}
-              color="#6366f1"
+              color="#14b8a6"
             />
             <ProgressRow
               label={`${fmt$(pace.amountSpent)} of ${fmt$(pace.monthlyBudget)}`}
@@ -88,7 +88,7 @@ export default function SpendingPaceWidget() {
           </div>
 
           {/* Daily average */}
-          <div className="text-[11px] text-slate-500">
+          <div className="text-[11px] text-fg-muted">
             Avg. {fmt$(pace.dailyAvg)}/day
             {' · '}
             {pace.daysInMonth - pace.daysElapsed} days left
@@ -111,7 +111,7 @@ function ProgressRow({
   return (
     <div>
       <div className="flex items-center justify-between mb-0.5">
-        <span className="text-[10px] text-slate-400">{label}</span>
+        <span className="text-[10px] text-fg-muted">{label}</span>
         <span className="text-[10px] font-semibold" style={{ color }}>
           {pct}%
         </span>

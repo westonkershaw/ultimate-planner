@@ -158,7 +158,7 @@ function hadRecentActivity(habit) {
 const EMOJI_OPTIONS = ["📚","🏃","🧘","💧","✍️","🎸","🥗","🏋️","😴","🌱","🧠","💊","📵","🚶","🎯","💬","🎨","🍎","☕","🙏"];
 
 const COLOR_OPTIONS = [
-  "#6366f1","#f97316","#22c55e","#ef4444",
+  "#14b8a6","#f97316","#22c55e","#ef4444",
   "#ec4899","#14b8a6","#f59e0b","#8b5cf6",
 ];
 
@@ -172,7 +172,7 @@ const WEEKDAYS_LIST = ["Monday","Tuesday","Wednesday","Thursday","Friday","Satur
 const UNIT_OPTIONS = ["times","minutes","pages","oz","steps"];
 
 const TEMPLATES = [
-  { name:"Read 30 min",           emoji:"📚", color:"#6366f1", frequency:"daily",    category:"intellectual", target:30, unit:"minutes" },
+  { name:"Read 30 min",           emoji:"📚", color:"#14b8a6", frequency:"daily",    category:"intellectual", target:30, unit:"minutes" },
   { name:"Exercise",              emoji:"🏃", color:"#f97316", frequency:"daily",    category:"health",       target:1,  unit:"times"   },
   { name:"Meditate 10 min",       emoji:"🧘", color:"#8b5cf6", frequency:"daily",    category:"mindset",      target:10, unit:"minutes" },
   { name:"Drink 8 glasses water", emoji:"💧", color:"#14b8a6", frequency:"daily",    category:"health",       target:8,  unit:"times"   },
@@ -181,7 +181,7 @@ const TEMPLATES = [
   { name:"No phone before 9am",   emoji:"📵", color:"#ef4444", frequency:"weekdays", category:"mindset",      target:1,  unit:"times"   },
   { name:"Eat vegetables",        emoji:"🥗", color:"#22c55e", frequency:"daily",    category:"health",       target:1,  unit:"times"   },
   { name:"Call family/friend",    emoji:"💬", color:"#ec4899", frequency:"weekly",   category:"social",       target:1,  unit:"times"   },
-  { name:"Review goals",          emoji:"🎯", color:"#6366f1", frequency:"weekly",   category:"productivity", target:1,  unit:"times"   },
+  { name:"Review goals",          emoji:"🎯", color:"#14b8a6", frequency:"weekly",   category:"productivity", target:1,  unit:"times"   },
   { name:"Take vitamins",         emoji:"💊", color:"#22c55e", frequency:"daily",    category:"health",       target:1,  unit:"times"   },
   { name:"Learn something new",   emoji:"🌱", color:"#14b8a6", frequency:"daily",    category:"intellectual", target:1,  unit:"times"   },
 ];
@@ -218,7 +218,7 @@ const HABIT_TEMPLATE_CATEGORIES = ["All", "physical", "intellectual", "financial
 
 const HABIT_TEMPLATE_COLORS = {
   physical:     "#f97316",
-  intellectual: "#6366f1",
+  intellectual: "#14b8a6",
   financial:    "#22c55e",
   social:       "#ec4899",
   spiritual:    "#8b5cf6",
@@ -234,7 +234,7 @@ function weeklyGoalToFrequency(weeklyGoal) {
 const BLANK_HABIT = {
   name: "",
   emoji: "📚",
-  color: "#6366f1",
+  color: "#14b8a6",
   frequency: "daily",
   customDays: [],
   category: "health",
@@ -277,7 +277,7 @@ const QUICK_START_STACKS = [
     description: "Protect your sleep and end the day calm",
     habits: [
       { name: "No screens 1hr before bed", emoji: "📵", color: "#ef4444", frequency: "daily", category: "mindset",      target: 1, unit: "times", difficulty: "hard"   },
-      { name: "Read",                      emoji: "📚", color: "#6366f1", frequency: "daily", category: "intellectual", target: 20, unit: "minutes", difficulty: "easy" },
+      { name: "Read",                      emoji: "📚", color: "#14b8a6", frequency: "daily", category: "intellectual", target: 20, unit: "minutes", difficulty: "easy" },
       { name: "Gratitude journal",         emoji: "✍️", color: "#f59e0b", frequency: "daily", category: "mindset",      target: 1, unit: "times", difficulty: "easy"   },
       { name: "Sleep by 11pm",             emoji: "😴", color: "#8b5cf6", frequency: "daily", category: "health",       target: 1, unit: "times", difficulty: "medium" },
     ],
@@ -286,10 +286,10 @@ const QUICK_START_STACKS = [
     id: "productivity",
     name: "Productivity Stack",
     icon: "⚡",
-    color: "#6366f1",
+    color: "#14b8a6",
     description: "Deep work, clear priorities, and no distractions",
     habits: [
-      { name: "Deep work block",      emoji: "🎯", color: "#6366f1", frequency: "weekdays", category: "productivity", target: 90, unit: "minutes", difficulty: "hard"   },
+      { name: "Deep work block",      emoji: "🎯", color: "#14b8a6", frequency: "weekdays", category: "productivity", target: 90, unit: "minutes", difficulty: "hard"   },
       { name: "Review priorities",    emoji: "📋", color: "#22c55e", frequency: "daily",    category: "productivity", target: 1,  unit: "times",   difficulty: "easy"   },
       { name: "Exercise",             emoji: "🏋️", color: "#f97316", frequency: "daily",    category: "health",       target: 1,  unit: "times",   difficulty: "hard"   },
       { name: "No social media AM",   emoji: "🚫", color: "#ef4444", frequency: "weekdays", category: "mindset",      target: 1,  unit: "times",   difficulty: "medium" },
@@ -376,9 +376,9 @@ const S = {
     borderRadius: 99,
     fontSize: 13,
     fontWeight: 600,
-    border: active ? `1.5px solid ${color || "#6366f1"}` : "1.5px solid rgba(255,255,255,0.12)",
-    background: active ? `${color || "#6366f1"}22` : "transparent",
-    color: active ? color || "#6366f1" : "rgba(255,255,255,0.55)",
+    border: active ? `1.5px solid ${color || "#14b8a6"}` : "1.5px solid rgba(255,255,255,0.12)",
+    background: active ? `${color || "#14b8a6"}22` : "transparent",
+    color: active ? color || "#14b8a6" : "rgba(255,255,255,0.55)",
     cursor: "pointer",
     transition: "all 0.15s",
   }),
@@ -392,8 +392,8 @@ if (typeof document !== "undefined" && !document.getElementById(PULSE_STYLE_ID))
   style.id = PULSE_STYLE_ID;
   style.textContent = `
     @keyframes habitPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.55); }
-      50%       { box-shadow: 0 0 0 6px rgba(99,102,241,0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 191,0.55); }
+      50%       { box-shadow: 0 0 0 6px rgba(45, 212, 191,0); }
     }
     @keyframes habitConfettiFall {
       0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
@@ -418,8 +418,8 @@ if (typeof document !== "undefined" && !document.getElementById(PULSE_STYLE_ID))
 
 function heatmapCellColor(pct) {
   if (pct <= 0)       return "rgba(255,255,255,0.06)";
-  if (pct < 0.5)      return "rgba(99,102,241,0.3)";
-  if (pct < 1)        return "rgba(99,102,241,0.6)";
+  if (pct < 0.5)      return "rgba(45, 212, 191,0.3)";
+  if (pct < 1)        return "rgba(45, 212, 191,0.6)";
   return "#34c98a"; // 100% hit — bright green
 }
 
@@ -694,7 +694,7 @@ function LogTodayButton({ habit, onToggle }) {
                 style={{
                   flex: 1,
                   background: "rgba(255,255,255,0.07)",
-                  border: "1px solid rgba(99,102,241,0.5)",
+                  border: "1px solid rgba(45, 212, 191,0.5)",
                   borderRadius: 8,
                   padding: "6px 10px",
                   color: "#fff",
@@ -705,7 +705,7 @@ function LogTodayButton({ habit, onToggle }) {
               <button
                 onClick={handleSubmit}
                 style={{
-                  background: "#6366f1",
+                  background: "#14b8a6",
                   border: "none",
                   borderRadius: 8,
                   padding: "6px 12px",
@@ -744,10 +744,10 @@ function LogTodayButton({ habit, onToggle }) {
           borderRadius: 10,
           border: doneToday
             ? `1.5px solid ${habit.color}`
-            : "1.5px solid rgba(99,102,241,0.7)",
+            : "1.5px solid rgba(45, 212, 191,0.7)",
           background: doneToday
             ? `${habit.color}22`
-            : "rgba(99,102,241,0.12)",
+            : "rgba(45, 212, 191,0.12)",
           color: doneToday ? habit.color : "#a5b4fc",
           fontWeight: 700,
           fontSize: 13,
@@ -1153,8 +1153,8 @@ function HabitInsightCard({ habits }) {
             display: "flex",
             alignItems: "flex-start",
             gap: 10,
-            background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08))",
-            border: "1px solid rgba(99,102,241,0.25)",
+            background: "linear-gradient(135deg, rgba(45, 212, 191,0.12), rgba(14, 148, 136,0.08))",
+            border: "1px solid rgba(45, 212, 191,0.25)",
             borderRadius: 14,
             padding: "12px 16px",
             cursor: insights.length > 1 ? "pointer" : "default",
@@ -1175,7 +1175,7 @@ function HabitInsightCard({ habits }) {
           {insights.length > 1 && (
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, flexShrink: 0, marginTop: 2 }}>
               <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)" }}>{idx + 1}/{insights.length}</span>
-              <span style={{ fontSize: 12, color: "rgba(99,102,241,0.6)" }}>›</span>
+              <span style={{ fontSize: 12, color: "rgba(45, 212, 191,0.6)" }}>›</span>
             </div>
           )}
         </motion.div>
@@ -1191,7 +1191,7 @@ function HabitInsightCard({ habits }) {
                 width: i === idx ? 16 : 6,
                 height: 6,
                 borderRadius: 99,
-                background: i === idx ? "#6366f1" : "rgba(255,255,255,0.2)",
+                background: i === idx ? "#14b8a6" : "rgba(255,255,255,0.2)",
                 border: "none",
                 padding: 0,
                 cursor: "pointer",
@@ -1207,7 +1207,7 @@ function HabitInsightCard({ habits }) {
 
 // ─── PerfectDayBanner ─────────────────────────────────────────────────────────
 
-const CONFETTI_COLORS = ["#6366f1", "#f59e0b", "#22c55e", "#ec4899", "#14b8a6", "#f97316"];
+const CONFETTI_COLORS = ["#14b8a6", "#f59e0b", "#22c55e", "#ec4899", "#14b8a6", "#f97316"];
 
 function PerfectDayBanner({ habits }) {
   const today = todayKey();
@@ -1249,8 +1249,8 @@ function PerfectDayBanner({ habits }) {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: "linear-gradient(135deg, rgba(99,102,241,0.28), rgba(139,92,246,0.22))",
-          border: "1px solid rgba(139,92,246,0.5)",
+          background: "linear-gradient(135deg, rgba(45, 212, 191,0.28), rgba(14, 148, 136,0.22))",
+          border: "1px solid rgba(14, 148, 136,0.5)",
           borderRadius: 16,
           padding: "16px 20px",
           marginBottom: 20,
@@ -1335,7 +1335,7 @@ function StackSuggestionToast({ suggestion, onAccept, onDismiss }) {
           zIndex: 1200,
           maxWidth: 320,
           background: "rgba(15,17,30,0.96)",
-          border: "1px solid rgba(99,102,241,0.35)",
+          border: "1px solid rgba(45, 212, 191,0.35)",
           borderRadius: 14,
           padding: "14px 16px",
           backdropFilter: "blur(16px)",
@@ -1360,8 +1360,8 @@ function StackSuggestionToast({ suggestion, onAccept, onDismiss }) {
             onClick={onAccept}
             style={{
               flex: 1, padding: "7px 0",
-              background: "rgba(99,102,241,0.2)",
-              border: "1px solid rgba(99,102,241,0.45)",
+              background: "rgba(45, 212, 191,0.2)",
+              border: "1px solid rgba(45, 212, 191,0.45)",
               borderRadius: 8, color: "#a5b4fc",
               fontWeight: 700, fontSize: 12, cursor: "pointer",
             }}
@@ -1412,7 +1412,7 @@ function StreakMilestoneToast({ toast, onDismiss }) {
             zIndex: 1300,
             maxWidth: 320,
             background: "rgba(15,17,30,0.97)",
-            border: "1px solid rgba(99,102,241,0.45)",
+            border: "1px solid rgba(45, 212, 191,0.45)",
             borderRadius: 14,
             padding: "14px 16px",
             backdropFilter: "blur(16px)",
@@ -1914,7 +1914,7 @@ function HabitStackingPanel({ habits }) {
         onClick={() => setOpen((v) => !v)}
         style={{
           background: "none",
-          border: "1px solid rgba(99,102,241,0.25)",
+          border: "1px solid rgba(45, 212, 191,0.25)",
           borderRadius: 10,
           padding: "8px 16px",
           color: "rgba(165,180,252,0.85)",
@@ -1946,7 +1946,7 @@ function HabitStackingPanel({ habits }) {
           >
             <div style={{
               background: "rgba(15,23,42,0.55)",
-              border: "1px solid rgba(99,102,241,0.18)",
+              border: "1px solid rgba(45, 212, 191,0.18)",
               borderRadius: 14,
               padding: 16,
               marginTop: 10,
@@ -2000,8 +2000,8 @@ function HabitStackingPanel({ habits }) {
                       <span style={{
                         padding: "3px 10px",
                         borderRadius: 99,
-                        background: "rgba(99,102,241,0.18)",
-                        border: "1px solid rgba(99,102,241,0.35)",
+                        background: "rgba(45, 212, 191,0.18)",
+                        border: "1px solid rgba(45, 212, 191,0.35)",
                         fontSize: 12,
                         fontWeight: 600,
                         color: "#a5b4fc",
@@ -2020,8 +2020,8 @@ function HabitStackingPanel({ habits }) {
                           style={{
                             padding: "4px 10px",
                             borderRadius: 8,
-                            border: "1px solid rgba(99,102,241,0.35)",
-                            background: toast === origIdx ? "rgba(34,197,94,0.2)" : "rgba(99,102,241,0.15)",
+                            border: "1px solid rgba(45, 212, 191,0.35)",
+                            background: toast === origIdx ? "rgba(34,197,94,0.2)" : "rgba(45, 212, 191,0.15)",
                             color: toast === origIdx ? "#86efac" : "#a5b4fc",
                             fontSize: 11,
                             fontWeight: 600,
@@ -2129,7 +2129,7 @@ function StatisticsPanel({ habits }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 10, marginBottom: 20 }}>
         {stats.map((s) => (
           <div key={s.label} style={{ ...S.card, textAlign: "center" }}>
-            <div style={{ fontSize: 26, fontWeight: 800, color: "#6366f1" }}>{s.value}{s.suffix}</div>
+            <div style={{ fontSize: 26, fontWeight: 800, color: "#14b8a6" }}>{s.value}{s.suffix}</div>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginTop: 4 }}>{s.label}</div>
           </div>
         ))}
@@ -2256,8 +2256,8 @@ function ArchiveSection({ habits, onUnarchive }) {
                   <button
                     onClick={() => onUnarchive(habit.id)}
                     style={{
-                      background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)",
-                      borderRadius: 8, padding: "4px 10px", color: "#6366f1",
+                      background: "rgba(45, 212, 191,0.15)", border: "1px solid rgba(45, 212, 191,0.3)",
+                      borderRadius: 8, padding: "4px 10px", color: "#14b8a6",
                       fontSize: 12, fontWeight: 600, cursor: "pointer",
                       whiteSpace: "nowrap",
                     }}
@@ -2413,7 +2413,7 @@ export default function HabitBuilderTab({ data, onChange }) {
   };
 
   const handleQuickAddTemplate = (tmpl) => {
-    const color = HABIT_TEMPLATE_COLORS[tmpl.category] || "#6366f1";
+    const color = HABIT_TEMPLATE_COLORS[tmpl.category] || "#14b8a6";
     const frequency = weeklyGoalToFrequency(tmpl.weeklyGoal);
     const newHabit = {
       id: uid(),
@@ -2498,8 +2498,8 @@ export default function HabitBuilderTab({ data, onChange }) {
             onClick={() => { setShowTemplates((v) => !v); setTemplateCatFilter("All"); }}
             style={{
               padding: "10px 16px",
-              background: showTemplates ? "rgba(99,102,241,0.18)" : "rgba(255,255,255,0.06)",
-              border: showTemplates ? "1px solid rgba(99,102,241,0.5)" : "1px solid rgba(255,255,255,0.12)",
+              background: showTemplates ? "rgba(45, 212, 191,0.18)" : "rgba(255,255,255,0.06)",
+              border: showTemplates ? "1px solid rgba(45, 212, 191,0.5)" : "1px solid rgba(255,255,255,0.12)",
               borderRadius: 12,
               color: showTemplates ? "#a5b4fc" : "rgba(255,255,255,0.65)",
               fontWeight: 600,
@@ -2518,7 +2518,7 @@ export default function HabitBuilderTab({ data, onChange }) {
             onClick={() => setModal({ mode: "create", initial: {} })}
             style={{
               padding: "10px 18px",
-              background: "#6366f1",
+              background: "#14b8a6",
               border: "none",
               borderRadius: 12,
               color: "#fff",
@@ -2569,7 +2569,7 @@ export default function HabitBuilderTab({ data, onChange }) {
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
                 {HABIT_TEMPLATE_CATEGORIES.map((cat) => {
                   const active = templateCatFilter === cat;
-                  const color = cat === "All" ? "#6366f1" : (HABIT_TEMPLATE_COLORS[cat] || "#6366f1");
+                  const color = cat === "All" ? "#14b8a6" : (HABIT_TEMPLATE_COLORS[cat] || "#14b8a6");
                   return (
                     <button
                       key={cat}
@@ -2603,7 +2603,7 @@ export default function HabitBuilderTab({ data, onChange }) {
                   .filter((t) => templateCatFilter === "All" || t.category === templateCatFilter)
                   .map((tmpl, i) => {
                     const alreadyAdded = habits.some((h) => !h.archived && h.name === tmpl.name);
-                    const color = HABIT_TEMPLATE_COLORS[tmpl.category] || "#6366f1";
+                    const color = HABIT_TEMPLATE_COLORS[tmpl.category] || "#14b8a6";
                     return (
                       <div
                         key={i}
@@ -2619,7 +2619,7 @@ export default function HabitBuilderTab({ data, onChange }) {
                           transition: "background 0.15s",
                           cursor: alreadyAdded ? "default" : "default",
                         }}
-                        onMouseEnter={(e) => { if (!alreadyAdded) e.currentTarget.style.background = "rgba(99,102,241,0.08)"; }}
+                        onMouseEnter={(e) => { if (!alreadyAdded) e.currentTarget.style.background = "rgba(45, 212, 191,0.08)"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.background = alreadyAdded ? "rgba(255,255,255,0.03)" : "transparent"; }}
                       >
                         <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
@@ -2675,8 +2675,8 @@ export default function HabitBuilderTab({ data, onChange }) {
               padding: "8px 16px",
               background: "none",
               border: "none",
-              borderBottom: activeTab === tab.id ? "2px solid #6366f1" : "2px solid transparent",
-              color: activeTab === tab.id ? "#6366f1" : "rgba(255,255,255,0.45)",
+              borderBottom: activeTab === tab.id ? "2px solid #14b8a6" : "2px solid transparent",
+              color: activeTab === tab.id ? "#14b8a6" : "rgba(255,255,255,0.45)",
               fontWeight: activeTab === tab.id ? 700 : 500,
               fontSize: 14,
               cursor: "pointer",
@@ -2716,7 +2716,7 @@ export default function HabitBuilderTab({ data, onChange }) {
               const max = calcMaxDailyScore(habits, todayStr);
               if (max === 0) return null;
               const pct = max > 0 ? earned / max : 0;
-              const scoreColor = pct >= 1 ? "#22c55e" : pct >= 0.5 ? "#f59e0b" : "#6366f1";
+              const scoreColor = pct >= 1 ? "#22c55e" : pct >= 0.5 ? "#f59e0b" : "#14b8a6";
               return (
                 <div
                   style={{
@@ -2791,7 +2791,7 @@ export default function HabitBuilderTab({ data, onChange }) {
                     <button
                       onClick={() => setModal({ mode: "create", initial: {} })}
                       style={{
-                        padding: "8px 18px", background: "#6366f1", border: "none",
+                        padding: "8px 18px", background: "#14b8a6", border: "none",
                         borderRadius: 10, color: "#fff", fontWeight: 700, fontSize: 13, cursor: "pointer",
                       }}
                     >
@@ -2910,7 +2910,7 @@ export function HabitsDashWidget({ data, onNavigate }) {
       style={{
         ...S.card,
         cursor: "pointer",
-        borderLeft: "4px solid #6366f1",
+        borderLeft: "4px solid #14b8a6",
       }}
     >
       {/* Title row */}
@@ -2920,7 +2920,7 @@ export function HabitsDashWidget({ data, onNavigate }) {
         </div>
         <div style={{
           fontSize: 13, fontWeight: 700,
-          color: done === total && total > 0 ? "#22c55e" : "#6366f1",
+          color: done === total && total > 0 ? "#22c55e" : "#14b8a6",
         }}>
           {done}/{total} done
         </div>
@@ -2963,7 +2963,7 @@ export function HabitsDashWidget({ data, onNavigate }) {
             initial={{ width: 0 }}
             animate={{ width: total > 0 ? `${(done / total) * 100}%` : "0%" }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            style={{ height: "100%", background: "#6366f1", borderRadius: 99 }}
+            style={{ height: "100%", background: "#14b8a6", borderRadius: 99 }}
           />
         </div>
       )}

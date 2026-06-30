@@ -36,7 +36,7 @@ function fmtDate(dateStr) {
 const ACCENT = "#8b5cf6";
 
 const GENRES = [
-  { value: "fiction", label: "Fiction", color: "#6366f1", bg: "#6366f120" },
+  { value: "fiction", label: "Fiction", color: "#14b8a6", bg: "#14b8a620" },
   { value: "non-fiction", label: "Non-Fiction", color: "#0ea5e9", bg: "#0ea5e920" },
   { value: "self-help", label: "Self-Help", color: "#10b981", bg: "#10b98120" },
   { value: "sci-fi", label: "Sci-Fi", color: "#8b5cf6", bg: "#8b5cf620" },
@@ -203,7 +203,7 @@ function ReadingStatsHero({ books, goal, onSetGoal }) {
   return (
     <div style={{
       background: "linear-gradient(135deg,rgba(17,24,39,0.95) 0%,rgba(15,23,42,0.98) 100%)",
-      border: "1px solid rgba(139,92,246,0.25)",
+      border: "1px solid rgba(14, 148, 136,0.25)",
       borderRadius: 20,
       padding: "20px 24px",
       display: "flex",
@@ -547,7 +547,7 @@ function WeeklyPagesPanel({ sessions, weeklyGoal, onSetGoal }) {
 
   const barColor =
     pct >= 100 ? "#10b981" :
-    pct >= 60  ? "#6366f1" : "#f59e0b";
+    pct >= 60  ? "#14b8a6" : "#f59e0b";
 
   const handleSetGoal = () => {
     const n = parseInt(goalInput, 10);
@@ -664,7 +664,7 @@ function BooksMilestonesPanel({ books }) {
         {badges.map((b) => {
           const _opacity = b.reached ? 1 : 0.3;
           const _border = b.reached ? "1px solid " + ACCENT + "50" : "1px solid rgba(51,65,85,0.4)";
-          const _bg = b.reached ? "rgba(99,102,241,0.12)" : "rgba(15,23,42,0.4)";
+          const _bg = b.reached ? "rgba(45, 212, 191,0.12)" : "rgba(15,23,42,0.4)";
           return (
             <div
               key={b.count}
@@ -818,8 +818,8 @@ function ReadingTimeLogPanel({ sessions, books, onChange }) {
               flex: "1 1 80px",
               padding: "10px 8px",
               borderRadius: 10,
-              background: "rgba(99,102,241,0.12)",
-              border: "1px solid rgba(99,102,241,0.3)",
+              background: "rgba(45, 212, 191,0.12)",
+              border: "1px solid rgba(45, 212, 191,0.3)",
               color: ACCENT,
               fontWeight: 700,
               fontSize: 13,
@@ -1810,7 +1810,7 @@ export function ReadingListDashWidget({ data, onNavigate }) {
       onClick={onNavigate}
       style={{
         background: "rgba(17,24,39,0.75)",
-        border: "1px solid rgba(139,92,246,0.2)",
+        border: "1px solid rgba(14, 148, 136,0.2)",
         borderRadius: 16,
         padding: "16px 18px",
         cursor: "pointer",
@@ -1826,7 +1826,7 @@ export function ReadingListDashWidget({ data, onNavigate }) {
           <div style={{ fontSize: 13, color: "rgba(148,163,184,0.6)", lineHeight: 1.5, marginBottom: 8 }}>
             Track your reading journey — add a book to get started.
           </div>
-          <div style={{ fontSize: 11, color: "rgba(139,92,246,0.7)", fontWeight: 600 }}>
+          <div style={{ fontSize: 11, color: "rgba(14, 148, 136,0.7)", fontWeight: 600 }}>
             Add your first book →
           </div>
         </>
@@ -1852,13 +1852,13 @@ export function ReadingListDashWidget({ data, onNavigate }) {
                 <span>{year} goal</span>
                 <span>{booksReadThisYear} / {goal.target}</span>
               </div>
-              <div style={{ height: 4, borderRadius: 2, background: "rgba(139,92,246,0.15)", overflow: "hidden" }}>
+              <div style={{ height: 4, borderRadius: 2, background: "rgba(14, 148, 136,0.15)", overflow: "hidden" }}>
                 <div style={{ width: goalProgress + "%", height: "100%", background: ACCENT, transition: "width 0.4s" }} />
               </div>
             </div>
           )}
 
-          <div style={{ fontSize: 11, color: "rgba(139,92,246,0.7)", fontWeight: 600, marginTop: 8 }}>
+          <div style={{ fontSize: 11, color: "rgba(14, 148, 136,0.7)", fontWeight: 600, marginTop: 8 }}>
             View library →
           </div>
         </>

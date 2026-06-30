@@ -102,7 +102,7 @@ const S = {
   }),
   tab: (active) => ({
     flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer',
-    background: active ? '#6366f1' : 'transparent',
+    background: active ? '#14b8a6' : 'transparent',
     color: active ? '#fff' : 'rgba(148,163,184,0.6)',
     fontSize: 13, fontWeight: 700, borderRadius: 8,
     fontFamily: "'DM Sans',sans-serif", transition: 'all 0.18s',
@@ -384,7 +384,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                 )}
                 {barcodeStream && (
                   <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ width: '70%', height: 2, background: 'rgba(99,102,241,0.6)', borderRadius: 2 }} />
+                    <div style={{ width: '70%', height: 2, background: 'rgba(45, 212, 191,0.6)', borderRadius: 2 }} />
                   </div>
                 )}
               </div>
@@ -403,7 +403,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                 inputMode="numeric"
                 style={{
                   flex: 1, background: 'rgba(15,23,42,0.7)',
-                  border: '1px solid rgba(99,102,241,0.3)', borderRadius: 10,
+                  border: '1px solid rgba(45, 212, 191,0.3)', borderRadius: 10,
                   padding: '10px 14px', color: '#f1f5f9', fontSize: 14,
                   fontFamily: "'DM Sans',sans-serif", outline: 'none',
                   letterSpacing: '1px',
@@ -413,7 +413,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                 type="submit"
                 disabled={!barcodeInput.trim()}
                 style={{
-                  background: '#6366f1', border: 'none', borderRadius: 10,
+                  background: '#14b8a6', border: 'none', borderRadius: 10,
                   color: '#fff', padding: '10px 18px', cursor: 'pointer',
                   fontSize: 14, fontWeight: 700, fontFamily: "'DM Sans',sans-serif",
                   opacity: !barcodeInput.trim() ? 0.5 : 1,
@@ -428,7 +428,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
         {/* Barcode loading */}
         {scanning && mode === 'barcode' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 0', justifyContent: 'center' }}>
-            <div style={{ width: 20, height: 20, border: '2px solid rgba(99,102,241,0.3)', borderTop: '2px solid #6366f1', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+            <div style={{ width: 20, height: 20, border: '2px solid rgba(45, 212, 191,0.3)', borderTop: '2px solid #14b8a6', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
             <span style={{ fontSize: 13, color: '#a5b4fc' }}>Looking up barcode…</span>
           </div>
         )}
@@ -444,7 +444,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                 placeholder="e.g. kiwi, chicken breast..."
                 style={{
                   flex: 1, background: 'rgba(15,23,42,0.7)',
-                  border: '1px solid rgba(99,102,241,0.3)', borderRadius: 10,
+                  border: '1px solid rgba(45, 212, 191,0.3)', borderRadius: 10,
                   padding: '10px 14px', color: '#f1f5f9', fontSize: 14,
                   fontFamily: "'DM Sans',sans-serif", outline: 'none',
                 }}
@@ -453,7 +453,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                 type="submit"
                 disabled={!searchQuery.trim()}
                 style={{
-                  background: '#6366f1', border: 'none', borderRadius: 10,
+                  background: '#14b8a6', border: 'none', borderRadius: 10,
                   color: '#fff', padding: '10px 18px', cursor: 'pointer',
                   fontSize: 14, fontWeight: 700, fontFamily: "'DM Sans',sans-serif",
                   opacity: !searchQuery.trim() ? 0.5 : 1,
@@ -475,10 +475,10 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                   <motion.div
                     animate={{ y: ['0%', '100%', '0%'] }}
                     transition={{ duration: 1.6, repeat: Infinity, ease: 'linear' }}
-                    style={{ height: 2, background: 'linear-gradient(90deg,transparent,#6366f1,transparent)', width: '100%' }}
+                    style={{ height: 2, background: 'linear-gradient(90deg,transparent,#14b8a6,transparent)', width: '100%' }}
                   />
                 </div>
-                <div style={{ width: 30, height: 30, border: '2.5px solid rgba(99,102,241,0.3)', borderTop: '2.5px solid #6366f1', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                <div style={{ width: 30, height: 30, border: '2.5px solid rgba(45, 212, 191,0.3)', borderTop: '2.5px solid #14b8a6', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
                 <div style={{ fontSize: 12, color: '#a5b4fc', fontWeight: 600 }}>
                   {scanPhase === 'recognizing' ? '🔍 Identifying food…' : '📊 Looking up nutrition…'}
                 </div>
@@ -490,7 +490,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
         {/* Search loading */}
         {scanning && mode === 'search' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 0', justifyContent: 'center' }}>
-            <div style={{ width: 20, height: 20, border: '2px solid rgba(99,102,241,0.3)', borderTop: '2px solid #6366f1', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+            <div style={{ width: 20, height: 20, border: '2px solid rgba(45, 212, 191,0.3)', borderTop: '2px solid #14b8a6', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
             <span style={{ fontSize: 13, color: '#a5b4fc' }}>Searching USDA database…</span>
           </div>
         )}
@@ -525,7 +525,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: 14, padding: '14px 16px', marginBottom: 12 }}
+              style={{ background: 'rgba(45, 212, 191,0.08)', border: '1px solid rgba(45, 212, 191,0.25)', borderRadius: 14, padding: '14px 16px', marginBottom: 12 }}
             >
               <div style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', marginBottom: result.brand ? 1 : 4 }}>🍽️ {result.name}</div>
               {result.brand && (
@@ -548,7 +548,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                   onChange={e => setQty(e.target.value)}
                   style={{
                     width: 72, padding: '7px 10px', borderRadius: 8,
-                    background: 'rgba(15,23,42,0.7)', border: '1px solid rgba(99,102,241,0.35)',
+                    background: 'rgba(15,23,42,0.7)', border: '1px solid rgba(45, 212, 191,0.35)',
                     color: '#f1f5f9', fontSize: 14, fontWeight: 700,
                     fontFamily: "'DM Sans',sans-serif", outline: 'none', textAlign: 'center',
                   }}
@@ -566,10 +566,10 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                       }}
                       style={{
                         padding: '6px 10px', borderRadius: 7, cursor: 'pointer',
-                        background: unit === u.value ? '#6366f1' : 'rgba(15,23,42,0.6)',
+                        background: unit === u.value ? '#14b8a6' : 'rgba(15,23,42,0.6)',
                         color: unit === u.value ? '#fff' : 'rgba(148,163,184,0.6)',
                         fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans',sans-serif",
-                        border: `1px solid ${unit === u.value ? '#6366f1' : 'rgba(51,65,85,0.4)'}`,
+                        border: `1px solid ${unit === u.value ? '#14b8a6' : 'rgba(51,65,85,0.4)'}`,
                         transition: 'all 0.15s',
                       }}
                     >
@@ -583,7 +583,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
                 {[
                   { label: 'Cal', value: scaled.calories, color: '#f97b4f' },
-                  { label: 'Protein', value: scaled.protein ? `${scaled.protein}g` : '—', color: '#6366f1' },
+                  { label: 'Protein', value: scaled.protein ? `${scaled.protein}g` : '—', color: '#14b8a6' },
                   { label: 'Carbs', value: scaled.carbs ? `${scaled.carbs}g` : '—', color: '#fbbf24' },
                   { label: 'Fat', value: scaled.fat ? `${scaled.fat}g` : '—', color: '#34d399' },
                 ].map((m, i) => (
@@ -606,7 +606,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
                 </div>
               ) : null}
 
-              <button onClick={handleUse} style={{ ...S.btn('linear-gradient(135deg,#6366f1,#8b5cf6)'), marginTop: 12 }}>
+              <button onClick={handleUse} style={{ ...S.btn('linear-gradient(135deg,#14b8a6,#8b5cf6)'), marginTop: 12 }}>
                 ✓ Log This Meal →
               </button>
             </motion.div>
@@ -664,7 +664,7 @@ export default function FoodCameraScanner({ onResult, onClose }) {
             <button onClick={() => cameraRef.current.click()} style={S.btn('linear-gradient(135deg,#f97b4f,#f59e0b)')}>
               📷 Take Photo
             </button>
-            <button onClick={() => galleryRef.current.click()} style={S.btn('rgba(99,102,241,0.15)')}>
+            <button onClick={() => galleryRef.current.click()} style={S.btn('rgba(45, 212, 191,0.15)')}>
               🖼️ Choose from Library
             </button>
             {result && (

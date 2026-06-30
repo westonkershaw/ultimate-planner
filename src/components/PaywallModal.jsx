@@ -42,10 +42,10 @@ const S = {
   },
   modal: {
     background: "linear-gradient(180deg, #0d0f1a 0%, #08090d 100%)",
-    border: "1px solid rgba(99,102,241,0.2)",
+    border: "1px solid rgba(45, 212, 191,0.2)",
     borderRadius: 24, width: "100%", maxWidth: 560,
     maxHeight: "92vh", overflowY: "auto",
-    boxShadow: "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(99,102,241,0.15)",
+    boxShadow: "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(45, 212, 191,0.15)",
     position: "relative",
   },
   closeBtn: {
@@ -69,24 +69,24 @@ const S = {
   plans: { padding: "20px 28px" },
   planCard: (selected, popular) => ({
     borderRadius: 14, padding: "14px 16px", cursor: "pointer",
-    border: selected ? "2px solid #6366f1" : popular ? "1.5px solid rgba(251,191,36,0.4)" : "1px solid rgba(51,65,85,0.5)",
-    background: selected ? "rgba(99,102,241,0.1)" : popular ? "rgba(251,191,36,0.05)" : "rgba(15,23,42,0.5)",
+    border: selected ? "2px solid #14b8a6" : popular ? "1.5px solid rgba(251,191,36,0.4)" : "1px solid rgba(51,65,85,0.5)",
+    background: selected ? "rgba(45, 212, 191,0.1)" : popular ? "rgba(251,191,36,0.05)" : "rgba(15,23,42,0.5)",
     display: "flex", alignItems: "center", gap: 12, marginBottom: 10,
     transition: "all 0.18s", position: "relative",
-    boxShadow: selected ? "0 0 0 1px rgba(99,102,241,0.3), 0 4px 16px rgba(99,102,241,0.15)" : "none",
+    boxShadow: selected ? "0 0 0 1px rgba(45, 212, 191,0.3), 0 4px 16px rgba(45, 212, 191,0.15)" : "none",
   }),
   planRadio: (selected) => ({
     width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
-    border: selected ? "5px solid #6366f1" : "2px solid rgba(100,116,139,0.5)",
+    border: selected ? "5px solid #14b8a6" : "2px solid rgba(100,116,139,0.5)",
     background: "transparent", transition: "all 0.15s",
   }),
   ctaBtn: (loading) => ({
     width: "100%", padding: "17px 0", borderRadius: 14, border: "none",
-    background: loading ? "rgba(99,102,241,0.4)" : "linear-gradient(135deg, #6366f1, #4f46e5)",
+    background: loading ? "rgba(45, 212, 191,0.4)" : "linear-gradient(135deg, #14b8a6, #0e9488)",
     color: loading ? "rgba(255,255,255,0.5)" : "#fff",
     fontSize: 16, fontWeight: 800, cursor: loading ? "not-allowed" : "pointer",
     fontFamily: "'DM Sans', sans-serif",
-    boxShadow: loading ? "none" : "0 8px 32px rgba(99,102,241,0.5)",
+    boxShadow: loading ? "none" : "0 8px 32px rgba(45, 212, 191,0.5)",
     marginTop: 4, transition: "all 0.2s",
   }),
   featureRow: {
@@ -94,7 +94,7 @@ const S = {
   },
   featureIcon: {
     width: 34, height: 34, borderRadius: 10, flexShrink: 0,
-    background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.2)",
+    background: "rgba(45, 212, 191,0.12)", border: "1px solid rgba(45, 212, 191,0.2)",
     display: "flex", alignItems: "center", justifyContent: "center",
   },
   trust: {
@@ -243,7 +243,7 @@ export default function PaywallModal({ authUser, onClose, onSuccess }) {
 
         {/* Header */}
         <div style={S.header}>
-          <div style={{ width: 56, height: 56, borderRadius: 18, background: "linear-gradient(135deg,#6366f1,#4f46e5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", boxShadow: "0 0 32px rgba(99,102,241,0.45)" }}>
+          <div style={{ width: 56, height: 56, borderRadius: 18, background: "linear-gradient(135deg,#14b8a6,#0e9488)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", boxShadow: "0 0 32px rgba(45, 212, 191,0.45)" }}>
             <Zap size={26} color="#fff" fill="#fff" />
           </div>
           <div style={S.badge}><Star size={10} />Ultimate Life Planner Pro</div>
@@ -252,7 +252,7 @@ export default function PaywallModal({ authUser, onClose, onSuccess }) {
             AI coaching, unlimited goals, iCal export,<br />and everything you need to actually achieve your goals.
           </div>
           {/* College student story card */}
-          <div style={{background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08))', border: '1px solid rgba(99,102,241,0.25)', borderRadius: 12, padding: '16px 20px', marginTop: 20, textAlign: 'center'}}>
+          <div style={{background: 'linear-gradient(135deg, rgba(45, 212, 191,0.12), rgba(14, 148, 136,0.08))', border: '1px solid rgba(45, 212, 191,0.25)', borderRadius: 12, padding: '16px 20px', marginTop: 20, textAlign: 'center'}}>
             <div style={{fontSize: 28, marginBottom: 8}}>👨‍💻</div>
             <p style={{color: '#e2e8f0', fontSize: 14, fontWeight: 600, margin: '0 0 6px'}}>
               Built by a college student, for people who want more from life
@@ -272,8 +272,8 @@ export default function PaywallModal({ authUser, onClose, onSuccess }) {
               style={{
                 background: "transparent", border: "none", cursor: "pointer",
                 padding: "12px 16px", fontSize: 13, fontWeight: tab === id ? 700 : 500,
-                color: tab === id ? "#818cf8" : "rgba(148,163,184,0.5)",
-                borderBottom: tab === id ? "2px solid #6366f1" : "2px solid transparent",
+                color: tab === id ? "#2dd4bf" : "rgba(148,163,184,0.5)",
+                borderBottom: tab === id ? "2px solid #14b8a6" : "2px solid transparent",
                 fontFamily: "'DM Sans',sans-serif", transition: "all 0.15s",
               }}
             >{label}</button>
@@ -332,7 +332,7 @@ export default function PaywallModal({ authUser, onClose, onSuccess }) {
               const Icon = f.icon;
               return (
                 <div key={f.label} style={S.featureRow}>
-                  <div style={S.featureIcon}><Icon size={16} color="#818cf8" /></div>
+                  <div style={S.featureIcon}><Icon size={16} color="#2dd4bf" /></div>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", marginBottom: 2 }}>{f.label}</div>
                     <div style={{ fontSize: 12, color: "rgba(148,163,184,0.6)", lineHeight: 1.5 }}>{f.desc}</div>

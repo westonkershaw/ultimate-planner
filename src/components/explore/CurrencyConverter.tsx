@@ -63,15 +63,15 @@ const CurrencyConverter = React.memo(function CurrencyConverter({
   return (
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
-        <ArrowRightLeft size={16} className="text-violet-400" />
-        <h3 className="text-sm font-semibold text-slate-200">Currency Converter</h3>
+        <ArrowRightLeft size={16} className="text-accent-text" />
+        <h3 className="text-sm font-semibold text-fg-secondary">Currency Converter</h3>
       </div>
 
       <div className="flex items-end gap-2 mb-3">
         <Input containerClassName="w-24" label="Amount" type="number" min={0} step={1}
           value={amount || ''} onChange={(e) => { setAmount(parseFloat(e.target.value) || 0); setResult(null); }} />
         <CurrencySelect value={from} onChange={(v) => { setFrom(v); setResult(null); }} />
-        <button onClick={swap} className="p-2 mb-0.5 rounded-lg text-slate-500 hover:text-violet-400 transition-colors">
+        <button onClick={swap} className="p-2 mb-0.5 rounded-lg text-fg-muted hover:text-accent-text transition-colors">
           <ArrowRightLeft size={14} />
         </button>
         <CurrencySelect value={to} onChange={(v) => { setTo(v); setResult(null); onCurrencyChange(v); }} />
@@ -83,11 +83,11 @@ const CurrencyConverter = React.memo(function CurrencyConverter({
       {error && <p className="text-xs text-red-400 mb-2">{error}</p>}
 
       {result !== null && rate !== null && (
-        <div className="p-3 rounded-xl bg-violet-500/8 border border-violet-500/15">
-          <p className="text-sm font-bold text-slate-100">
+        <div className="p-3 rounded-xl bg-accent/8 border border-accent/15">
+          <p className="text-sm font-bold text-fg">
             {formatNumber(amount, 2)} {from} = {formatNumber(result, 2)} {to}
           </p>
-          <p className="text-[10px] text-slate-500 mt-0.5">1 {from} = {formatNumber(rate, 4)} {to}</p>
+          <p className="text-[10px] text-fg-muted mt-0.5">1 {from} = {formatNumber(rate, 4)} {to}</p>
         </div>
       )}
     </Card>
@@ -97,7 +97,7 @@ const CurrencyConverter = React.memo(function CurrencyConverter({
 function CurrencySelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <select value={value} onChange={(e) => onChange(e.target.value)}
-      className="bg-slate-900 border border-slate-800 rounded-lg px-2 py-2 text-xs text-slate-200 outline-none focus:border-indigo-500/50 mb-0.5">
+      className="bg-surface-1 border border-border rounded-lg px-2 py-2 text-xs text-fg-secondary outline-none focus:border-accent/50 mb-0.5">
       {POPULAR_CURRENCIES.map((c) => (
         <option key={c} value={c}>{c}</option>
       ))}

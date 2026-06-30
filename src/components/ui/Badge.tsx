@@ -13,10 +13,10 @@ export interface BadgeProps {
 // ── Style map ───────────────────────────────────────────────────────────────
 
 const VARIANTS: Record<BadgeVariant, string> = {
-  default: 'bg-slate-800 text-slate-400 border-slate-700',
-  success: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25',
-  warning: 'bg-amber-500/15 text-amber-400 border-amber-500/25',
-  danger:  'bg-red-500/15 text-red-400 border-red-500/25',
+  default: 'bg-surface-2 text-fg-muted border-border',
+  success: 'bg-success/15 text-success-text border-success/25',
+  warning: 'bg-warning/15 text-warning-text border-warning/25',
+  danger:  'bg-danger/15 text-danger-text border-danger/25',
 };
 
 // ── Component ───────────────────────────────────────────────────────────────

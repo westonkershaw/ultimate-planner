@@ -41,10 +41,10 @@ export default function WeekOverview({ mondayDate, onSelectDay }: WeekOverviewPr
   return (
     <div className="space-y-4">
       <div className="text-center space-y-1">
-        <h3 className="text-lg font-bold text-slate-100 font-[Syne]">
+        <h3 className="text-lg font-bold text-fg font-[Syne]">
           Your Week at a Glance
         </h3>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-fg-muted">
           Tap any day to start planning it
         </p>
       </div>
@@ -60,10 +60,10 @@ export default function WeekOverview({ mondayDate, onSelectDay }: WeekOverviewPr
               className={[
                 'flex flex-col items-start gap-2 p-3 rounded-xl border text-left transition-all min-h-[120px]',
                 day.isToday
-                  ? 'bg-indigo-500/10 border-indigo-500/30'
+                  ? 'bg-accent/10 border-accent/30'
                   : hasContent
-                    ? 'bg-slate-900/50 border-slate-800/60 hover:border-slate-700'
-                    : 'bg-slate-900/20 border-slate-800/30 hover:border-slate-700',
+                    ? 'bg-surface-1 border-border hover:border-border-strong'
+                    : 'bg-surface-1 border-border hover:border-border-strong',
               ].join(' ')}
             >
               {/* Day header */}
@@ -71,16 +71,16 @@ export default function WeekOverview({ mondayDate, onSelectDay }: WeekOverviewPr
                 <div>
                   <span className={[
                     'text-xs font-bold uppercase tracking-wider',
-                    day.isToday ? 'text-indigo-400' : 'text-slate-500',
+                    day.isToday ? 'text-accent-text' : 'text-fg-muted',
                   ].join(' ')}>
                     {DAY_LABELS[i]}
                   </span>
-                  <span className="text-[10px] text-slate-600 ml-1.5">
+                  <span className="text-[10px] text-fg-faint ml-1.5">
                     {formatShortDate(day.date)}
                   </span>
                 </div>
                 {day.isToday && (
-                  <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/15 px-1.5 py-0.5 rounded">
+                  <span className="text-[9px] font-bold text-accent-text bg-accent/15 px-1.5 py-0.5 rounded">
                     TODAY
                   </span>
                 )}
@@ -89,19 +89,19 @@ export default function WeekOverview({ mondayDate, onSelectDay }: WeekOverviewPr
               {/* Intention */}
               {day.plan?.intention ? (
                 <div className="flex items-start gap-1.5 w-full">
-                  <Sparkles size={10} className="text-indigo-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-[11px] text-slate-300 line-clamp-2 leading-tight">
+                  <Sparkles size={10} className="text-accent-text mt-0.5 flex-shrink-0" />
+                  <p className="text-[11px] text-fg-secondary line-clamp-2 leading-tight">
                     {day.plan.intention}
                   </p>
                 </div>
               ) : (
-                <p className="text-[11px] text-slate-700 italic">No intention set</p>
+                <p className="text-[11px] text-fg-faint italic">No intention set</p>
               )}
 
               {/* Task count */}
               <div className="mt-auto flex items-center gap-2 w-full">
                 {day.dayTasks.length > 0 && (
-                  <span className="flex items-center gap-1 text-[10px] text-slate-500">
+                  <span className="flex items-center gap-1 text-[10px] text-fg-muted">
                     <Calendar size={10} />
                     {day.dayTasks.length} task{day.dayTasks.length !== 1 ? 's' : ''}
                   </span>

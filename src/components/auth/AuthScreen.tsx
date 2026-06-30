@@ -15,14 +15,14 @@ interface FieldProps {
 function Field({ type, label, value, onChange, autoComplete }: FieldProps) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-wider text-slate-500 mb-1">{label}</span>
+      <span className="block text-[11px] uppercase tracking-wider text-fg-muted mb-1">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoComplete={autoComplete}
         required
-        className="w-full bg-slate-900/50 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 outline-none focus:border-indigo-500/50 transition-colors"
+        className="w-full bg-surface-2 border border-border rounded-control px-3 py-2.5 text-sm text-fg placeholder-fg-faint outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 transition-colors"
       />
     </label>
   );
@@ -70,7 +70,7 @@ export default function AuthScreen() {
   }, [mode, email, pass, firstName, lastName, signIn, signUp, resetPassword]);
 
   return (
-    <div className="min-h-[100dvh] flex items-center justify-center bg-[#08090d] px-4 py-10">
+    <div className="min-h-[100dvh] flex items-center justify-center bg-surface-0 px-4 py-10">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,11 +78,11 @@ export default function AuthScreen() {
         className="w-full max-w-sm"
       >
         <div className="flex flex-col items-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-xl font-bold">
-            ✦
+          <div className="w-12 h-12 rounded-card bg-accent flex items-center justify-center text-white text-xl font-semibold">
+            U
           </div>
-          <h1 className="mt-3 font-syne text-xl font-bold text-slate-100 tracking-tight">Ultimate Life Planner</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <h1 className="mt-3 text-xl font-semibold text-fg tracking-tight">Ultimate Life Planner</h1>
+          <p className="text-xs text-fg-muted mt-1">
             {mode === 'login' && 'Sign in to continue'}
             {mode === 'signup' && 'Create your account'}
             {mode === 'forgot' && 'Reset your password'}
@@ -117,12 +117,12 @@ export default function AuthScreen() {
           )}
 
           {error && (
-            <div className="text-xs text-rose-400 bg-rose-500/[0.06] border border-rose-500/20 rounded-lg px-3 py-2">
+            <div className="text-xs text-danger-text bg-danger/[0.08] border border-danger/20 rounded-control px-3 py-2">
               {error}
             </div>
           )}
           {info && (
-            <div className="text-xs text-emerald-300 bg-emerald-500/[0.06] border border-emerald-500/20 rounded-lg px-3 py-2">
+            <div className="text-xs text-success-text bg-success/[0.08] border border-success/20 rounded-control px-3 py-2">
               {info}
             </div>
           )}
@@ -131,34 +131,34 @@ export default function AuthScreen() {
             type="submit"
             disabled={submitting}
             className={[
-              'w-full py-2.5 rounded-xl text-sm font-semibold transition-colors',
+              'w-full py-2.5 rounded-control text-sm font-semibold transition-colors',
               submitting
-                ? 'bg-indigo-500/30 text-indigo-300 cursor-wait'
-                : 'bg-indigo-500 hover:bg-indigo-400 text-white',
+                ? 'bg-accent/30 text-accent-text cursor-wait'
+                : 'bg-accent hover:bg-accent-hover text-white',
             ].join(' ')}
           >
             {submitting ? 'Working…' : mode === 'login' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Send reset link'}
           </button>
         </form>
 
-        <div className="mt-5 flex items-center justify-between text-xs text-slate-500">
+        <div className="mt-5 flex items-center justify-between text-xs text-fg-muted">
           {mode === 'login' && (
             <>
-              <button onClick={() => { setMode('signup'); setError(''); }} className="hover:text-slate-300 transition-colors">
+              <button onClick={() => { setMode('signup'); setError(''); }} className="hover:text-fg transition-colors">
                 Create account
               </button>
-              <button onClick={() => { setMode('forgot'); setError(''); }} className="hover:text-slate-300 transition-colors">
+              <button onClick={() => { setMode('forgot'); setError(''); }} className="hover:text-fg transition-colors">
                 Forgot password?
               </button>
             </>
           )}
           {mode === 'signup' && (
-            <button onClick={() => { setMode('login'); setError(''); }} className="hover:text-slate-300 transition-colors">
+            <button onClick={() => { setMode('login'); setError(''); }} className="hover:text-fg transition-colors">
               Already have an account? Sign in
             </button>
           )}
           {mode === 'forgot' && (
-            <button onClick={() => { setMode('login'); setError(''); }} className="hover:text-slate-300 transition-colors">
+            <button onClick={() => { setMode('login'); setError(''); }} className="hover:text-fg transition-colors">
               ← Back to sign in
             </button>
           )}

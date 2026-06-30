@@ -33,7 +33,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 // ── Constants ────────────────────────────────────────────────────────────────
 
 const TX_CATEGORIES = [
-  { id: 'housing',       label: 'Housing',       color: '#6366f1', emoji: '🏠', budget: 0.35 },
+  { id: 'housing',       label: 'Housing',       color: '#14b8a6', emoji: '🏠', budget: 0.35 },
   { id: 'food',          label: 'Food',          color: '#10b981', emoji: '🍔', budget: 0.15 },
   { id: 'transport',     label: 'Transport',     color: '#f59e0b', emoji: '🚗', budget: 0.10 },
   { id: 'health',        label: 'Health',        color: '#ef4444', emoji: '💊', budget: 0.08 },
@@ -57,7 +57,7 @@ const TABS = [
 ];
 
 const BILL_COLORS = [
-  '#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#3b82f6', '#14b8a6',
+  '#14b8a6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#3b82f6', '#14b8a6',
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 9);
@@ -119,7 +119,7 @@ function HealthScoreGauge({ score, grade, color }) {
         <div className="font-syne text-4xl font-black leading-none" style={{ color }}>
           {grade}
         </div>
-        <div className="text-slate-400 text-sm font-semibold mt-0.5">{score}/100</div>
+        <div className="text-fg-muted text-sm font-semibold mt-0.5">{score}/100</div>
       </div>
     </div>
   );
@@ -156,11 +156,11 @@ function InsightCard({ label, value, sub, accent }) {
       className="flex-shrink-0 rounded-2xl border border-white/[0.07] bg-white/[0.03] px-5 py-4 min-w-[160px]"
       style={{ borderLeftColor: accent, borderLeftWidth: 3 }}
     >
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-1.5">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-1.5">
         {label}
       </div>
-      <div className="font-syne text-xl font-bold text-slate-100 leading-tight">{value}</div>
-      {sub && <div className="text-xs text-slate-500 mt-0.5">{sub}</div>}
+      <div className="font-syne text-xl font-bold text-fg leading-tight">{value}</div>
+      {sub && <div className="text-xs text-fg-muted mt-0.5">{sub}</div>}
     </div>
   );
 }
@@ -190,7 +190,7 @@ function PieChartTooltip({ active, payload }) {
       className="rounded-xl border border-white/10 px-3 py-2"
       style={{ background: '#0d1117', fontFamily: 'DM Sans, sans-serif' }}
     >
-      <div className="text-xs font-semibold text-slate-200">
+      <div className="text-xs font-semibold text-fg-secondary">
         {d.emoji} {d.name}
       </div>
       <div className="text-sm font-bold" style={{ color: d.color }}>
@@ -229,7 +229,7 @@ function SpendingPieChart({ transactions }) {
         className="flex items-center justify-center"
         style={{ width: 140, height: 140 }}
       >
-        <span className="text-xs text-slate-600">No spending data</span>
+        <span className="text-xs text-fg-faint">No spending data</span>
       </div>
     );
   }
@@ -256,8 +256,8 @@ function SpendingPieChart({ transactions }) {
         </PieChart>
       </ResponsiveContainer>
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <div className="font-syne text-sm font-bold text-slate-100">{fmt$(total)}</div>
-        <div className="text-[10px] text-slate-500">spent</div>
+        <div className="font-syne text-sm font-bold text-fg">{fmt$(total)}</div>
+        <div className="text-[10px] text-fg-muted">spent</div>
       </div>
     </div>
   );
@@ -332,8 +332,8 @@ function DebtPayoffSection({ income: _income }) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <div className="font-syne text-base font-bold text-slate-100">Debt Payoff Calculator</div>
-          <div className="text-xs text-slate-600">Compare avalanche vs snowball strategy</div>
+          <div className="font-syne text-base font-bold text-fg">Debt Payoff Calculator</div>
+          <div className="text-xs text-fg-faint">Compare avalanche vs snowball strategy</div>
         </div>
         <Button size="sm" onClick={() => setShowForm(true)}>+ Add Debt</Button>
       </div>
@@ -343,7 +343,7 @@ function DebtPayoffSection({ income: _income }) {
         <Card className="p-4">
           <div className="flex items-center gap-3">
             <div className="flex-1">
-              <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-1">
+              <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-1">
                 Extra Monthly Payment
               </label>
               <input
@@ -351,10 +351,10 @@ function DebtPayoffSection({ income: _income }) {
                 value={extra}
                 onChange={(e) => setExtra(e.target.value)}
                 placeholder="0"
-                className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2 text-sm text-slate-200 outline-none focus:border-indigo-500/60"
+                className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2 text-sm text-fg-secondary outline-none focus:border-accent/60"
               />
             </div>
-            <div className="text-xs text-slate-600 pt-5 whitespace-nowrap">
+            <div className="text-xs text-fg-faint pt-5 whitespace-nowrap">
               added beyond minimums
             </div>
           </div>
@@ -364,14 +364,14 @@ function DebtPayoffSection({ income: _income }) {
       {/* Debt list with progress bars */}
       {debts.length === 0 ? (
         <div
-          className="rounded-xl border border-dashed border-white/10 py-10 text-center text-slate-600 text-sm cursor-pointer hover:border-indigo-500/30 transition-colors"
+          className="rounded-xl border border-dashed border-white/10 py-10 text-center text-fg-faint text-sm cursor-pointer hover:border-accent/30 transition-colors"
           onClick={() => setShowForm(true)}
         >
           No debts added yet. Add your first debt to compare payoff strategies.
         </div>
       ) : (
         <Card className="p-4 space-y-3">
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-2">
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-2">
             Your Debts
           </div>
           {debts.map((debt) => {
@@ -382,13 +382,13 @@ function DebtPayoffSection({ income: _income }) {
             return (
               <div key={debt.id}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-slate-300 font-medium">{debt.name}</span>
+                  <span className="text-xs text-fg-secondary font-medium">{debt.name}</span>
                   <div className="flex items-center gap-3">
-                    <span className="text-[10px] text-slate-500">{debt.apr}% APR</span>
+                    <span className="text-[10px] text-fg-muted">{debt.apr}% APR</span>
                     <span className="text-xs font-semibold text-amber-400">{fmt$(debt.balance)}</span>
                     <button
                       onClick={() => removeDebt(debt.id)}
-                      className="text-slate-700 hover:text-red-400 transition-colors text-xs"
+                      className="text-fg-faint hover:text-red-400 transition-colors text-xs"
                       aria-label={`Remove debt: ${debt.name}`}
                     >
                       ✕
@@ -413,29 +413,29 @@ function DebtPayoffSection({ income: _income }) {
       {debts.length > 0 && (
         <div className="grid grid-cols-2 gap-3">
           {[
-            { label: 'Avalanche', subtitle: 'Highest APR first', data: avalanche, color: '#6366f1', icon: '⬇' },
+            { label: 'Avalanche', subtitle: 'Highest APR first', data: avalanche, color: '#14b8a6', icon: '⬇' },
             { label: 'Snowball', subtitle: 'Lowest balance first', data: snowball, color: '#10b981', icon: '⬆' },
           ].map(({ label, subtitle, data, color, icon }) => (
             <Card key={label} className="p-4">
               <div className="flex items-center gap-1.5 mb-3">
                 <span className="text-base">{icon}</span>
                 <div>
-                  <div className="text-sm font-bold text-slate-100">{label}</div>
-                  <div className="text-[10px] text-slate-600">{subtitle}</div>
+                  <div className="text-sm font-bold text-fg">{label}</div>
+                  <div className="text-[10px] text-fg-faint">{subtitle}</div>
                 </div>
               </div>
               <div className="space-y-2">
                 <div>
-                  <div className="text-[10px] text-slate-500">Total Interest</div>
+                  <div className="text-[10px] text-fg-muted">Total Interest</div>
                   <div className="font-syne text-lg font-bold" style={{ color }}>
                     {fmt$(data.totalInterestPaid)}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500">Months to Payoff</div>
-                  <div className="text-sm font-semibold text-slate-200">
+                  <div className="text-[10px] text-fg-muted">Months to Payoff</div>
+                  <div className="text-sm font-semibold text-fg-secondary">
                     {data.totalMonths} months
-                    <span className="text-[10px] text-slate-600 ml-1">
+                    <span className="text-[10px] text-fg-faint ml-1">
                       ({(data.totalMonths / 12).toFixed(1)} yrs)
                     </span>
                   </div>
@@ -451,13 +451,13 @@ function DebtPayoffSection({ income: _income }) {
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-4 py-3"
+          className="rounded-xl border border-accent/30 bg-accent/10 px-4 py-3"
         >
-          <div className="text-sm font-semibold text-indigo-300">
+          <div className="text-sm font-semibold text-accent-text">
             {betterStrategy.name} saves you {fmt$(betterStrategy.interestSaved)} and{' '}
             {betterStrategy.monthsSaved} month{betterStrategy.monthsSaved !== 1 ? 's' : ''}
           </div>
-          <div className="text-xs text-indigo-400/70 mt-0.5">
+          <div className="text-xs text-accent-text/70 mt-0.5">
             Recommended strategy based on your current debts
           </div>
         </motion.div>
@@ -543,9 +543,9 @@ function BudgetBuilderSection({ income, transactions }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <div className="font-syne text-base font-bold text-slate-100">Monthly Budget Builder</div>
-          <div className="text-xs text-slate-500">
-            50/30/20 rule — <span className="text-indigo-400">50%</span> needs (rent, food) &middot; <span className="text-purple-400">30%</span> wants (dining, fun) &middot; <span className="text-emerald-400">20%</span> savings
+          <div className="font-syne text-base font-bold text-fg">Monthly Budget Builder</div>
+          <div className="text-xs text-fg-muted">
+            50/30/20 rule — <span className="text-accent-text">50%</span> needs (rent, food) &middot; <span className="text-purple-400">30%</span> wants (dining, fun) &middot; <span className="text-emerald-400">20%</span> savings
           </div>
         </div>
         <Button size="sm" variant="ghost" onClick={() => { setEditForm(splits); setEditing(true); }}>
@@ -555,12 +555,12 @@ function BudgetBuilderSection({ income, transactions }) {
 
       {income === 0 ? (
         <Card className="p-4 text-center text-sm">
-          <div className="text-slate-400 font-semibold mb-1">Income not set</div>
-          <div className="text-slate-600 text-xs leading-relaxed">
-            Go to the <span className="text-indigo-400">Overview tab</span> and enter your monthly take-home income.
+          <div className="text-fg-muted font-semibold mb-1">Income not set</div>
+          <div className="text-fg-faint text-xs leading-relaxed">
+            Go to the <span className="text-accent-text">Overview tab</span> and enter your monthly take-home income.
             Once set, your 50/30/20 budget buckets will populate here.
           </div>
-          <div className="mt-3 text-[10px] text-slate-600">
+          <div className="mt-3 text-[10px] text-fg-faint">
             The 50/30/20 rule: allocate 50% of income to needs (rent, food), 30% to wants (dining, entertainment), and 20% to savings or debt payoff.
           </div>
         </Card>
@@ -582,12 +582,12 @@ function BudgetBuilderSection({ income, transactions }) {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: bucket.color }} />
-                      <span className="text-sm font-medium text-slate-200">{bucket.label}</span>
-                      <span className="text-[10px] text-slate-600">({bucket.targetPct}% target)</span>
+                      <span className="text-sm font-medium text-fg-secondary">{bucket.label}</span>
+                      <span className="text-[10px] text-fg-faint">({bucket.targetPct}% target)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-200">{fmt$(bucket.actualAmt)}</span>
-                      <span className="text-[10px] text-slate-500">/ {fmt$(bucket.targetAmt)}</span>
+                      <span className="text-sm font-semibold text-fg-secondary">{fmt$(bucket.actualAmt)}</span>
+                      <span className="text-[10px] text-fg-muted">/ {fmt$(bucket.targetAmt)}</span>
                       {over ? (
                         <span className="text-[10px] font-bold text-red-400 border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 rounded-full">
                           +{fmt$(bucket.variance)}
@@ -609,7 +609,7 @@ function BudgetBuilderSection({ income, transactions }) {
                     />
                   </div>
                   {/* Month-over-month comparison */}
-                  <div className="mt-1 text-[10px] text-slate-600">
+                  <div className="mt-1 text-[10px] text-fg-faint">
                     {diff === 0
                       ? 'Same as last month'
                       : diff > 0
@@ -623,7 +623,7 @@ function BudgetBuilderSection({ income, transactions }) {
 
           {/* Donut visual strip */}
           <Card className="p-4">
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
               Income Allocation
             </div>
             <div className="flex gap-0 h-4 rounded-full overflow-hidden">
@@ -642,7 +642,7 @@ function BudgetBuilderSection({ income, transactions }) {
               {buckets.map((b) => (
                 <div key={b.key} className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: b.color }} />
-                  <span className="text-[10px] text-slate-500">{b.label} {b.actualPct}%</span>
+                  <span className="text-[10px] text-fg-muted">{b.label} {b.actualPct}%</span>
                 </div>
               ))}
             </div>
@@ -653,17 +653,17 @@ function BudgetBuilderSection({ income, transactions }) {
       {/* Edit targets modal */}
       <Modal open={editing} onClose={() => setEditing(false)} title="Adjust Budget Targets">
         <div className="space-y-3">
-          <p className="text-xs text-slate-500">Percentages must total exactly 100%.</p>
+          <p className="text-xs text-fg-muted">Percentages must total exactly 100%.</p>
           {['needs', 'wants', 'savings'].map((key) => (
             <div key={key}>
-              <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-1 capitalize">
+              <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-1 capitalize">
                 {key} (%)
               </label>
               <input
                 type="number"
                 value={editForm[key]}
                 onChange={(e) => setEditForm((f) => ({ ...f, [key]: e.target.value }))}
-                className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2 text-sm text-slate-200 outline-none focus:border-indigo-500/60"
+                className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2 text-sm text-fg-secondary outline-none focus:border-accent/60"
               />
             </div>
           ))}
@@ -684,7 +684,7 @@ function BudgetBuilderSection({ income, transactions }) {
 
 // 3. Emergency Fund Tracker
 const MILESTONE_LABELS = { 25: '25%', 50: '50%', 75: '75%', 100: '100%' };
-const MILESTONE_COLORS = { 25: '#f59e0b', 50: '#6366f1', 75: '#8b5cf6', 100: '#10b981' };
+const MILESTONE_COLORS = { 25: '#f59e0b', 50: '#14b8a6', 75: '#8b5cf6', 100: '#10b981' };
 
 function EmergencyFundSection({ income, transactions }) {
   const [currentSaved, setCurrentSaved] = useState(() => loadLS('up_ef_saved', 0));
@@ -709,8 +709,8 @@ function EmergencyFundSection({ income, transactions }) {
   return (
     <div className="space-y-4">
       <div>
-        <div className="font-syne text-base font-bold text-slate-100">Emergency Fund Tracker</div>
-        <div className="text-xs text-slate-600">Track your financial safety net</div>
+        <div className="font-syne text-base font-bold text-fg">Emergency Fund Tracker</div>
+        <div className="text-xs text-fg-faint">Track your financial safety net</div>
       </div>
 
       {/* Milestone celebration banner */}
@@ -736,7 +736,7 @@ function EmergencyFundSection({ income, transactions }) {
             >
               {MILESTONE_LABELS[efData.milestone]} milestone reached!
             </div>
-            <div className="text-xs text-slate-500 mt-0.5">
+            <div className="text-xs text-fg-muted mt-0.5">
               {efData.milestone === 100
                 ? 'Your emergency fund is fully funded.'
                 : `Keep going — ${100 - efData.milestone}% more to full funding.`}
@@ -748,15 +748,15 @@ function EmergencyFundSection({ income, transactions }) {
       <Card className="p-5">
         {/* Coverage selector */}
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-xs text-slate-400">Target coverage:</span>
+          <span className="text-xs text-fg-muted">Target coverage:</span>
           {([3, 6]).map((m) => (
             <button
               key={m}
               onClick={() => setMonthsCoverage(m)}
               className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
                 monthsCoverage === m
-                  ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40'
-                  : 'text-slate-500 border border-white/10 hover:border-white/20'
+                  ? 'bg-accent/20 text-accent-text border border-accent/40'
+                  : 'text-fg-muted border border-white/10 hover:border-white/20'
               }`}
             >
               {m} months
@@ -767,7 +767,7 @@ function EmergencyFundSection({ income, transactions }) {
         {/* Progress fill bar */}
         <div className="relative mb-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-slate-400">Current savings</span>
+            <span className="text-xs text-fg-muted">Current savings</span>
             <span className="text-sm font-bold text-emerald-400">{fmt$(efData.currentAmt)}</span>
           </div>
           <div className="h-5 rounded-full bg-white/[0.05] overflow-hidden border border-white/[0.07]">
@@ -804,23 +804,23 @@ function EmergencyFundSection({ income, transactions }) {
             ))}
           </div>
           <div className="flex items-center justify-between mt-1">
-            <span className="text-[10px] text-slate-600">$0</span>
-            <span className="text-[10px] text-slate-600">{fmt$(efData.targetAmt)} goal</span>
+            <span className="text-[10px] text-fg-faint">$0</span>
+            <span className="text-[10px] text-fg-faint">{fmt$(efData.targetAmt)} goal</span>
           </div>
         </div>
 
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-3">
           <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
-            <div className="text-[10px] text-slate-500 mb-1">Progress</div>
-            <div className="font-syne text-lg font-bold text-slate-100">{efData.pct}%</div>
+            <div className="text-[10px] text-fg-muted mb-1">Progress</div>
+            <div className="font-syne text-lg font-bold text-fg">{efData.pct}%</div>
           </div>
           <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
-            <div className="text-[10px] text-slate-500 mb-1">Target</div>
-            <div className="font-syne text-lg font-bold text-slate-100">{fmt$(efData.targetAmt)}</div>
+            <div className="text-[10px] text-fg-muted mb-1">Target</div>
+            <div className="font-syne text-lg font-bold text-fg">{fmt$(efData.targetAmt)}</div>
           </div>
           <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
-            <div className="text-[10px] text-slate-500 mb-1">Monthly Needed</div>
+            <div className="text-[10px] text-fg-muted mb-1">Monthly Needed</div>
             <div className="font-syne text-lg font-bold text-emerald-400">
               {efData.pct >= 100 ? 'Done!' : fmt$(efData.monthlyNeeded)}
             </div>
@@ -828,7 +828,7 @@ function EmergencyFundSection({ income, transactions }) {
         </div>
 
         {efData.pct < 100 && (
-          <div className="mt-3 text-[10px] text-slate-600 text-center">
+          <div className="mt-3 text-[10px] text-fg-faint text-center">
             Save {fmt$(efData.monthlyNeeded)}/mo to reach your goal in 12 months
           </div>
         )}
@@ -836,7 +836,7 @@ function EmergencyFundSection({ income, transactions }) {
 
       {/* Current savings input */}
       <Card className="p-4">
-        <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-2">
+        <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-2">
           Current Emergency Fund Balance
         </label>
         <input
@@ -844,9 +844,9 @@ function EmergencyFundSection({ income, transactions }) {
           value={currentSaved}
           onChange={(e) => setCurrentSaved(e.target.value)}
           placeholder="0"
-          className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500/60"
+          className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-fg-secondary outline-none focus:border-accent/60"
         />
-        <div className="text-[10px] text-slate-600 mt-1.5">
+        <div className="text-[10px] text-fg-faint mt-1.5">
           Estimated monthly expenses: {fmt$(monthlyExpenses)} ({monthsCoverage} mo target = {fmt$(efData.targetAmt)})
         </div>
       </Card>
@@ -857,7 +857,7 @@ function EmergencyFundSection({ income, transactions }) {
 // 4. Investment Return Simulator
 const PRESETS = [
   { label: 'Conservative', rate: 5, color: '#10b981' },
-  { label: 'Moderate',     rate: 7, color: '#6366f1' },
+  { label: 'Moderate',     rate: 7, color: '#14b8a6' },
   { label: 'Aggressive',   rate: 10, color: '#f59e0b' },
 ];
 
@@ -921,7 +921,7 @@ function InvestmentSimSection() {
     return { pathTotal: areaT, pathContrib: areaC };
   }, [result.curve, chartW, chartH]);
 
-  const presetColor = PRESETS[activePreset]?.color ?? '#6366f1';
+  const presetColor = PRESETS[activePreset]?.color ?? '#14b8a6';
 
   const prefersReduced =
     typeof window !== 'undefined' &&
@@ -930,8 +930,8 @@ function InvestmentSimSection() {
   return (
     <div className="space-y-4">
       <div>
-        <div className="font-syne text-base font-bold text-slate-100">Investment Return Simulator</div>
-        <div className="text-xs text-slate-600">Compound growth projection</div>
+        <div className="font-syne text-base font-bold text-fg">Investment Return Simulator</div>
+        <div className="text-xs text-fg-faint">Compound growth projection</div>
       </div>
 
       {/* Preset buttons */}
@@ -942,8 +942,8 @@ function InvestmentSimSection() {
             onClick={() => applyPreset(p, i)}
             className={`flex-1 px-3 py-2 rounded-xl text-xs font-semibold border transition-colors ${
               activePreset === i
-                ? 'border-opacity-60 text-slate-100'
-                : 'border-white/10 text-slate-500 hover:border-white/20'
+                ? 'border-opacity-60 text-fg'
+                : 'border-white/10 text-fg-muted hover:border-white/20'
             }`}
             style={activePreset === i ? { borderColor: `${p.color}60`, backgroundColor: `${p.color}15`, color: p.color } : {}}
           >
@@ -962,7 +962,7 @@ function InvestmentSimSection() {
             { key: 'years',    label: 'Years', placeholder: '20' },
           ].map(({ key, label, placeholder }) => (
             <div key={key}>
-              <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-1">
+              <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-1">
                 {label}
               </label>
               <input
@@ -978,7 +978,7 @@ function InvestmentSimSection() {
                   }
                 }}
                 placeholder={placeholder}
-                className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2 text-sm text-slate-200 outline-none focus:border-indigo-500/60"
+                className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2 text-sm text-fg-secondary outline-none focus:border-accent/60"
               />
             </div>
           ))}
@@ -993,7 +993,7 @@ function InvestmentSimSection() {
           { label: 'Interest Earned',    value: fmt$(result.totalInterest),    color: '#10b981' },
         ].map(({ label, value, color }) => (
           <Card key={label} className="p-3 text-center">
-            <div className="text-[10px] text-slate-500 mb-1">{label}</div>
+            <div className="text-[10px] text-fg-muted mb-1">{label}</div>
             <div className="font-syne text-base font-bold" style={{ color }}>{value}</div>
           </Card>
         ))}
@@ -1001,7 +1001,7 @@ function InvestmentSimSection() {
 
       {/* SVG Area Chart */}
       <Card className="p-4">
-        <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+        <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
           Growth Curve
         </div>
         <svg
@@ -1077,11 +1077,11 @@ function InvestmentSimSection() {
         <div className="flex gap-4 mt-2">
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-0.5 rounded" style={{ backgroundColor: presetColor }} />
-            <span className="text-[10px] text-slate-500">Total Value</span>
+            <span className="text-[10px] text-fg-muted">Total Value</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-0.5 rounded bg-slate-600" style={{ borderTop: '1px dashed #475569' }} />
-            <span className="text-[10px] text-slate-500">Contributions</span>
+            <span className="text-[10px] text-fg-muted">Contributions</span>
           </div>
         </div>
       </Card>
@@ -1146,8 +1146,8 @@ function BillCalendarSection() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <div className="font-syne text-base font-bold text-slate-100">Bill Due Calendar</div>
-          <div className="text-xs text-slate-600">Next 30 days of upcoming bills</div>
+          <div className="font-syne text-base font-bold text-fg">Bill Due Calendar</div>
+          <div className="text-xs text-fg-faint">Next 30 days of upcoming bills</div>
         </div>
         <Button size="sm" onClick={() => setShowForm(true)}>+ Add Bill</Button>
       </div>
@@ -1155,7 +1155,7 @@ function BillCalendarSection() {
       {/* Upcoming this week */}
       {thisWeek.length > 0 && (
         <Card className="p-4">
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
             Upcoming This Week
           </div>
           <div className="space-y-2">
@@ -1165,10 +1165,10 @@ function BillCalendarSection() {
                 <div key={bill.id + bill.daysUntil} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: urgColor }} />
-                    <span className="text-sm text-slate-300">{bill.name}</span>
+                    <span className="text-sm text-fg-secondary">{bill.name}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-semibold text-slate-200">{fmt$(bill.amount)}</span>
+                    <span className="text-sm font-semibold text-fg-secondary">{fmt$(bill.amount)}</span>
                     <span
                       className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full border"
                       style={{
@@ -1189,7 +1189,7 @@ function BillCalendarSection() {
 
       {/* 30-day calendar strip */}
       <Card className="p-4">
-        <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+        <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
           30-Day View
         </div>
         <div
@@ -1203,13 +1203,13 @@ function BillCalendarSection() {
               <div
                 key={i}
                 className={`flex-shrink-0 flex flex-col items-center gap-1 w-8 py-1.5 rounded-lg ${
-                  day.isToday ? 'bg-indigo-500/20 border border-indigo-500/40' : ''
+                  day.isToday ? 'bg-accent/20 border border-accent/40' : ''
                 }`}
               >
-                <span className={`text-[9px] font-medium ${day.isToday ? 'text-indigo-400' : 'text-slate-600'}`}>
+                <span className={`text-[9px] font-medium ${day.isToday ? 'text-accent-text' : 'text-fg-faint'}`}>
                   {day.date.toLocaleDateString('en-US', { weekday: 'narrow' })}
                 </span>
-                <span className={`text-[10px] font-semibold ${day.isToday ? 'text-indigo-300' : 'text-slate-400'}`}>
+                <span className={`text-[10px] font-semibold ${day.isToday ? 'text-accent-text' : 'text-fg-muted'}`}>
                   {day.dayOfMonth}
                 </span>
                 {/* Bill dots */}
@@ -1226,7 +1226,7 @@ function BillCalendarSection() {
                     );
                   })}
                   {day.bills.length > 3 && (
-                    <span className="text-[7px] text-slate-600">+{day.bills.length - 3}</span>
+                    <span className="text-[7px] text-fg-faint">+{day.bills.length - 3}</span>
                   )}
                 </div>
               </div>
@@ -1238,7 +1238,7 @@ function BillCalendarSection() {
           {[['#ef4444', 'Due within 3 days'], ['#f59e0b', '4–7 days'], ['#10b981', '8+ days']].map(([c, l]) => (
             <div key={l} className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full" style={{ backgroundColor: c }} />
-              <span className="text-[10px] text-slate-600">{l}</span>
+              <span className="text-[10px] text-fg-faint">{l}</span>
             </div>
           ))}
         </div>
@@ -1247,7 +1247,7 @@ function BillCalendarSection() {
       {/* Bill list */}
       {bills.length > 0 && (
         <Card className="p-4">
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
             All Bills
           </div>
           <div className="space-y-2">
@@ -1255,14 +1255,14 @@ function BillCalendarSection() {
               <div key={bill.id} className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: bill.color }} />
-                  <span className="text-sm text-slate-300">{bill.name}</span>
-                  <span className="text-[10px] text-slate-600">due day {bill.dueDay}</span>
+                  <span className="text-sm text-fg-secondary">{bill.name}</span>
+                  <span className="text-[10px] text-fg-faint">due day {bill.dueDay}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-slate-200">{fmt$(bill.amount)}</span>
+                  <span className="text-sm font-semibold text-fg-secondary">{fmt$(bill.amount)}</span>
                   <button
                     onClick={() => removeBill(bill.id)}
-                    className="text-slate-700 hover:text-red-400 transition-colors text-xs opacity-0 group-hover:opacity-100"
+                    className="text-fg-faint hover:text-red-400 transition-colors text-xs opacity-0 group-hover:opacity-100"
                     aria-label={`Remove bill: ${bill.name}`}
                   >
                     ✕
@@ -1272,8 +1272,8 @@ function BillCalendarSection() {
             ))}
           </div>
           <div className="mt-3 pt-3 border-t border-white/[0.06] flex items-center justify-between">
-            <span className="text-xs text-slate-500">Monthly total</span>
-            <span className="text-sm font-bold text-slate-200">
+            <span className="text-xs text-fg-muted">Monthly total</span>
+            <span className="text-sm font-bold text-fg-secondary">
               {fmt$(bills.reduce((s, b) => s + b.amount, 0))}
             </span>
           </div>
@@ -1282,7 +1282,7 @@ function BillCalendarSection() {
 
       {bills.length === 0 && (
         <div
-          className="rounded-xl border border-dashed border-white/10 py-10 text-center text-slate-600 text-sm cursor-pointer hover:border-indigo-500/30 transition-colors"
+          className="rounded-xl border border-dashed border-white/10 py-10 text-center text-fg-faint text-sm cursor-pointer hover:border-accent/30 transition-colors"
           onClick={() => setShowForm(true)}
         >
           No bills added yet. Add recurring bills to track due dates.
@@ -1313,7 +1313,7 @@ function BillCalendarSection() {
             placeholder="15"
           />
           <div>
-            <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-1">
+            <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-1">
               Color
             </label>
             <div className="flex gap-2 flex-wrap">
@@ -1426,8 +1426,8 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
   return (
     <div className="p-4 sm:p-6 max-w-5xl mx-auto">
       <div className="mb-6">
-        <h1 className="font-syne text-2xl font-bold text-slate-100">Finance</h1>
-        <p className="text-slate-600 text-sm mt-0.5">
+        <h1 className="font-syne text-2xl font-bold text-fg">Finance</h1>
+        <p className="text-fg-faint text-sm mt-0.5">
           {isNewUser ? 'Set your income to unlock budgets, goals & spending insights' : 'Budget, goals & spending overview'}
         </p>
       </div>
@@ -1448,8 +1448,8 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
             title={tab.hint}
             className={`group px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px whitespace-nowrap flex-shrink-0 ${
               activeTab === tab.id
-                ? 'border-indigo-500 text-indigo-400'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-accent text-accent-text'
+                : 'border-transparent text-fg-muted hover:text-fg-secondary'
             }`}
           >
             {tab.label}
@@ -1466,19 +1466,19 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border border-indigo-500/30 bg-indigo-500/[0.07] p-5"
+              className="rounded-2xl border border-accent/30 bg-accent/[0.07] p-5"
             >
-              <div className="font-syne text-base font-bold text-slate-100 mb-1">
+              <div className="font-syne text-base font-bold text-fg mb-1">
                 Welcome to Finance — set up in 2 steps
               </div>
-              <div className="text-xs text-slate-400 mb-4 leading-relaxed">
-                <span className="text-indigo-400 font-semibold">Step 1:</span> Enter your monthly take-home income below.
-                {' '}<span className="text-indigo-400 font-semibold">Step 2:</span> Log your first expense in the Transactions tab.
+              <div className="text-xs text-fg-muted mb-4 leading-relaxed">
+                <span className="text-accent-text font-semibold">Step 1:</span> Enter your monthly take-home income below.
+                {' '}<span className="text-accent-text font-semibold">Step 2:</span> Log your first expense in the Transactions tab.
                 That's it — budgets, health score, and insights all update automatically.
               </div>
               <div className="flex gap-2 items-end">
                 <div className="flex-1 max-w-xs">
-                  <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 block mb-1.5">
+                  <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted block mb-1.5">
                     Monthly Take-Home Income ($)
                   </label>
                   <input
@@ -1487,7 +1487,7 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                     onChange={(e) => setIncomeInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') handleSaveIncome(); }}
                     placeholder="e.g. 4500"
-                    className="w-full rounded-xl border border-indigo-500/40 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500/70"
+                    className="w-full rounded-xl border border-accent/40 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-fg-secondary outline-none focus:border-accent/70"
                     aria-label="Monthly take-home income"
                   />
                 </div>
@@ -1501,13 +1501,13 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
           {/* ── Income update row (shown when income is already set) ── */}
           {income > 0 && (
             <div className="flex items-center justify-between px-1">
-              <div className="text-xs text-slate-500">
-                Monthly income: <span className="text-slate-300 font-semibold">{fmt$(income)}</span>
+              <div className="text-xs text-fg-muted">
+                Monthly income: <span className="text-fg-secondary font-semibold">{fmt$(income)}</span>
               </div>
               {!showIncomeSetup && (
                 <button
                   onClick={() => { setIncomeInput(String(income)); setShowIncomeSetup(true); }}
-                  className="text-[10px] text-indigo-400 hover:text-indigo-300 transition-colors"
+                  className="text-[10px] text-accent-text hover:text-accent-text transition-colors"
                 >
                   Edit income
                 </button>
@@ -1519,11 +1519,11 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                     value={incomeInput}
                     onChange={(e) => setIncomeInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') handleSaveIncome(); }}
-                    className="w-32 rounded-xl border border-indigo-500/40 bg-[#0a1120]/80 px-3 py-1.5 text-sm text-slate-200 outline-none focus:border-indigo-500/70"
+                    className="w-32 rounded-xl border border-accent/40 bg-[#0a1120]/80 px-3 py-1.5 text-sm text-fg-secondary outline-none focus:border-accent/70"
                     aria-label="Update monthly income"
                   />
                   <Button size="sm" onClick={handleSaveIncome}>Save</Button>
-                  <button onClick={() => setShowIncomeSetup(false)} className="text-xs text-slate-600 hover:text-slate-400">
+                  <button onClick={() => setShowIncomeSetup(false)} className="text-xs text-fg-faint hover:text-fg-muted">
                     Cancel
                   </button>
                 </div>
@@ -1540,10 +1540,10 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                 color={healthScore.color}
               />
               <div className="flex-1 min-w-0">
-                <div className="font-syne text-base font-bold text-slate-100 mb-0.5">
+                <div className="font-syne text-base font-bold text-fg mb-0.5">
                   Your Financial Health
                 </div>
-                <div className="text-[10px] text-slate-600 mb-3">
+                <div className="text-[10px] text-fg-faint mb-3">
                   {isNewUser ? 'Add income & transactions to improve your score' : 'Updated today'}
                 </div>
                 <div className="grid grid-cols-2 gap-x-6 gap-y-2">
@@ -1555,8 +1555,8 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                   ].map(({ label, pts, max }) => (
                     <div key={label}>
                       <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[10px] text-slate-500">{label}</span>
-                        <span className="text-[10px] font-medium text-slate-400">
+                        <span className="text-[10px] text-fg-muted">{label}</span>
+                        <span className="text-[10px] font-medium text-fg-muted">
                           {pts}/{max}
                         </span>
                       </div>
@@ -1580,10 +1580,10 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
             <div className="flex items-center gap-6">
               <SpendingPieChart transactions={transactions} />
               <div className="flex-1 min-w-0">
-                <div className="font-syne text-base font-bold text-slate-100 mb-0.5">
+                <div className="font-syne text-base font-bold text-fg mb-0.5">
                   Budget Categories
                 </div>
-                <div className="text-[10px] text-slate-600 mb-3">
+                <div className="text-[10px] text-fg-faint mb-3">
                   This month&apos;s spending breakdown
                 </div>
                 <div className="space-y-1.5">
@@ -1608,16 +1608,16 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                       .slice(0, 4);
                     if (entries.length === 0) {
                       return (
-                        <div className="text-xs text-slate-600">Log expenses to see categories</div>
+                        <div className="text-xs text-fg-faint">Log expenses to see categories</div>
                       );
                     }
                     return entries.map((e) => (
                       <div key={e.label} className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
                           <div className="w-2 h-2 rounded-full" style={{ backgroundColor: e.color }} />
-                          <span className="text-xs text-slate-400">{e.emoji} {e.label}</span>
+                          <span className="text-xs text-fg-muted">{e.emoji} {e.label}</span>
                         </div>
-                        <span className="text-xs font-medium text-slate-300">{fmt$(e.amount)}</span>
+                        <span className="text-xs font-medium text-fg-secondary">{fmt$(e.amount)}</span>
                       </div>
                     ));
                   })()}
@@ -1628,10 +1628,10 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
 
           {/* ── Budget by Category Pie Chart ── */}
           <Card className="p-5">
-            <div className="font-syne text-base font-bold text-slate-100 mb-1">
+            <div className="font-syne text-base font-bold text-fg mb-1">
               Budget by Category
             </div>
-            <div className="text-[10px] text-slate-600 mb-4">
+            <div className="text-[10px] text-fg-faint mb-4">
               Full category breakdown for the current month
             </div>
             {(() => {
@@ -1657,14 +1657,14 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
               if (pieData.length === 0) {
                 return (
                   <div
-                    className="flex items-center justify-center rounded-xl border border-dashed border-white/10 cursor-pointer hover:border-indigo-500/30 transition-colors"
+                    className="flex items-center justify-center rounded-xl border border-dashed border-white/10 cursor-pointer hover:border-accent/30 transition-colors"
                     style={{ height: 180 }}
                     onClick={() => { setActiveTab('transactions'); setShowTxForm(true); }}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setActiveTab('transactions'); setShowTxForm(true); } }}
                   >
-                    <span className="text-sm text-slate-600">No spending data yet — log an expense to see your chart</span>
+                    <span className="text-sm text-fg-faint">No spending data yet — log an expense to see your chart</span>
                   </div>
                 );
               }
@@ -1709,10 +1709,10 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                             style={{ backgroundColor: entry.color }}
                           />
                           <div className="min-w-0 flex-1">
-                            <div className="text-[11px] text-slate-300 font-medium truncate">
+                            <div className="text-[11px] text-fg-secondary font-medium truncate">
                               {entry.emoji} {entry.name}
                             </div>
-                            <div className="text-[10px] text-slate-500">
+                            <div className="text-[10px] text-fg-muted">
                               {fmt$(entry.value)} &middot; {pct}%
                             </div>
                           </div>
@@ -1742,7 +1742,7 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                   : '—'
               }
               sub={topCategory ? `${topCategory.pctOfTotal}% of total this month` : 'No data yet'}
-              accent="#6366f1"
+              accent="#14b8a6"
             />
             <InsightCard
               label="Peak Spend Day"
@@ -1765,30 +1765,30 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
           {/* Stats row */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <Card
-              className={`p-4 ${income === 0 ? 'cursor-pointer hover:border-indigo-500/40 transition-colors' : ''}`}
+              className={`p-4 ${income === 0 ? 'cursor-pointer hover:border-accent/40 transition-colors' : ''}`}
               onClick={income === 0 ? () => setShowIncomeSetup(true) : undefined}
               role={income === 0 ? 'button' : undefined}
               tabIndex={income === 0 ? 0 : undefined}
               onKeyDown={income === 0 ? (e) => { if (e.key === 'Enter' || e.key === ' ') setShowIncomeSetup(true); } : undefined}
               aria-label={income === 0 ? 'Tap to set your monthly income' : undefined}
             >
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-1">Monthly Income</div>
+              <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint mb-1">Monthly Income</div>
               {income === 0 ? (
-                <div className="text-sm text-indigo-400 font-semibold">Tap to set income</div>
+                <div className="text-sm text-accent-text font-semibold">Tap to set income</div>
               ) : (
-                <div className="font-syne text-xl font-bold text-slate-100">{fmt$(income)}</div>
+                <div className="font-syne text-xl font-bold text-fg">{fmt$(income)}</div>
               )}
             </Card>
             <Card className="p-4">
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-1">This Month Spent</div>
+              <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint mb-1">This Month Spent</div>
               <div className="font-syne text-xl font-bold text-amber-400">
-                {transactions.length === 0 ? <span className="text-sm text-slate-600 font-normal">No expenses yet</span> : fmt$(spending.currentMonth)}
+                {transactions.length === 0 ? <span className="text-sm text-fg-faint font-normal">No expenses yet</span> : fmt$(spending.currentMonth)}
               </div>
             </Card>
             <Card className="p-4 col-span-2 sm:col-span-1">
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-1">Active Goals</div>
+              <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-faint mb-1">Active Goals</div>
               <div className="font-syne text-xl font-bold text-emerald-400">
-                {goals.length === 0 ? <span className="text-sm text-slate-600 font-normal">None yet</span> : goals.length}
+                {goals.length === 0 ? <span className="text-sm text-fg-faint font-normal">None yet</span> : goals.length}
               </div>
             </Card>
           </div>
@@ -1800,13 +1800,13 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
           <Card className="p-5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="font-syne text-base font-bold text-slate-100">30-Day Spending</div>
-                <div className="text-xs text-slate-600">Daily transaction totals</div>
+                <div className="font-syne text-base font-bold text-fg">30-Day Spending</div>
+                <div className="text-xs text-fg-faint">Daily transaction totals</div>
               </div>
               {transactions.length === 0 && (
                 <button
                   onClick={() => { setActiveTab('transactions'); setShowTxForm(true); }}
-                  className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                  className="text-xs text-accent-text hover:text-accent-text transition-colors"
                 >
                   + Log first expense
                 </button>
@@ -1814,21 +1814,21 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
             </div>
             {transactions.length === 0 ? (
               <div
-                className="flex items-center justify-center rounded-xl border border-dashed border-white/10 cursor-pointer hover:border-indigo-500/30 transition-colors"
+                className="flex items-center justify-center rounded-xl border border-dashed border-white/10 cursor-pointer hover:border-accent/30 transition-colors"
                 style={{ height: 80 }}
                 onClick={() => { setActiveTab('transactions'); setShowTxForm(true); }}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setActiveTab('transactions'); setShowTxForm(true); } }}
               >
-                <span className="text-sm text-slate-600">No spending data yet — log an expense to see your chart</span>
+                <span className="text-sm text-fg-faint">No spending data yet — log an expense to see your chart</span>
               </div>
             ) : (
               <Sparkline
                 transactions={transactions}
                 width={600}
                 height={80}
-                color="#6366f1"
+                color="#14b8a6"
                 days={30}
                 className="w-full"
               />
@@ -1844,15 +1844,15 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
           {/* Monthly Budget Progress Bars */}
           {income > 0 && (
             <Card className="p-5">
-              <div className="font-syne text-base font-bold text-slate-100 mb-4">Budget vs Actual</div>
+              <div className="font-syne text-base font-bold text-fg mb-4">Budget vs Actual</div>
               <div className="space-y-4">
                 {budgetCategories.map(({ id, label, emoji, actual, budgetAmt, pct, barColor }) => (
                   <div key={id}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs text-slate-400">{emoji} {label}</span>
+                      <span className="text-xs text-fg-muted">{emoji} {label}</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-slate-300">{fmt$(actual)}</span>
-                        <span className="text-[10px] text-slate-600">/ {fmt$(budgetAmt)}</span>
+                        <span className="text-xs font-medium text-fg-secondary">{fmt$(actual)}</span>
+                        <span className="text-[10px] text-fg-faint">/ {fmt$(budgetAmt)}</span>
                         {pct >= 100 && (
                           <span className="text-[10px] font-bold text-red-400 rounded-full border border-red-500/30 bg-red-500/10 px-1.5 py-0.5">
                             Over
@@ -1877,7 +1877,7 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
           {/* Category Breakdown */}
           {breakdown.length > 0 && (
             <Card className="p-5">
-              <div className="font-syne text-base font-bold text-slate-100 mb-4">Spending by Category</div>
+              <div className="font-syne text-base font-bold text-fg mb-4">Spending by Category</div>
               <div className="space-y-3">
                 {breakdown.slice(0, 5).map(({ category, amount }) => {
                   const catInfo = TX_CATEGORIES.find((c) => c.id === category) || TX_CATEGORIES.at(-1);
@@ -1887,11 +1887,11 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                   return (
                     <div key={category}>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-slate-400">{catInfo.label}</span>
+                        <span className="text-xs text-fg-muted">{catInfo.label}</span>
                         <div className="flex items-center gap-3">
                           <MiniBarChart values={sparkData} color={catInfo.color} width={56} height={24} />
-                          <span className="text-xs font-medium text-slate-300 w-14 text-right">{fmt$(amount)}</span>
-                          <span className="text-[10px] text-slate-600 w-7 text-right">{pct}%</span>
+                          <span className="text-xs font-medium text-fg-secondary w-14 text-right">{fmt$(amount)}</span>
+                          <span className="text-[10px] text-fg-faint w-7 text-right">{pct}%</span>
                         </div>
                       </div>
                       <div className="h-1 rounded-full bg-white/[0.06] overflow-hidden">
@@ -1916,8 +1916,8 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
         <div className="space-y-4">
           {goals.length === 0 && (
             <Card className="p-5 border-dashed">
-              <div className="font-syne text-base font-bold text-slate-100 mb-1">Set a savings goal</div>
-              <div className="text-sm text-slate-500 leading-relaxed mb-1">
+              <div className="font-syne text-base font-bold text-fg mb-1">Set a savings goal</div>
+              <div className="text-sm text-fg-muted leading-relaxed mb-1">
                 Goals let you track progress toward a target amount — a vacation fund, emergency fund, down payment, or anything else.
                 Set a deadline and Ultimate Life Planner will calculate how much you need to save each month.
               </div>
@@ -1925,13 +1925,13 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
           )}
           {goals.length > 0 && (
             <Card className="p-4">
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+              <div className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted mb-3">
                 Monthly Progress
               </div>
               <div className="space-y-2">
                 {goalsOnTrack.map((status) => (
                   <div key={status.goalId} className="flex items-center justify-between gap-3">
-                    <span className="text-xs text-slate-400 truncate flex-1">{status.goalName}</span>
+                    <span className="text-xs text-fg-muted truncate flex-1">{status.goalName}</span>
                     <OnTrackBadge status={status} />
                   </div>
                 ))}
@@ -1947,8 +1947,8 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-syne text-base font-bold text-slate-100">Transactions</div>
-              <div className="text-[10px] text-slate-600 mt-0.5">Log income as a positive amount (+), expenses as a negative amount (-)</div>
+              <div className="font-syne text-base font-bold text-fg">Transactions</div>
+              <div className="text-[10px] text-fg-faint mt-0.5">Log income as a positive amount (+), expenses as a negative amount (-)</div>
             </div>
             <Button onClick={() => setShowTxForm(true)}>+ Add Transaction</Button>
           </div>
@@ -1957,7 +1957,7 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border border-dashed border-white/10 py-14 px-6 text-center cursor-pointer hover:border-indigo-500/30 transition-colors"
+              className="rounded-2xl border border-dashed border-white/10 py-14 px-6 text-center cursor-pointer hover:border-accent/30 transition-colors"
               onClick={() => setShowTxForm(true)}
               role="button"
               tabIndex={0}
@@ -1965,12 +1965,12 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
               aria-label="Add your first transaction"
             >
               <div className="text-3xl mb-3" aria-hidden="true">💸</div>
-              <div className="font-syne text-base font-semibold text-slate-300 mb-1">No transactions yet</div>
-              <div className="text-sm text-slate-600 max-w-xs mx-auto mb-4 leading-relaxed">
+              <div className="font-syne text-base font-semibold text-fg-secondary mb-1">No transactions yet</div>
+              <div className="text-sm text-fg-faint max-w-xs mx-auto mb-4 leading-relaxed">
                 Log an expense (e.g. Rent -1200) or income (e.g. Paycheck +4500).
                 Your budget, insights, and health score all update automatically.
               </div>
-              <div className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-500/15 border border-indigo-500/30 px-5 py-2.5 text-sm font-semibold text-indigo-300">
+              <div className="inline-flex items-center gap-1.5 rounded-xl bg-accent/15 border border-accent/30 px-5 py-2.5 text-sm font-semibold text-accent-text">
                 + Add first transaction
               </div>
             </motion.div>
@@ -1989,15 +1989,15 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
                       style={{ backgroundColor: catInfo.color }}
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm text-slate-300 truncate">{tx.description}</div>
-                      <div className="text-[10px] text-slate-600">
+                      <div className="text-sm text-fg-secondary truncate">{tx.description}</div>
+                      <div className="text-[10px] text-fg-faint">
                         {catInfo.label} · {new Date(tx.date).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="text-sm font-medium text-amber-400">{fmt$(tx.amount)}</div>
                     <button
                       onClick={() => deleteTransaction(tx.id)}
-                      className="text-slate-700 hover:text-red-400 transition-colors text-xs opacity-0 group-hover:opacity-100"
+                      className="text-fg-faint hover:text-red-400 transition-colors text-xs opacity-0 group-hover:opacity-100"
                       aria-label={`Delete transaction: ${tx.description}`}
                     >
                       ✕
@@ -2033,7 +2033,7 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
       {/* Add Transaction Modal */}
       <Modal open={showTxForm} onClose={() => setShowTxForm(false)} title="Add Transaction">
         <div className="space-y-3">
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-xs text-slate-500 leading-relaxed">
+          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-xs text-fg-muted leading-relaxed">
             Use a <span className="text-emerald-400 font-semibold">positive number</span> for income (e.g. +4500 for salary).
             Use a <span className="text-amber-400 font-semibold">negative number</span> for expenses (e.g. -85 for groceries).
             Or enter any positive number — the category will classify it as spending automatically.
@@ -2052,13 +2052,13 @@ const FinanceDashboard = React.memo(function FinanceDashboard() {
             placeholder="-50 or +4500"
           />
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+            <label className="text-[10px] font-semibold uppercase tracking-widest text-fg-muted">
               Category
             </label>
             <select
               value={txForm.category}
               onChange={(e) => setTxForm((f) => ({ ...f, category: e.target.value }))}
-              className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500/60"
+              className="w-full rounded-xl border border-white/10 bg-[#0a1120]/80 px-3 py-2.5 text-sm text-fg-secondary outline-none focus:border-accent/60"
             >
               {TX_CATEGORIES.map((c) => (
                 <option key={c.id} value={c.id}>{c.label}</option>

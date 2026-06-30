@@ -12,7 +12,7 @@ function WaterRow({ value, onChange }: { value: number; onChange: (n: number) =>
       <div className="flex items-center gap-2">
         <Droplet size={14} className="text-cyan-400" />
         <span className="text-[10px] uppercase tracking-wider text-cyan-300 font-semibold">Water</span>
-        <span className="ml-auto text-xs text-slate-400">{value} / {WATER_TARGET} glasses</span>
+        <span className="ml-auto text-xs text-fg-muted">{value} / {WATER_TARGET} glasses</span>
       </div>
       <div className="flex items-center gap-1.5">
         {Array.from({ length: WATER_TARGET }).map((_, i) => {
@@ -24,7 +24,7 @@ function WaterRow({ value, onChange }: { value: number; onChange: (n: number) =>
               aria-label={`${i + 1} glasses of water`}
               className={[
                 'flex-1 h-8 rounded-md transition-colors',
-                filled ? 'bg-cyan-500' : 'bg-slate-800/60 hover:bg-slate-800',
+                filled ? 'bg-cyan-500' : 'bg-surface-2 hover:bg-surface-2',
               ].join(' ')}
             />
           );
@@ -45,13 +45,13 @@ function HabitTile({ Icon, label, accent, active, onToggle }: {
       className={[
         'flex-1 p-4 rounded-xl border transition-all flex flex-col items-center gap-2',
         active
-          ? 'border-indigo-500/30 bg-indigo-500/[0.08] scale-[1.02]'
-          : 'border-slate-800/40 bg-slate-900/30 hover:border-slate-700',
+          ? 'border-accent/30 bg-accent/[0.08] scale-[1.02]'
+          : 'border-border bg-surface-1 hover:border-border-strong',
       ].join(' ')}
       style={active ? { borderColor: `${accent}66`, boxShadow: `0 0 0 1px ${accent}33` } : undefined}
     >
-      <Icon size={20} className={active ? '' : 'text-slate-500'} style={active ? { color: accent } : undefined} />
-      <span className={`text-xs font-medium ${active ? 'text-slate-100' : 'text-slate-500'}`}>{label}</span>
+      <Icon size={20} className={active ? '' : 'text-fg-muted'} style={active ? { color: accent } : undefined} />
+      <span className={`text-xs font-medium ${active ? 'text-fg' : 'text-fg-muted'}`}>{label}</span>
       {active && <Check size={11} className="text-emerald-400" />}
     </button>
   );
@@ -59,8 +59,8 @@ function HabitTile({ Icon, label, accent, active, onToggle }: {
 
 function ScorePill({ label, value, color }: { label: string; value: string | number; color: string }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800/40 bg-slate-900/30">
-      <span className="text-[10px] uppercase tracking-wider text-slate-500">{label}</span>
+    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border bg-surface-1">
+      <span className="text-[10px] uppercase tracking-wider text-fg-muted">{label}</span>
       <span className="text-sm font-semibold ml-auto" style={{ color }}>{value}</span>
     </div>
   );
@@ -84,8 +84,8 @@ function HeatStrip({ log }: { log: ReturnType<typeof useWellnessStore.getState>[
     return out;
   }, [log]);
   return (
-    <div className="p-3 rounded-xl border border-slate-800/40 bg-slate-900/30">
-      <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-2">Last 14 days</div>
+    <div className="p-3 rounded-xl border border-border bg-surface-1">
+      <div className="text-[10px] uppercase tracking-wider text-fg-muted mb-2">Last 14 days</div>
       <div className="flex items-center gap-1">
         {cells.map(({ key, score }) => (
           <div
@@ -123,8 +123,8 @@ export default function WellnessView() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <HeartPulse size={18} className="text-indigo-400" />
-        <h1 className="font-syne text-lg font-bold text-slate-100">Wellness</h1>
+        <HeartPulse size={18} className="text-accent-text" />
+        <h1 className="font-syne text-lg font-bold text-fg">Wellness</h1>
       </motion.div>
 
       <div className="grid grid-cols-2 gap-2">

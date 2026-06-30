@@ -18,8 +18,8 @@ function NumberRow({
 }) {
   return (
     <div className="flex items-center gap-3 py-2">
-      <Icon size={16} className="text-indigo-400 flex-shrink-0" />
-      <span className="flex-1 text-sm text-slate-400">{label}</span>
+      <Icon size={16} className="text-accent-text flex-shrink-0" />
+      <span className="flex-1 text-sm text-fg-muted">{label}</span>
       <input
         type="number"
         aria-label={label}
@@ -28,7 +28,7 @@ function NumberRow({
         step={step}
         value={value}
         onChange={(e) => onChange(Math.max(min, Math.min(max, parseInt(e.target.value) || min)))}
-        className="w-20 text-center bg-slate-900/60 border border-slate-800/60 rounded-lg text-slate-100 text-sm px-2 py-1.5 outline-none focus:border-indigo-500/40 transition-colors"
+        className="w-20 text-center bg-surface-1 border border-border rounded-lg text-fg text-sm px-2 py-1.5 outline-none focus:border-accent/40 transition-colors"
       />
     </div>
   );
@@ -52,13 +52,13 @@ export default function AccountSection() {
       aria-labelledby="account-heading"
     >
       <div className="flex items-center gap-2">
-        <User size={14} className="text-slate-500" />
-        <h2 id="account-heading" className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+        <User size={14} className="text-fg-muted" />
+        <h2 id="account-heading" className="text-xs font-medium text-fg-muted uppercase tracking-wider">
           Account · {displayName}
         </h2>
       </div>
 
-      <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/30 divide-y divide-slate-800/40">
+      <div className="p-4 rounded-xl border border-border bg-surface-1 divide-y divide-border">
         <NumberRow
           Icon={Droplet}
           label="Daily water goal (glasses)"

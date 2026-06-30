@@ -44,7 +44,7 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: (id: string)
       animate={{ opacity: 1, x: 0, scale: 1 }}
       exit={{ opacity: 0, x: 60, scale: 0.9 }}
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-      className="px-4 py-3 rounded-xl border border-white/10 bg-[#0f1829]/95 backdrop-blur-sm text-sm text-slate-200 shadow-xl pointer-events-auto max-w-sm cursor-pointer"
+      className="px-4 py-3 rounded-xl border border-white/10 bg-[#0f1829]/95 backdrop-blur-sm text-sm text-fg-secondary shadow-xl pointer-events-auto max-w-sm cursor-pointer"
       onClick={() => onDismiss(toast.id)}
     >
       {toast.message}

@@ -14,7 +14,7 @@ const COLUMNS = [
 const EMOJI_OPTIONS = ['🚀', '💡', '🎯', '🏗️', '📱', '💼', '🎨', '🔬', '📚', '🏋️', '🌱', '⭐'];
 
 const COLOR_OPTIONS = [
-  '#6366f1', '#4f9cf9', '#c084fc', '#f97316',
+  '#14b8a6', '#4f9cf9', '#c084fc', '#f97316',
   '#22c55e', '#f59e0b', '#ef4444', '#ec4899',
 ];
 
@@ -27,7 +27,7 @@ const PRIORITY_META = {
 const BLANK_PROJECT = {
   title: '',
   description: '',
-  color: '#6366f1',
+  color: '#14b8a6',
   emoji: '🚀',
   status: 'todo',
   priority: 'medium',
@@ -123,7 +123,7 @@ function ProgressBar({ done, total, color }) {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           style={{
             height: '100%',
-            background: color || '#6366f1',
+            background: color || '#14b8a6',
             borderRadius: 999,
           }}
         />
@@ -171,7 +171,7 @@ function ProjectCard({ project, onDragStart, onDragEnd, onClick, isDragging, onM
       style={{
         background: `rgba(${hexToRgb(project.color)}, 0.03)`,
         border: '1px solid rgba(51,65,85,0.5)',
-        borderLeft: `4px solid ${project.color || '#6366f1'}`,
+        borderLeft: `4px solid ${project.color || '#14b8a6'}`,
         borderRadius: 12,
         padding: '14px',
         cursor: 'grab',
@@ -500,8 +500,8 @@ function Modal({ project, defaultStatus, onSave, onDelete, onClose }) {
                   fontSize: 20,
                   padding: '6px 8px',
                   borderRadius: 8,
-                  border: `2px solid ${form.emoji === em ? '#6366f1' : 'rgba(51,65,85,0.5)'}`,
-                  background: form.emoji === em ? 'rgba(99,102,241,0.15)' : 'rgba(8,9,13,0.5)',
+                  border: `2px solid ${form.emoji === em ? '#14b8a6' : 'rgba(51,65,85,0.5)'}`,
+                  background: form.emoji === em ? 'rgba(45, 212, 191,0.15)' : 'rgba(8,9,13,0.5)',
                   cursor: 'pointer',
                   lineHeight: 1,
                   transition: 'border-color 0.15s',
@@ -650,9 +650,9 @@ function Modal({ project, defaultStatus, onSave, onDelete, onClose }) {
               style={{
                 padding: '9px 14px',
                 borderRadius: 8,
-                border: '1px solid rgba(99,102,241,0.4)',
-                background: 'rgba(99,102,241,0.15)',
-                color: '#6366f1',
+                border: '1px solid rgba(45, 212, 191,0.4)',
+                background: 'rgba(45, 212, 191,0.15)',
+                color: '#14b8a6',
                 cursor: 'pointer',
                 fontSize: 13,
                 fontWeight: 600,
@@ -711,7 +711,7 @@ function Modal({ project, defaultStatus, onSave, onDelete, onClose }) {
               padding: '10px',
               borderRadius: 10,
               border: 'none',
-              background: form.title.trim() ? '#6366f1' : 'rgba(99,102,241,0.3)',
+              background: form.title.trim() ? '#14b8a6' : 'rgba(45, 212, 191,0.3)',
               color: form.title.trim() ? '#fff' : '#475569',
               cursor: form.title.trim() ? 'pointer' : 'not-allowed',
               fontSize: 13,
@@ -809,7 +809,7 @@ export default function ProjectsTab({ projects: projectsProp = [], onChange }) {
         flexWrap: 'wrap',
         marginBottom: 24,
       }}>
-        <StatPill value={totalCount} label="Total Projects" color="#6366f1" />
+        <StatPill value={totalCount} label="Total Projects" color="#14b8a6" />
         <StatPill value={inProgressCount} label="In Progress" color="#f59e0b" />
         <StatPill value={overdueCount} label="Overdue" color={overdueCount > 0 ? '#ef4444' : '#64748b'} />
       </div>

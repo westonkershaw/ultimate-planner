@@ -494,7 +494,7 @@ function AddMealModal({ open, onClose, onSave, favoriteMeals = [], targetSlot, p
                     {foodError && (
                       <div style={{ padding: "12px 14px", fontSize: 13, color: "#f87171", display: "flex", alignItems: "center", gap: 8 }}>
                         Search unavailable — check connection
-                        <button onClick={() => { setFoodError(false); setFoodSearch(s => s + " "); setTimeout(() => setFoodSearch(s => s.trimEnd()), 0); }} style={{ fontSize: 12, color: "#6366f1", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>Retry</button>
+                        <button onClick={() => { setFoodError(false); setFoodSearch(s => s + " "); setTimeout(() => setFoodSearch(s => s.trimEnd()), 0); }} style={{ fontSize: 12, color: "#14b8a6", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>Retry</button>
                       </div>
                     )}
                     {!foodLoading && !foodError && foodResults.map((food, i) => (
@@ -863,7 +863,7 @@ function MacroSummaryPanel({ dateStr: ds, dayData, calorieGoal, bodyWeight }) {
 
   const stats = [
     { label: "Calories", value: macros.calories, goal: calGoal, unit: "kcal", color: ACCENT },
-    { label: "Protein", value: macros.protein, goal: proteinGoal, unit: "g", color: "#6366f1" },
+    { label: "Protein", value: macros.protein, goal: proteinGoal, unit: "g", color: "#14b8a6" },
     { label: "Carbs", value: macros.carbs, goal: Math.round(calGoal * 0.5 / 4), unit: "g", color: "#f59e0b" },
     { label: "Fat", value: macros.fat, goal: Math.round(calGoal * 0.3 / 9), unit: "g", color: "#ef4444" },
   ];
@@ -1277,7 +1277,7 @@ function MacroPieDonut({ protein, carbs, fat }) {
   const total = pCal + cCal + fCal;
 
   const segments = [
-    { label: "Protein", kcal: pCal, color: "#6366f1" },
+    { label: "Protein", kcal: pCal, color: "#14b8a6" },
     { label: "Carbs", kcal: cCal, color: "#14b8a6" },
     { label: "Fat", kcal: fCal, color: "#f43f5e" },
   ];
@@ -1439,7 +1439,7 @@ function DailyMacroDashboard({ mealPlan, calorieGoal, proteinGoal, carbsGoal, fa
         aria-label="Today's macro progress"
       >
         <MacroRing value={macros.calories} goal={calTarget} color="#f59e0b" label="Calories" unit="cal" />
-        <MacroRing value={macros.protein} goal={pTarget} color="#6366f1" label="Protein" unit="g" />
+        <MacroRing value={macros.protein} goal={pTarget} color="#14b8a6" label="Protein" unit="g" />
         <MacroRing value={macros.carbs} goal={cTarget} color="#14b8a6" label="Carbs" unit="g" />
         <MacroRing value={macros.fat} goal={fTarget} color="#f43f5e" label="Fat" unit="g" />
       </div>
@@ -1481,12 +1481,12 @@ function DailyMacroDashboard({ mealPlan, calorieGoal, proteinGoal, carbsGoal, fa
               <button
                 key={meal.name}
                 style={{
-                  background: "rgba(99,102,241,0.1)",
-                  border: "1px solid rgba(99,102,241,0.25)",
+                  background: "rgba(45, 212, 191,0.1)",
+                  border: "1px solid rgba(45, 212, 191,0.25)",
                   borderRadius: 8,
                   padding: "5px 12px",
                   fontSize: 12,
-                  color: "#818cf8",
+                  color: "#2dd4bf",
                   cursor: "pointer",
                   fontWeight: 600,
                   fontFamily: FONT,
@@ -1500,7 +1500,7 @@ function DailyMacroDashboard({ mealPlan, calorieGoal, proteinGoal, carbsGoal, fa
               >
                 {meal.name}
                 {meal.calories > 0 && (
-                  <span style={{ color: "#6366f1", fontSize: 10 }}>{meal.calories} cal</span>
+                  <span style={{ color: "#14b8a6", fontSize: 10 }}>{meal.calories} cal</span>
                 )}
               </button>
             ))}
@@ -1710,7 +1710,7 @@ function CalorieBudgetBar({ dayData, calorieGoal, proteinGoal, carbsGoal, fatGoa
   const pct = Math.round(budget.caloriePct * 100);
 
   const macroItems = [
-    { label: "P", value: budget.protein, unit: "g", color: "#6366f1" },
+    { label: "P", value: budget.protein, unit: "g", color: "#14b8a6" },
     { label: "C", value: budget.carbs,   unit: "g", color: "#14b8a6" },
     { label: "F", value: budget.fat,     unit: "g", color: "#f43f5e" },
   ];
@@ -1832,7 +1832,7 @@ function SmartMealSuggestions({ dayData, calorieGoal, proteinGoal, carbsGoal, fa
                 {meal.name}
               </div>
               <div style={{ display: "flex", gap: 10 }}>
-                <span style={{ fontSize: 11, color: "#6366f1", fontWeight: 600 }}>P {meal.protein}g</span>
+                <span style={{ fontSize: 11, color: "#14b8a6", fontWeight: 600 }}>P {meal.protein}g</span>
                 <span style={{ fontSize: 11, color: "#14b8a6", fontWeight: 600 }}>C {meal.carbs}g</span>
                 <span style={{ fontSize: 11, color: "#f43f5e", fontWeight: 600 }}>F {meal.fat}g</span>
                 <span style={{ fontSize: 11, color: "#94a3b8" }}>{meal.calories} kcal</span>
@@ -2356,7 +2356,7 @@ export function MealPlannerDashWidget({ data, onNavigate }) {
       {(macros.protein > 0 || macros.carbs > 0 || macros.fat > 0) && (
         <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
           {[
-            { label: "P", value: macros.protein, color: "#6366f1" },
+            { label: "P", value: macros.protein, color: "#14b8a6" },
             { label: "C", value: macros.carbs, color: "#f59e0b" },
             { label: "F", value: macros.fat, color: "#ef4444" },
           ].map((m) => (
