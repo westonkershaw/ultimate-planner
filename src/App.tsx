@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AuthGate from './components/auth/AuthGate';
 import Shell from './components/layout/Shell';
 import Dashboard from './components/Dashboard';
-import TaskList from './components/tasks/TaskList';
+import TasksView from './components/tasks/TasksView';
 import WorkoutView from './components/workouts/WorkoutView';
 import FinanceDashboard from './components/finance/FinanceDashboard';
 import ExploreView from './components/explore/ExploreView';
@@ -79,7 +79,7 @@ function Toasts() {
 function ViewContent({ view }: { view: ActiveView }) {
   switch (view) {
     case 'dashboard': return <Dashboard />;
-    case 'tasks':     return <TaskList />;
+    case 'tasks':     return <TasksView />;
     case 'workouts':  return <WorkoutView />;
     case 'finance':   return <FinanceDashboard />;
     case 'explore':   return <ExploreView />;

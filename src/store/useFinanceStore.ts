@@ -35,6 +35,8 @@ interface FinanceState {
   envelopes: Envelope[];
   envelopeSnapshots: EnvelopeSnapshot[];
   linkedAccounts: LinkedAccount[];
+  /** Auth user id that currently owns this store's data ('' = unclaimed). */
+  ownedBy: string;
 }
 
 interface FinanceActions {
@@ -64,6 +66,9 @@ interface FinanceActions {
   addLinkedAccount: (account: Omit<LinkedAccount, 'id'>) => void;
   updateLinkedAccount: (id: ID, updates: Partial<LinkedAccount>) => void;
   removeLinkedAccount: (id: ID) => void;
+
+  /** Per-user isolation: clear data when switching to a different account. */
+  resetForUser: (userId: string) => void;
 }
 
 export type FinanceStore = FinanceState & FinanceActions;
@@ -87,6 +92,7 @@ export const useFinanceStore = create<FinanceStore>()(
       envelopes: [],
       envelopeSnapshots: [],
       linkedAccounts: [],
+      ownedBy: '',
 
       setIncome: (income) =>
         set((draft) => {
@@ -241,6 +247,20 @@ export const useFinanceStore = create<FinanceStore>()(
       removeLinkedAccount: (id) =>
         set((draft) => {
           draft.linkedAccounts = draft.linkedAccounts.filter((a) => a.id !== id);
+        }),
+
+      resetForUser: (userId) =>
+        set((draft) => {
+          if (draft.ownedBy === userId || userId === 'guest') return;
+          if (draft.ownedBy === '') { draft.ownedBy = userId; return; }
+          draft.income = 0;
+          draft.goals = [];
+          draft.transactions = [];
+          draft.budgetSplits = { needs: 50, wants: 30, savings: 20 };
+          draft.envelopes = [];
+          draft.envelopeSnapshots = [];
+          draft.linkedAccounts = [];
+          draft.ownedBy = userId;
         }),
     })),
     { name: 'up_finance' },

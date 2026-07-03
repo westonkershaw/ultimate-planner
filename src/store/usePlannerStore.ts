@@ -30,6 +30,8 @@ export interface DailyReview {
 
 interface PlannerState {
   plans: DailyPlan[];
+  /** Auth user id that currently owns this store's data ('' = unclaimed). */
+  ownedBy: string;
 }
 
 interface PlannerActions {
@@ -42,6 +44,8 @@ interface PlannerActions {
   setEnergyLevel: (date: string, level: number) => void;
   setTopPriorities: (date: string, taskIds: string[]) => void;
   submitReview: (date: string, rating: number, notes: string) => void;
+  /** Per-user isolation: clear data when switching to a different account. */
+  resetForUser: (userId: string) => void;
 }
 
 export type PlannerStore = PlannerState & PlannerActions;
@@ -50,6 +54,7 @@ export const usePlannerStore = create<PlannerStore>()(
   persist(
     immer((set, get) => ({
       plans: [],
+      ownedBy: '',
 
       getToday: () => {
         const today = new Date().toISOString().split('T')[0];
@@ -122,6 +127,14 @@ export const usePlannerStore = create<PlannerStore>()(
           if (plan) {
             plan.review = { rating, notes, completedAt: Date.now() };
           }
+        }),
+
+      resetForUser: (userId) =>
+        set((draft) => {
+          if (draft.ownedBy === userId || userId === 'guest') return;
+          if (draft.ownedBy === '') { draft.ownedBy = userId; return; }
+          draft.plans = [];
+          draft.ownedBy = userId;
         }),
     })),
     { name: 'up_planner' },

@@ -154,7 +154,6 @@ const RestTimer = React.memo(function RestTimer({
             transform={`rotate(-90 ${SIZE / 2} ${SIZE / 2})`}
             animate={{ strokeDashoffset: dashOffset, stroke: color }}
             transition={{ type: 'spring', stiffness: 60, damping: 20 }}
-            style={{ filter: `drop-shadow(0 0 8px ${color}80)` }}
           />
           {/* Time label */}
           <text

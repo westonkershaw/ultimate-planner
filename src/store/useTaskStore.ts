@@ -11,6 +11,8 @@ const uid = (): ID => Math.random().toString(36).slice(2, 9);
 
 interface TaskState {
   tasks: Task[];
+  /** Auth user id that currently owns this store's data ('' = unclaimed). */
+  ownedBy: string;
 }
 
 interface TaskActions {
@@ -18,6 +20,8 @@ interface TaskActions {
   updateTask: (id: ID, updates: UpdateTaskInput) => void;
   deleteTask: (id: ID) => void;
   toggleTask: (id: ID) => void;
+  /** Per-user isolation: clear data when switching to a different account. */
+  resetForUser: (userId: string) => void;
 }
 
 export type TaskStore = TaskState & TaskActions;
@@ -34,6 +38,7 @@ export const useTaskStore = create<TaskStore>()(
   persist(
     immer((set) => ({
       tasks: [],
+      ownedBy: '',
 
       addTask: (input) =>
         set((draft) => {
@@ -65,6 +70,14 @@ export const useTaskStore = create<TaskStore>()(
         set((draft) => {
           const task = draft.tasks.find((t) => t.id === id);
           if (task) task.completed = !task.completed;
+        }),
+
+      resetForUser: (userId) =>
+        set((draft) => {
+          if (draft.ownedBy === userId || userId === 'guest') return;
+          if (draft.ownedBy === '') { draft.ownedBy = userId; return; }
+          draft.tasks = [];
+          draft.ownedBy = userId;
         }),
     })),
     { name: 'up_tasks' },

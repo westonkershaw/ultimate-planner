@@ -22,6 +22,8 @@ interface WorkoutState {
   workoutHistory: WorkoutSession[];
   activeSession: WorkoutSession | null;
   userProfile: UserProfile | null;
+  /** Auth user id that currently owns this store's data ('' = unclaimed). */
+  ownedBy: string;
 }
 
 interface WorkoutActions {
@@ -41,6 +43,9 @@ interface WorkoutActions {
 
   // Computed (read-only derived values exposed as getters)
   getStreak: () => number;
+
+  /** Per-user isolation: clear data when switching to a different account. */
+  resetForUser: (userId: string) => void;
 }
 
 export type WorkoutStore = WorkoutState & WorkoutActions;
@@ -61,6 +66,7 @@ export const useWorkoutStore = create<WorkoutStore>()(
       workoutHistory: [],
       activeSession: null,
       userProfile: null,
+      ownedBy: '',
 
       // ── Routine CRUD ──────────────────────────────────────────────────────
 
@@ -153,6 +159,17 @@ export const useWorkoutStore = create<WorkoutStore>()(
       // ── Computed ──────────────────────────────────────────────────────────
 
       getStreak: () => calcWorkoutStreak(get().workoutHistory),
+
+      resetForUser: (userId) =>
+        set((draft) => {
+          if (draft.ownedBy === userId || userId === 'guest') return;
+          if (draft.ownedBy === '') { draft.ownedBy = userId; return; }
+          draft.routines = [];
+          draft.workoutHistory = [];
+          draft.activeSession = null;
+          draft.userProfile = null;
+          draft.ownedBy = userId;
+        }),
     })),
     { name: 'up_workouts' },
   ),

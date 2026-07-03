@@ -23,6 +23,8 @@ const uid = (): ID => Math.random().toString(36).slice(2, 9);
 interface ExploreState {
   trips: SavedTrip[];
   fuelPrices: FuelPrices | null;
+  /** Auth user id that currently owns this store's data ('' = unclaimed). */
+  ownedBy: string;
 }
 
 interface ExploreActions {
@@ -48,6 +50,8 @@ interface ExploreActions {
   addSplitPerson: (tripId: ID, name: string) => void;
   removeSplitPerson: (tripId: ID, personId: ID) => void;
   updateSplitPerson: (tripId: ID, personId: ID, updates: Partial<SplitPerson>) => void;
+  /** Per-user isolation: clear data when switching to a different account. */
+  resetForUser: (userId: string) => void;
 }
 
 export type ExploreStore = ExploreState & ExploreActions;
@@ -81,6 +85,7 @@ export const useExploreStore = create<ExploreStore>()(
     immer((set) => ({
       trips: [],
       fuelPrices: null,
+      ownedBy: '',
 
       addTrip: (name, from, to) => {
         const trip = defaultTrip(name, from, to);
@@ -179,6 +184,14 @@ export const useExploreStore = create<ExploreStore>()(
         if (!t) return;
         const p = t.splitPeople.find((x) => x.id === personId);
         if (p) { Object.assign(p, updates); t.updatedAt = Date.now(); }
+      }),
+
+      resetForUser: (userId) => set((d) => {
+        if (d.ownedBy === userId || userId === 'guest') return;
+        if (d.ownedBy === '') { d.ownedBy = userId; return; }
+        d.trips = [];
+        d.fuelPrices = null;
+        d.ownedBy = userId;
       }),
     })),
     {

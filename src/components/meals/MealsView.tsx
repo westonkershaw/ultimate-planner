@@ -93,7 +93,10 @@ function AddMealRow({ onAdd }: { onAdd: (m: { name: string; calories: number; pr
 }
 
 function SlotCard({ date, slot }: { date: string; slot: MealSlot }) {
-  const meals = useMealsStore((s) => s.plan[date]?.[slot] ?? []);
+  // Keep the default OUTSIDE the selector — returning a fresh `[]` from the
+  // selector makes zustand see a new snapshot every render → infinite loop
+  // (React #185). Selecting the raw value returns a stable `undefined`.
+  const meals = useMealsStore((s) => s.plan[date]?.[slot]) ?? [];
   const addMeal = useMealsStore((s) => s.addMeal);
   const deleteMeal = useMealsStore((s) => s.deleteMeal);
   const addToast = useUIStore((s) => s.addToast);

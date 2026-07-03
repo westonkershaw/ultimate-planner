@@ -221,9 +221,10 @@ const SessionMode = React.memo(function SessionMode() {
           })}
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap justify-center">
           <Button onClick={handleConfirmFinish}>Save Workout</Button>
           <Button variant="ghost" onClick={() => setShowSummary(false)}>Keep Going</Button>
+          <Button variant="danger" onClick={cancelSession}>Discard</Button>
         </div>
       </motion.div>
     );
@@ -247,7 +248,13 @@ const SessionMode = React.memo(function SessionMode() {
             </div>
             <div className="text-[9px] text-fg-faint uppercase tracking-wider">volume</div>
           </div>
-          <Button variant="ghost" size="sm" onClick={cancelSession}>End</Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => (completedSets > 0 ? handleFinishWorkout() : cancelSession())}
+          >
+            End
+          </Button>
         </div>
       </div>
 

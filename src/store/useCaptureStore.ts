@@ -10,6 +10,8 @@ const uid = (): ID => Math.random().toString(36).slice(2, 9);
 
 interface CaptureState {
   items: CaptureItem[];
+  /** Auth user id that currently owns this store's data ('' = unclaimed). */
+  ownedBy: string;
 }
 
 interface CaptureActions {
@@ -19,6 +21,8 @@ interface CaptureActions {
   convertToTask: (id: ID) => void;
   bulkConvert: (ids: ID[]) => void;
   clearArchived: () => void;
+  /** Per-user isolation: clear data when switching to a different account. */
+  resetForUser: (userId: string) => void;
 }
 
 export type CaptureStore = CaptureState & CaptureActions;
@@ -27,6 +31,7 @@ export const useCaptureStore = create<CaptureStore>()(
   persist(
     immer((set, get) => ({
       items: [],
+      ownedBy: '',
 
       addCapture: (rawText) =>
         set((draft) => {
@@ -82,6 +87,14 @@ export const useCaptureStore = create<CaptureStore>()(
       clearArchived: () =>
         set((draft) => {
           draft.items = draft.items.filter((i) => !i.archived);
+        }),
+
+      resetForUser: (userId) =>
+        set((draft) => {
+          if (draft.ownedBy === userId || userId === 'guest') return;
+          if (draft.ownedBy === '') { draft.ownedBy = userId; return; }
+          draft.items = [];
+          draft.ownedBy = userId;
         }),
     })),
     { name: 'up_captures' },

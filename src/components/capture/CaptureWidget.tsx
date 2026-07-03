@@ -7,7 +7,10 @@ interface CaptureWidgetProps {
 }
 
 export default function CaptureWidget({ onOpen }: CaptureWidgetProps) {
-  const items = useCaptureStore((s) => s.items.filter((i) => !i.archived && !i.convertedToTask));
+  // Select the stable `items` reference and filter in render — filtering inside
+  // the selector returns a fresh array every render → infinite loop (React #185).
+  const allItems = useCaptureStore((s) => s.items);
+  const items = allItems.filter((i) => !i.archived && !i.convertedToTask);
   const count = items.length;
   const latest = items[0];
 
