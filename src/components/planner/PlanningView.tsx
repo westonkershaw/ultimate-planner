@@ -44,7 +44,9 @@ export default function PlanningView() {
   const weekPlanned = !!weeks[periodIndex(new Date(), 'week')];
   const monthRec = months[periodIndex(new Date(), 'month')];
   const monthPlanned = !!monthRec && monthRec.completedAt > 0;
-  const insights = useProfileStore((s) => s.profile?.insights ?? []);
+  // Select the stable profile reference, then derive insights — never return a
+  // fresh array from the selector (that breaks Zustand's snapshot cache → loop).
+  const insights = useProfileStore((s) => s.profile)?.insights ?? [];
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 space-y-5">
