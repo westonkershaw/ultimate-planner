@@ -11,6 +11,7 @@ import {
   Target,
   KanbanSquare,
   Calendar,
+  CalendarCheck,
   Timer,
   Moon,
   Smile,
@@ -62,6 +63,7 @@ const NAV_GROUPS: NavGroup[] = [
     id: 'plan',
     label: 'Plan',
     items: [
+      { id: 'planning',  label: 'Planner',    Icon: CalendarCheck },
       { id: 'tasks',     label: 'Tasks',      Icon: CheckSquare },
       { id: 'goals',     label: 'Goals',      Icon: Target },
       { id: 'projects',  label: 'Projects',   Icon: KanbanSquare },

@@ -16,3 +16,4 @@ export * from './meals.types';
 export type * from './vision.types';
 export type * from './study.types';
 export type * from './wellness.types';
+export * from './profile.types';

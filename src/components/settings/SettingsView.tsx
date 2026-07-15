@@ -6,6 +6,7 @@ import AccountSection from './AccountSection';
 import NotificationsSection from './NotificationsSection';
 import AISection from './AISection';
 import SecuritySection from './SecuritySection';
+import LearnedProfilePanel from './LearnedProfilePanel';
 import { useLegacyDataStore, useUIStore } from '@/store';
 
 function DangerZone() {
@@ -60,6 +61,10 @@ export default function SettingsView() {
 
       <div className="pt-2 border-t border-border">
         <NotificationsSection />
+      </div>
+
+      <div className="pt-2 border-t border-border">
+        <LearnedProfilePanel />
       </div>
 
       <div className="pt-2 border-t border-border">

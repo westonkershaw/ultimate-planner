@@ -19,6 +19,7 @@ import MealsView from './components/meals/MealsView';
 import VisionView from './components/vision/VisionView';
 import StudyView from './components/study/StudyView';
 import WellnessView from './components/wellness/WellnessView';
+import PlanningView from './components/planner/PlanningView';
 import {
   TimeBlockHost,
   FocusHost,
@@ -85,6 +86,7 @@ function ViewContent({ view }: { view: ActiveView }) {
     case 'explore':   return <ExploreView />;
     case 'settings':  return <SettingsView />;
     // Plan
+    case 'planning':  return <PlanningView />;
     case 'goals':     return <GoalsHost />;
     case 'projects':  return <ProjectsHost />;
     case 'timeblock': return <TimeBlockHost />;

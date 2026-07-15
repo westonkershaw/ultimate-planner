@@ -2,6 +2,11 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Check, Sparkles, Target } from 'lucide-react';
 import { usePlannerStore } from '@/store/usePlannerStore';
+import { useProfileStore, usePlanningStore } from '@/store';
+import { suggestWeekPlan } from '@/utils/planSuggest';
+import { periodIndex } from '@/utils/streakEngine';
+import { logLearningEvent } from '@/utils/learningEvents';
+import { learnNow } from '@/utils/learnNow';
 import WeekOverview from './WeekOverview';
 import WeekDayStep from './WeekDayStep';
 
@@ -39,13 +44,17 @@ function formatWeekRange(monday: string): string {
 
 export default function WeekWizard({ open, onClose }: WeekWizardProps) {
   const [step, setStep] = useState(0);
+  const [usedSuggestion, setUsedSuggestion] = useState(false);
   const mondayDate = useMemo(getMonday, []);
   const { ensureWeekPlans, plans } = usePlannerStore();
+  const profile = useProfileStore((s) => s.profile);
+  const suggestion = useMemo(() => (profile ? suggestWeekPlan(profile) : null), [profile]);
 
   useEffect(() => {
     if (open) {
       ensureWeekPlans(mondayDate);
       setStep(0);
+      setUsedSuggestion(false);
     }
   }, [open, mondayDate, ensureWeekPlans]);
 
@@ -62,6 +71,38 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
     }),
     [mondayDate, plans],
   );
+
+  // One-tap: pre-fill every day from the profile-driven suggestion.
+  const applySuggestion = useCallback(() => {
+    if (!suggestion) return;
+    const { setIntention, setEnergyLevel } = usePlannerStore.getState();
+    suggestion.days.forEach((d, i) => {
+      const date = offsetDate(mondayDate, i);
+      setIntention(date, d.intention);
+      setEnergyLevel(date, d.energyLevel);
+    });
+    setUsedSuggestion(true);
+    setStep(8);
+  }, [suggestion, mondayDate]);
+
+  // Record the ritual completion, capture the signal, and refresh the profile.
+  const finish = useCallback(() => {
+    const current = usePlannerStore.getState().plans;
+    const dayPlans = Array.from({ length: 7 }, (_, i) => current.find((p) => p.date === offsetDate(mondayDate, i)));
+    const filledDays = dayPlans.filter((p) => p?.intention?.trim()).length;
+    const suggestionIntentions = suggestion?.days.map((d) => d.intention) ?? [];
+    const keptCount = dayPlans.filter((p, i) => p?.intention?.trim() && suggestionIntentions[i] === p.intention).length;
+    const allAccepted = usedSuggestion && suggestion != null && keptCount === suggestion.days.length;
+    const source = usedSuggestion ? (allAccepted ? 'suggested' : 'mixed') : 'scratch';
+
+    usePlanningStore.getState().completeWeek(periodIndex(new Date(), 'week'), { dayCount: filledDays, source });
+    logLearningEvent(allAccepted ? 'plan_accepted' : filledDays > 0 ? 'plan_edited' : 'plan_rejected', {
+      itemCount: 7,
+      keptCount: usedSuggestion ? keptCount : filledDays,
+    });
+    void learnNow();
+    onClose();
+  }, [mondayDate, suggestion, usedSuggestion, onClose]);
 
   if (!open) return null;
 
@@ -172,7 +213,35 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
               transition={{ duration: 0.15 }}
             >
               {step === 0 && (
-                <WeekOverview mondayDate={mondayDate} onSelectDay={goToDay} />
+                <div className="space-y-4">
+                  {suggestion && weekPlans.every((p) => !p?.intention?.trim()) && (
+                    <div className="rounded-card border border-accent/30 bg-accent/5 p-4 space-y-3">
+                      <div className="flex items-start gap-2">
+                        <Sparkles size={15} className="text-accent-text mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-semibold text-fg">Start from a plan that fits you</p>
+                          <p className="text-xs text-fg-muted mt-0.5">{suggestion.basis}</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <motion.button
+                          whileTap={{ scale: 0.96 }}
+                          onClick={applySuggestion}
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-control text-sm font-bold bg-accent text-white hover:bg-accent-hover transition-colors"
+                        >
+                          <Check size={15} /> Accept suggested plan
+                        </motion.button>
+                        <button
+                          onClick={goNext}
+                          className="px-3 py-2 rounded-control text-sm font-medium text-fg-secondary bg-surface-2 hover:bg-surface-3 transition-colors"
+                        >
+                          Start from scratch
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <WeekOverview mondayDate={mondayDate} onSelectDay={goToDay} />
+                </div>
               )}
 
               {step >= 1 && step <= 7 && (
@@ -215,7 +284,7 @@ export default function WeekWizard({ open, onClose }: WeekWizardProps) {
           {step === 8 ? (
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={onClose}
+              onClick={finish}
               className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
             >
               <Check size={16} />

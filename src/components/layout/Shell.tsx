@@ -24,6 +24,7 @@ const VIEW_LABELS: Record<ActiveView, string> = {
   finance:   'Finance',
   explore:   'Explore',
   settings:  'Settings',
+  planning:  'Planner',
   goals:     'Goals',
   projects:  'Projects',
   timeblock: 'Time Block',

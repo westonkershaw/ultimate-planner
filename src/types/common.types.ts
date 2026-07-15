@@ -21,6 +21,7 @@ export type ActiveView =
   | 'explore'
   | 'settings'
   // Plan
+  | 'planning'
   | 'goals'
   | 'projects'
   | 'timeblock'

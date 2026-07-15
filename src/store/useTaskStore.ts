@@ -2,10 +2,14 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import type { Task, CreateTaskInput, UpdateTaskInput, ID } from '@/types';
+import { logLearningEvent } from '@/utils/learningEvents';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 const uid = (): ID => Math.random().toString(36).slice(2, 9);
+
+/** Best-effort category for learning: first tag, else priority bucket. */
+const taskCategory = (t: Task): string => t.tags?.[0] || t.priority || 'general';
 
 // ── State & Action Interfaces ──────────────────────────────────────────────
 
@@ -63,13 +67,18 @@ export const useTaskStore = create<TaskStore>()(
 
       deleteTask: (id) =>
         set((draft) => {
+          const task = draft.tasks.find((t) => t.id === id);
+          // Abandoning an unfinished task is a genuine "skip" signal.
+          if (task && !task.completed) logLearningEvent('task_skipped', { category: taskCategory(task) });
           draft.tasks = draft.tasks.filter((t) => t.id !== id);
         }),
 
       toggleTask: (id) =>
         set((draft) => {
           const task = draft.tasks.find((t) => t.id === id);
-          if (task) task.completed = !task.completed;
+          if (!task) return;
+          task.completed = !task.completed;
+          if (task.completed) logLearningEvent('task_completed', { category: taskCategory(task) });
         }),
 
       resetForUser: (userId) =>
