@@ -93,3 +93,30 @@ Scaffold execution (Phase 0.9) was briefly blocked by a tooling outage, then com
 
 ### 5. Next up
 Phase 0.5 (auth in the Expo app: email/password against the existing Supabase now; Google/Apple once credentials arrive) — then Phase 1 (Goals engine) with the subagent flow.
+
+---
+
+## 2026-07-18 — Phase 0.5: Auth completion (email/password) — first full subagent-loop phase
+
+### 1. Built
+- **Email/password auth in the Expo app**, on branch `feature/auth-completion`, merged to main (`5cf5809`):
+  `src/lib/supabase.ts` (singleton client, AsyncStorage session persistence, AppState-driven token refresh, hard fail on missing env), `src/lib/auth-context.tsx` (AuthProvider/useAuth: session, loading, signIn/signUp/signOut; signUp passes first/last name metadata for the `profiles` trigger), `src/components/auth/sign-in-screen.tsx` (two-mode screen + validation + "check your email" confirmation state), auth gate in `src/app/_layout.tsx`, temporary sign-out row on the second tab. Env plumbed via `mobile/.env` (gitignored) + `.env.example` against the SAME live Supabase project as the web app — shared accounts.
+- **Process milestone:** first phase run fully through the roadmap loop — implementer (Sonnet) built it → code-reviewer (Sonnet) audited and **APPROVED** (traced auth-js source to rule out a session-init race; scope/conventions/privacy checks) → architect merged.
+- **Phase 0.9 DoD closed:** freed disk → native build succeeded → app **boots on the iPhone 17 Pro simulator**; Metro serves 1,720 modules; screenshot-verified the live auth screen. Bonus finding: supabase-js runs on Hermes/RN 0.86 **without** react-native-url-polyfill.
+
+### 2. Verification
+tsc strict clean (implementer + reviewer independently) · web suite still green · native boot + auth screen screenshot-verified. NOT yet exercised live: an actual credentialed sign-in round-trip (first real tap does it; rendering + client init prove the module path).
+
+### 3. Decisions I made
+- No test-writer run: Phase 0.5 lists no tests in the roadmap; auth logic here is thin glue over supabase-js. Goals engine (Phase 1) is where the test-writer starts earning its keep.
+- Kept the template's existing `#3c87f7` accent for buttons (already hardcoded in the template) rather than inventing a token system mid-phase — Phase 2 (dashboard rebuild) owns mobile theming.
+- Google/Apple: deliberately no dead buttons in the UI; they get added when provider credentials exist.
+
+### 4. Needs Weston
+1. Google OAuth client ID/secret + Apple Services ID/key → Supabase Auth providers (completes the auth target).
+2. `design-reference/` screenshots + companion specs (needed by Phase 2's "match the reference").
+3. Old app's bundle identifier from App Store Connect.
+4. Rotate the exposed PAT in the git remote (still outstanding).
+
+### 5. Next up
+Phase 1 — Goals engine (`feature/goals-engine`): the data spine (goal model, progress events, CRUD, templates) built Supabase-backed with RLS from day one, full implementer → reviewer → test-writer loop.
