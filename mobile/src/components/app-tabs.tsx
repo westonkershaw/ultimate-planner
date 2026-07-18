@@ -27,6 +27,15 @@ export default function AppTabs() {
           renderingMode="template"
         />
       </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="goals">
+        <NativeTabs.Trigger.Label>Goals</NativeTabs.Trigger.Label>
+        {/* Reusing the explore icon for now — dedicated goals SVG icon is Phase 2. */}
+        <NativeTabs.Trigger.Icon
+          src={require('@/assets/images/tabIcons/explore.png')}
+          renderingMode="template"
+        />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }
