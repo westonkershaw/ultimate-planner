@@ -5,7 +5,12 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'coverage', '.vercel']),
+  // src/App.jsx is compiled bundler output (16k lines, long-line minified) — linting
+  // it produces spurious errors and times ESLint out. It's generated, not
+  // hand-maintained, so exclude it from the gate. `**/dist` + `.claude` also cover
+  // built output inside .claude/worktrees checkouts. `mobile` is the Expo app —
+  // it has its own toolchain and is not part of this web gate.
+  globalIgnores(['**/dist', 'coverage', '.vercel', '.claude', 'src/App.jsx', 'mobile']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
