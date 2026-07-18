@@ -1,5 +1,23 @@
 # Ultimate Planner V60 Project Rules
 
+## ⚠️ Rebuild in progress (2026-07-18): Expo app in `mobile/`
+
+The product is being rebuilt as an **Expo/React Native app** in `mobile/` per
+`ROADMAP.md` (architect + implementer/code-reviewer/test-writer subagent flow;
+phase history in `PROGRESS.md`). The Vite web app below stays deployed and in
+maintenance-mode until Phase 11 replaces it. Key conventions for `mobile/`:
+- SDK 57 / RN 0.86 / Expo Router / New Architecture, TypeScript strict.
+- Native dirs are **gitignored (CNG)** — regenerate with `npx expo prebuild`;
+  `pod install` needs `LANG=en_US.UTF-8` in non-interactive shells.
+- Pure logic lives in `mobile/lib/` — day-boundary math MUST import
+  `mobile/lib/timePolicy.ts` (local timezone, never UTC).
+- Carried-over spine: the Supabase project/schema/RLS and the pure TS engines
+  (`timePolicy`, `goalEngine`, `profileEngine`, `planSuggest`, `streakEngine`).
+- Bundle id placeholder `com.westonk.mobile` must become the old listing's id
+  (App Store Connect) before any TestFlight build.
+
+Everything below documents the existing **web app** (still true for `src/`).
+
 ## Stack
 - Vite, React, TypeScript, Tailwind v4, Framer Motion, Zustand
 

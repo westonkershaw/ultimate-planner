@@ -63,4 +63,33 @@ Weston chose **Option A — full Expo/React Native rebuild**. Plan of record:
 - **The Vite web app stays deployed and untouched** during the rebuild (it has live users/data); it is replaced at Phase 11 per the "update the existing listing" ship decision.
 - Bundle identifier for the new app MUST match the old listing's (App Store Connect → App Information) — placeholder until Weston reads it out (Phase 11 requirement, set early to avoid rework).
 
-Scaffold execution (Phase 0.9) was **blocked this run by the ongoing tooling outage** (all mutating commands gated; project-file writes only). Queued for the next run, in order: create `.claude/agents/` (implementer / code-reviewer / test-writer, Sonnet-pinned, content drafted) → verify `timePolicy` (tsc + vitest) → delete dead `cloudSync.js` → commit pre-roadmap fixes + Phase 0 artifacts → deploy web → `npx create-expo-app mobile` → port `timePolicy` into `mobile/lib/` → verify the app type-checks/bundles (+ simulator boot if Xcode present) → commit + Phase 0.9 summary.
+Scaffold execution (Phase 0.9) was briefly blocked by a tooling outage, then completed the same day — see the Phase 0.9 entry below.
+
+---
+
+## 2026-07-18 — Phase 0.9: Expo workspace bootstrap (Option A execution)
+
+### 1. Built
+- **`mobile/`** — the new Expo app (create-expo-app default template: **SDK 57, RN 0.86, Expo Router, New Architecture**, TypeScript strict). `npx tsc --noEmit` clean. `timePolicy` ported to `mobile/lib/`. Native dirs (`ios/`, `android/`) are gitignored — **CNG**: regenerate anytime with `npx expo prebuild`.
+- **`.claude/agents/`** — `implementer`, `code-reviewer`, `test-writer` created, Sonnet-pinned (live from the next session, i.e. Phase 1).
+- **Phase 0 leftovers landed:** `timePolicy` verified (12/12 tests, tsc clean); lint gate actually restored — the 1,590 errors turned out to come from built `dist/` output inside `.claude/worktrees/` checkouts, not just `App.jsx`; ignores now cover `**/dist`, `.claude`, `src/App.jsx`, and `mobile` (which has its own toolchain). Dead `cloudSync.js` deleted. Snappier nav shipped. All committed in small conventional commits and pushed; web prod redeployed (HTTP 200).
+
+### 2. Verification honest-status
+- ✅ `mobile` type-checks clean; **Metro/Hermes iOS bundle builds end-to-end** (`expo export --platform ios` → 3.4MB `.hbc`).
+- ⚠️ **Native simulator boot NOT yet verified:** `pod install` first hit a CocoaPods UTF-8 locale quirk (fix: `LANG=en_US.UTF-8`), then died with **"No space left on device" — the Mac has ~1GB free**; an iOS native build needs several GB. Blocked on Weston freeing ~10GB. Everything else about the scaffold is verified.
+
+### 3. Decisions I made
+- `mobile/` inside this repo (no monorepo tooling) — shared history/docs/Supabase; the web app is maintenance-mode, so a workspace package for code sharing is overkill; pure TS engines get ported file-by-file as phases need them.
+- CNG (gitignored native dirs) — `app.json` stays the source of truth; EAS/prebuild regenerate `ios/` on demand; keeps the repo small and diffs readable.
+- Bundle id is currently the auto-generated `com.westonk.mobile` — MUST be replaced with the old listing's exact bundle id (App Store Connect → App Information) before any TestFlight build (Phase 11 requirement, worth setting as soon as Weston reads it out).
+- Kept the template's tabs/demo screens as-is — Phase 1/2 will replace them; deleting now buys nothing.
+
+### 4. Needs Weston
+1. **Free ~10GB disk on the Mac** — blocks the first native simulator build (`npx expo run:ios`).
+2. Google + Apple OAuth credentials (Phase 0.5).
+3. `design-reference/` screenshots + companion spec files.
+4. Old app's bundle identifier from App Store Connect.
+5. Rotate the exposed PAT in the git remote (still outstanding).
+
+### 5. Next up
+Phase 0.5 (auth in the Expo app: email/password against the existing Supabase now; Google/Apple once credentials arrive) — then Phase 1 (Goals engine) with the subagent flow.
