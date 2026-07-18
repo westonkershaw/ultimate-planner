@@ -45,3 +45,6 @@ example
 # Native projects are generated (Continuous Native Generation) — run `npx expo prebuild`
 /ios
 /android
+
+# local env (see .env.example)
+.env

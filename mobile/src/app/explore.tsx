@@ -10,6 +10,7 @@ import { Collapsible } from '@/components/ui/collapsible';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useAuth } from '@/lib/auth-context';
 
 export default function TabTwoScreen() {
   const safeAreaInsets = useSafeAreaInsets();
@@ -18,6 +19,7 @@ export default function TabTwoScreen() {
     bottom: safeAreaInsets.bottom + BottomTabInset + Spacing.three,
   };
   const theme = useTheme();
+  const { session, signOut } = useAuth();
 
   const contentPlatformStyle = Platform.select({
     android: {
@@ -118,6 +120,17 @@ export default function TabTwoScreen() {
               animate opening this hint.
             </ThemedText>
           </Collapsible>
+
+          <ThemedView type="backgroundElement" style={styles.signOutRow}>
+            <ThemedText type="small" themeColor="textSecondary" numberOfLines={1}>
+              {session?.user.email}
+            </ThemedText>
+            <Pressable
+              onPress={() => signOut()}
+              style={({ pressed }) => pressed && styles.pressed}>
+              <ThemedText type="linkPrimary">Sign out</ThemedText>
+            </Pressable>
+          </ThemedView>
         </ThemedView>
         {Platform.OS === 'web' && <WebBadge />}
       </ThemedView>
@@ -176,5 +189,14 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     alignSelf: 'center',
+  },
+  signOutRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: Spacing.three,
+    paddingHorizontal: Spacing.three,
+    paddingVertical: Spacing.three,
+    borderRadius: Spacing.three,
   },
 });
