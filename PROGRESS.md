@@ -120,3 +120,33 @@ tsc strict clean (implementer + reviewer independently) · web suite still green
 
 ### 5. Next up
 Phase 1 — Goals engine (`feature/goals-engine`): the data spine (goal model, progress events, CRUD, templates) built Supabase-backed with RLS from day one, full implementer → reviewer → test-writer loop.
+
+---
+
+## 2026-07-18 — Phase 1: Goals engine
+
+### 1. Built
+- **Schema + RLS (architect):** `supabase/migrations/20260718170000_goals_engine.sql` — `goals` + append-only `goal_progress_events`; `occurred_on` is the DEVICE-LOCAL day key (time policy in the data layer); owner-only RLS with event inserts additionally verifying goal ownership; additive-only.
+- **Pure engine** (`mobile/src/lib/`): typed models + row mappers, cadence windows (daily / local Mon–Sun weekly / calendar monthly), `currentStreak` (same-day dedup + graceToday: an unfinished today never breaks a streak), `totalProgress`, `deriveStatus` (progressing = activity in current or previous cadence window).
+- **Templates:** 3 sets ("RM adjusting to home", "New semester", "New year reset") × one starter goal per Life Area, member + general Spiritual flavors spread across sets.
+- **Screens:** Goals tab (grouped by Life Area), new-goal form (metricType/cadence/area pickers, YYYY-MM-DD target date validation, template sets with one-tap "Add all 5" + tap-to-prefill), goal detail (live current/target for the cadence window, streaks, one-tap +1 or amount logging, recent events, inline edit, Alert-confirmed archive/delete). React-query hooks with correct invalidation.
+- **Tests:** 26 engine tests (streak grace/gaps/dedup/month-boundary/DST, per-cadence windows incl. Sunday→prior-week, status boundaries, inclusive sums).
+- **Deps added (architect):** `@tanstack/react-query` (server-state for every Supabase screen from here on), `vitest` (mobile test runner the roadmap's test requirements need).
+
+### 2. Process + verification
+Full loop, first workflow-orchestrated phase: implementer (core) → reviewer **APPROVED** → parallel implementer (screens) + test-writer → reviewer **APPROVED, zero fix rounds**. The reviewer independently re-ran the suite under three timezones (Denver / Auckland / Honolulu) — 26/26 in all. Architect gates re-verified: tsc strict clean, tests green, app boots on the simulator with all Phase 1 code loaded (auth gate correctly in front; no red screen). Merged `feature/goals-engine` → main (`02139d5`), branch deleted.
+- **NOT yet verified live:** the Goals screens against the real DB — blocked on the migration being applied (below) and a signed-in account on the simulator.
+
+### 3. Decisions I made
+- `currentProgress` is derived, never stored — the events table is the single source of truth (roadmap's own principle, enforced at the schema level by simply not having a counter column).
+- Goal list rows show title/cadence/target only (no live fractions) — avoids N event queries on the list; the detail screen owns live numbers; Phase 2's dashboard adds the aggregate view properly.
+- Template "one tap per Life Area" implemented as per-set "Add all 5"; onboarding placement waits for Phase 10's onboarding flow.
+- Streak grace: an empty *today* counts back from yesterday (a day only breaks a streak once it's over) — matches the healthy-engagement principle.
+
+### 4. Needs Weston
+1. **Apply the migration** (60s): Supabase dashboard → SQL editor → paste `supabase/migrations/20260718170000_goals_engine.sql` → Run. (Or explicitly authorize me to connect with the DB password — the permission system declined my attempt, so it's your call.)
+2. Then sign in on the simulator (create your account) and the Goals tab goes fully live.
+3. Still open: Google/Apple credentials, `design-reference/` screenshots (Phase 2 needs them), old app's bundle id, PAT rotation.
+
+### 5. Next up
+Phase 2 — Home dashboard (PMG Weekly Key Indicators layout): featured pinned-goal card, Life Area grid, Today chips, Progressing Goals list — **requires the `design-reference/` screenshots to "match the reference element-for-element."**

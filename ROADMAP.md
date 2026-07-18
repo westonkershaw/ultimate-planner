@@ -65,12 +65,13 @@ Branch: `feature/goals-engine`
 
 The data spine everything else displays.
 
-* [ ] Goal model: `title`, `lifeAreaId`, `metricType` (`currency` | `count` | `streak` | `numeric`), `targetValue`, `currentProgress`, `cadence` (daily/weekly/monthly), `targetDate?` (milestone deadline, "Has Baptismal Date" equivalent), derived `status` (progressing / needs_attention from recent activity)
-* [ ] Progress is stored as progress events (timestamped increments), not a raw counter — streak math, history, and analytics all depend on this
-* [ ] Goal CRUD screens with metricType picker
-* [ ] Goal templates at onboarding + add-goal flow: "RM adjusting to home," "new semester," "new year reset" — one tap adds a starter goal per Life Area
-* [ ] Flexible Spiritual presets: Come Follow Me / scripture study / temple attendance options for members; meditation/mindfulness for everyone else
-* [ ] Tests: streak math across timezones/missed days, progress-event aggregation per cadence
+* [x] Goal model: `title`, `lifeAreaId`, `metricType` (`currency` | `count` | `streak` | `numeric`), `targetValue`, `currentProgress`, `cadence` (daily/weekly/monthly), `targetDate?` (milestone deadline, "Has Baptismal Date" equivalent), derived `status` (progressing / needs_attention from recent activity) — DONE 2026-07-18 (`mobile/src/lib/goals-types.ts` + `goal-engine.ts`; currentProgress derived from events, never stored)
+* [x] Progress is stored as progress events (timestamped increments), not a raw counter — streak math, history, and analytics all depend on this — DONE (`goal_progress_events`, append-only, `occurred_on` = device-local day key)
+* [x] Goal CRUD screens with metricType picker — DONE (Goals tab: grouped list, new-goal form with metric/cadence/area pickers, detail with log-progress/edit/archive/delete)
+* [x] Goal templates at onboarding + add-goal flow: "RM adjusting to home," "new semester," "new year reset" — one tap adds a starter goal per Life Area — DONE in the add-goal flow ("Add all 5" per set); onboarding integration lands with Phase 10's onboarding
+* [x] Flexible Spiritual presets: Come Follow Me / scripture study / temple attendance options for members; meditation/mindfulness for everyone else — DONE (both flavors spread across the three template sets)
+* [x] Tests: streak math across timezones/missed days, progress-event aggregation per cadence — DONE (26 tests; reviewer re-ran green under America/Denver, Pacific/Auckland, Pacific/Honolulu)
+* [ ] RUNTIME GATE (needs Weston): apply `supabase/migrations/20260718170000_goals_engine.sql` to the live project (dashboard SQL editor) — until then the Goals screens hit missing tables
 
 Phase 2 — Home dashboard (PMG Weekly Key Indicators layout)
 
