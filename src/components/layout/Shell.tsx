@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { useUIStore } from '@/store/index';
 import Sidebar from '@/components/layout/Sidebar';
@@ -123,18 +123,18 @@ const Shell = React.memo(function Shell({ children }: ShellProps) {
 
         {/* Scrollable content area */}
         <div className="flex-1 overflow-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeView}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.14 }}
-              className="min-h-full"
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+          {/* Keyed on activeView: React remounts on nav, replaying the enter
+              fade. No exit animation / no `mode="wait"` barrier, so the next view
+              mounts instantly instead of waiting for the old one to animate out. */}
+          <motion.div
+            key={activeView}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.14 }}
+            className="min-h-full"
+          >
+            {children}
+          </motion.div>
         </div>
 
         {/* Mobile bottom nav */}
