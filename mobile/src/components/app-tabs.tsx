@@ -36,6 +36,15 @@ export default function AppTabs() {
           renderingMode="template"
         />
       </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="people">
+        <NativeTabs.Trigger.Label>People</NativeTabs.Trigger.Label>
+        {/* Reusing the explore icon for now — dedicated people SVG icon is a later concern. */}
+        <NativeTabs.Trigger.Icon
+          src={require('@/assets/images/tabIcons/explore.png')}
+          renderingMode="template"
+        />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }
