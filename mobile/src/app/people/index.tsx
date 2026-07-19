@@ -25,6 +25,7 @@ import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { groupFriendsFamilyByRecency, sortDatingGroup, type RecencyBucket } from '@/lib/people-grouping';
 import { usePeople } from '@/lib/people-hooks';
+import { useCategoryFlip } from '@/lib/use-category-flip';
 
 const ACCENT = '#3c87f7';
 
@@ -58,6 +59,7 @@ export default function PeopleScreen() {
   const { data: people, isLoading, isError, error, refetch } = usePeople();
   const [refreshing, setRefreshing] = useState(false);
   const [collapsedBuckets, setCollapsedBuckets] = useState<Set<RecencyBucket>>(new Set());
+  const { requestMove } = useCategoryFlip();
 
   const allPeople = people ?? [];
   const datingPeople = useMemo(() => sortDatingGroup(allPeople, today), [allPeople, today]);
@@ -141,6 +143,7 @@ export default function PeopleScreen() {
                         person={person}
                         today={today}
                         onPress={() => router.push(`/people/${person.id}`)}
+                        onLongPress={() => requestMove(person)}
                       />
                     ))}
                   </View>
@@ -160,6 +163,7 @@ export default function PeopleScreen() {
                       person={person}
                       today={today}
                       onPress={() => router.push(`/people/${person.id}`)}
+                      onLongPress={() => requestMove(person)}
                     />
                   ))}
                 </CollapsibleSection>

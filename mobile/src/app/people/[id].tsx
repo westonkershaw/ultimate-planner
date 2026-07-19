@@ -1,23 +1,25 @@
 /**
- * [id].tsx — basic Person detail screen (Phase 3b). Extended later:
- *   - Phase 3c: category segmented-control flip (friend/family/dating), which
- *     will need to clear/collect relationshipStatus + weddingDate on
- *     transition into/out of 'dating' — see useSetCategory in people-hooks.
+ * [id].tsx — basic Person detail screen (Phase 3b), extended in Phase 3c
+ * with the category segmented control (friend/family/dating). Flip logic
+ * (instant vs. confirm-first) lives in useCategoryFlip, shared with the
+ * list's long-press action sheet — see use-category-flip.ts.
  *   - Phase 3e: address/phone/email/social-link rows + editing.
- * This screen intentionally only covers: identity (name, inline-editable),
- * category + resolved relationship status display, last-contact display,
- * "Log contact", and delete.
+ * This screen covers: identity (name, inline-editable), category flip,
+ * resolved relationship status display, last-contact display, "Log
+ * contact", and delete.
  */
 
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
+import { CategoryPicker } from '@/components/people/pickers';
 import { StatusBadge } from '@/components/people/status-badge';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useCategoryFlip } from '@/lib/use-category-flip';
 import { weddingCountdownDays } from '@/lib/people-grouping';
 import { useDeletePerson, useLogContact, usePeople, useUpdatePerson } from '@/lib/people-hooks';
 import { resolveRelationshipStatus } from '@/lib/relationship-status';
@@ -25,12 +27,6 @@ import { localDayKey, localDaysBetween, startOfLocalDay } from '@/lib/time-polic
 import { formatTargetDate } from '@/components/home/format-target-date';
 
 const ACCENT = '#3c87f7';
-
-const CATEGORY_LABELS: Record<string, string> = {
-  friend: 'Friend',
-  family: 'Family',
-  dating: 'Dating',
-};
 
 /** Local-midnight Date from a 'YYYY-MM-DD' day-key — matches people-grouping.ts's convention. */
 function localDateFromDayKey(dayKey: string): Date {
@@ -57,6 +53,7 @@ export default function PersonDetailScreen() {
   const logContact = useLogContact();
   const updatePerson = useUpdatePerson();
   const deletePerson = useDeletePerson();
+  const { requestFlip, isFlipping } = useCategoryFlip();
 
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState('');
@@ -144,9 +141,6 @@ export default function PersonDetailScreen() {
           <ThemedText type="title" style={styles.name}>
             {person.name}
           </ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
-            {CATEGORY_LABELS[person.category]}
-          </ThemedText>
 
           {person.category === 'dating' && resolved !== null && (
             <View style={styles.statusRow}>
@@ -171,8 +165,20 @@ export default function PersonDetailScreen() {
           </ThemedText>
         </View>
 
-        {/* TODO (Phase 3c): category segmented-control flip (friend/family/dating)
-            goes here, wired through useSetCategory. */}
+        <View style={styles.categorySection}>
+          <View style={styles.categoryHeaderRow}>
+            <ThemedText type="smallBold" themeColor="textSecondary">
+              CATEGORY
+            </ThemedText>
+            {isFlipping && <ActivityIndicator size="small" color={theme.textSecondary} />}
+          </View>
+          <View pointerEvents={isFlipping ? 'none' : 'auto'} style={isFlipping && styles.pressed}>
+            <CategoryPicker
+              value={person.category}
+              onChange={(next) => requestFlip(person, next)}
+            />
+          </View>
+        </View>
 
         <ThemedView type="backgroundElement" style={styles.actionSection}>
           <Pressable
@@ -303,6 +309,14 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.five,
     paddingHorizontal: Spacing.two,
     paddingVertical: Spacing.half,
+  },
+  categorySection: {
+    gap: Spacing.two,
+  },
+  categoryHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.two,
   },
   actionSection: {
     borderRadius: Spacing.three,

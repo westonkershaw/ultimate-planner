@@ -27,9 +27,22 @@ function lastContactSubtitle(lastContactAt: string | null, today: Date): string 
   return `Last contact ${days}d ago`;
 }
 
-export function PersonRow({ person, today, onPress }: { person: Person; today: Date; onPress: () => void }) {
+export function PersonRow({
+  person,
+  today,
+  onPress,
+  onLongPress,
+}: {
+  person: Person;
+  today: Date;
+  onPress: () => void;
+  onLongPress?: () => void;
+}) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
+    <Pressable
+      onPress={onPress}
+      onLongPress={onLongPress}
+      style={({ pressed }) => pressed && styles.pressed}>
       <ThemedView type="backgroundElement" style={styles.row}>
         <Avatar name={person.name} photoUrl={person.photoUrl} size={36} />
         <View style={styles.textBlock}>
