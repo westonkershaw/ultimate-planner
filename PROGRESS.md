@@ -150,3 +150,34 @@ Full loop, first workflow-orchestrated phase: implementer (core) → reviewer **
 
 ### 5. Next up
 Phase 2 — Home dashboard (PMG Weekly Key Indicators layout): featured pinned-goal card, Life Area grid, Today chips, Progressing Goals list — **requires the `design-reference/` screenshots to "match the reference element-for-element."**
+
+---
+
+## 2026-07-18 — Phase 2: Home dashboard
+
+### 1. Built
+- **Dashboard engine** (`mobile/src/lib/dashboard-engine.ts`, pure): Today-chip math per cadence (daily count, weekly linear pace — Monday `ceil(target/7)` through Sunday `= target`, on-pace vs behind with exact due-today; monthly month-fraction; streak = did-it-today), featured-goal fallback chain (pinned → nearest upcoming targetDate → past → most recent), per-area primary goal, Progressing-Goals sort, last-logged recency.
+- **Pinning**: `pinned_at` on goals (new additive migration `20260718190000_goal_pinning.sql`), at most one non-archived pin per user enforced by a partial unique index; `setPinned` clear-then-set repo fn + hook.
+- **Original icon set** (`react-native-svg`): five two-tone Life Area icons (banknote/coin, open book + light rays, head + spark, two figures, dumbbell motif) + target-flag, streak-flame, people extras — original geometry, no copied assets — plus a `LifeAreaColors` dark-theme palette.
+- **Home screen rebuilt** (`src/app/index.tsx` + `src/components/home/*`): THIS WEEK'S GOALS header + VIEW ALL, featured card (big fraction, Today chip with one-tap +, long-press pin/unpin), 2-col area grid with status dots + "Set a goal +" empties, swipeable monthly period card, outlined WEEKLY PLANNING button (Phase 4 placeholder), PROGRESSING GOALS list (Next-block line deferred to Phase 4), + FAB. One recent-events query (no N+1), pull-to-refresh, loading/error states.
+- **Tests**: 74 total green (48 new this phase) — chip math incl. Sunday/Feb-29 edges, fallback order incl. cross-area pin-leak guard, sort stability.
+
+### 2. Process + verification
+Workflow-orchestrated: parallel(engine, icons) → reviewer **APPROVED** → parallel(home screen, tests) → reviewer **APPROVED** — zero fix rounds across both waves (session-limit interruption mid-run; resumed from the workflow journal with the approved core cached). Reviewers ran tsc + vitest themselves; native app rebuilt with react-native-svg and relaunched on the simulator. Architect gates re-run at merge time.
+- **NOT verified live**: dashboard with real data — still gated on the two un-applied migrations + a signed-in account.
+
+### 3. Decisions I made
+- Built from the roadmap's textual spec — `design-reference/` was still absent at phase start (checkbox added for an optional fidelity pass when screenshots land).
+- Pinning lives server-side (cross-device) rather than AsyncStorage; integrity enforced by schema, not just client discipline.
+- One-tap chip "+" only for count/streak metrics; currency/numeric route to the detail screen (an amount is required — silent +1 would corrupt data).
+- Weekly pace is linear (`ceil(target × elapsed-days / 7)`) — matches PMG's on-pace/behind semantics without configurable pacing complexity.
+- WEEKLY PLANNING button + FAB "add block" ship as explicit Phase 4 placeholders rather than hidden — layout matches the target design now.
+
+### 4. Needs Weston
+1. **Apply BOTH migrations** (Supabase → SQL editor): `20260718170000_goals_engine.sql`, then `20260718190000_goal_pinning.sql`.
+2. Sign in on the simulator → the full dashboard lights up.
+3. Optional: drop the PMG reference screenshots in `design-reference/` for a fidelity pass.
+4. Still open: Google/Apple credentials, old app's bundle id, PAT rotation.
+
+### 5. Next up
+Phase 3 — Dating section, category flip, map colors, contact records (five sub-branches in order: people-categories → dating-section → category-flip → map-status-colors → contact-records). Requires the People data model — the first genuinely new domain since the rebuild began.

@@ -78,16 +78,18 @@ Phase 2 — Home dashboard (PMG Weekly Key Indicators layout)
 Branch: `feature/home-dashboard`
 Match the PMG Home screenshot element-for-element, for goals:
 
-* [ ] Header "THIS WEEK'S GOALS" + VIEW ALL -> Goals screen
-* [ ] Featured full-width card (PMG's "New People 3/7"): pinned goal (long-press to pin; fallback nearest targetDate, then most recent) with big fraction + right-side "Today" chip with one-tap + that logs a progress event (PMG's "Today's Goal 1/1 +")
-* [ ] 2-column card grid, one card per remaining Life Area: area icon in area color, primary goal fraction, status dot; areas with no goal show "Set a goal +" (grid stays stable, nudges balance)
-* [ ] Full-width period card: monthly goals with a month-named chip ("July Goal 0/2"), swipeable if several (PMG's "June Goal")
-* [ ] Outlined full-width WEEKLY PLANNING button -> guided session (Phase 4)
-* [ ] "PROGRESSING GOALS" list (PMG's Progressing People), rows field-for-field: status star/dot <- green star; goal title <- name; "Target: Oct 3, 2026" <- "Baptism: Jul 2, 2023"; "Progress logged 2 days ago" <- "Taught 2 days ago"; "Next block: Tue 4:30 PM" (next linked calendar block) <- "Next Event"
-* [ ] Floating + FAB: log progress / add goal / add block
-* [ ] "Today" chip cadence math: daily = today's count; weekly = pace (on pace -> checkmark, behind -> what's due today); monthly = month progress
-* [ ] Custom Life Area card icons: draw ORIGINAL two-tone outline SVG icons in the PMG style (simple line figures, primary stroke + single accent color, matching the app's dark theme) via react-native-svg — one per Life Area + goal-type extras (people, target/flag for targetDate goals, streak flame). Do NOT copy PMG's actual icon assets (copyrighted); reference the screenshots for style only. Interim: @expo/vector-icons.
-* [ ] Tests: chip math per cadence, featured-card fallback order, Progressing Goals sort (nearest targetDate, then recency)
+* [x] Header "THIS WEEK'S GOALS" + VIEW ALL -> Goals screen — DONE 2026-07-18
+* [x] Featured full-width card (PMG's "New People 3/7"): pinned goal (long-press to pin; fallback nearest targetDate, then most recent) with big fraction + right-side "Today" chip with one-tap + that logs a progress event (PMG's "Today's Goal 1/1 +") — DONE (pin persisted server-side via `pinned_at` + one-pinned-per-user partial unique index; one-tap + for count/streak, currency/numeric route to detail)
+* [x] 2-column card grid, one card per remaining Life Area: area icon in area color, primary goal fraction, status dot; areas with no goal show "Set a goal +" (grid stays stable, nudges balance) — DONE
+* [x] Full-width period card: monthly goals with a month-named chip ("July Goal 0/2"), swipeable if several (PMG's "June Goal") — DONE (paging ScrollView; hidden when no monthly goals)
+* [x] Outlined full-width WEEKLY PLANNING button -> guided session (Phase 4) — DONE as placeholder (button present; taps explain the session arrives in Phase 4)
+* [x] "PROGRESSING GOALS" list (PMG's Progressing People), rows field-for-field: status star/dot; goal title; "Target: Oct 3, 2026"; "Progress logged 2 days ago" — DONE; "Next block" line DEFERRED to Phase 4 (calendar blocks don't exist yet; code comment marks the spot)
+* [x] Floating + FAB: log progress / add goal — DONE; "add block" action DEFERRED to Phase 4
+* [x] "Today" chip cadence math: daily = today's count; weekly = pace (on pace -> checkmark, behind -> what's due today); monthly = month progress — DONE (`dashboard-engine.ts`, linear weekly pace, Monday=ceil(target/7) … Sunday=target)
+* [x] Custom Life Area card icons: ORIGINAL two-tone outline SVG icons via react-native-svg — one per Life Area + extras (people, target/flag, streak flame) — DONE (original geometry, primary stroke + accent detail; no interim vector-icons needed) + `LifeAreaColors` palette in theme.ts
+* [x] Tests: chip math per cadence, featured-card fallback order, Progressing Goals sort (nearest targetDate, then recency) — DONE (74 tests total green; incl. Sunday week-boundary + Feb-29 edges)
+* [ ] RUNTIME GATE (needs Weston): apply BOTH migrations — `20260718170000_goals_engine.sql` + `20260718190000_goal_pinning.sql` — then sign in on the simulator to see the dashboard live
+* [ ] FIDELITY PASS (optional, needs Weston): `design-reference/` screenshots never landed; built element-for-element from this file's textual spec — drop the PMG screenshots in and I'll do a visual-fidelity pass
 
 Phase 3 — Dating section, category flip, map colors, contact records
 

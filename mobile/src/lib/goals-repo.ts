@@ -156,6 +156,64 @@ export async function listEvents(
 }
 
 /**
+ * All the signed-in user's progress events with occurred_on >= sinceDayKey,
+ * across every goal, in a single query (no per-goal N+1). Ascending by
+ * occurred_on so callers can scan for each goal's last-logged day in order.
+ * RLS scopes the result to the caller's own rows.
+ */
+export async function listRecentEventsSince(sinceDayKey: string): Promise<Result<ProgressEvent[]>> {
+  const { data, error } = await supabase
+    .from('goal_progress_events')
+    .select('*')
+    .gte('occurred_on', sinceDayKey)
+    .order('occurred_on', { ascending: true });
+
+  if (error) {
+    return { data: null, error: error.message };
+  }
+  return { data: (data as ProgressEventRow[]).map(eventFromRow), error: null };
+}
+
+/**
+ * Pins `goalId` as the user's one Home-featured goal, unpinning any other
+ * pinned goal first. Two updates (clear-then-set) so the partial unique index
+ * on goals(user_id) WHERE pinned_at IS NOT NULL never trips. Pass null to
+ * unpin without pinning a new goal.
+ */
+export async function setPinned(goalId: string | null): Promise<Result<Goal>> {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData.user) {
+    return { data: null, error: userError?.message ?? 'Not authenticated' };
+  }
+
+  const { error: clearError } = await supabase
+    .from('goals')
+    .update({ pinned_at: null })
+    .eq('user_id', userData.user.id)
+    .not('pinned_at', 'is', null);
+
+  if (clearError) {
+    return { data: null, error: clearError.message };
+  }
+
+  if (goalId === null) {
+    return { data: null, error: null };
+  }
+
+  const { data, error } = await supabase
+    .from('goals')
+    .update({ pinned_at: new Date().toISOString() })
+    .eq('id', goalId)
+    .select('*')
+    .single();
+
+  if (error) {
+    return { data: null, error: error.message };
+  }
+  return { data: goalFromRow(data as GoalRow), error: null };
+}
+
+/**
  * Appends a progress event dated to the device-local "today" (never UTC).
  * user_id comes from the auth session, not the caller, so events can't be
  * grafted onto another account.

@@ -7,6 +7,8 @@ import '@/global.css';
 
 import { Platform } from 'react-native';
 
+import type { LifeArea } from '@/lib/goals-types';
+
 export const Colors = {
   light: {
     text: '#000000',
@@ -63,3 +65,17 @@ export const Spacing = {
 
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;
+
+/**
+ * Five distinct hues, one per LifeArea, picked to read clearly against the
+ * app's dark surfaces (~#151718 card/background tone): each is bright/light
+ * enough for >4.5:1 contrast there while staying visually separable from the
+ * existing `#3c87f7` (goals) accent blue.
+ */
+export const LifeAreaColors: Record<LifeArea, string> = {
+  finance: '#34d399', // green
+  spiritual: '#a78bfa', // violet
+  mental: '#38bdf8', // sky blue
+  social: '#fbbf24', // amber
+  physical: '#fb7185', // red/rose
+};

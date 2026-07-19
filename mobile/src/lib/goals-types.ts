@@ -33,6 +33,7 @@ export interface Goal {
   cadence: Cadence;
   targetDate: string | null; // YYYY-MM-DD, nullable milestone deadline
   archivedAt: string | null; // ISO timestamp; null = active
+  pinnedAt: string | null; // ISO timestamp; at most one non-archived pinned goal per user
   createdAt: string;
   updatedAt: string;
 }
@@ -60,6 +61,7 @@ export interface GoalRow {
   cadence: Cadence;
   target_date: string | null;
   archived_at: string | null;
+  pinned_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -88,6 +90,7 @@ export function goalFromRow(row: GoalRow): Goal {
     cadence: row.cadence,
     targetDate: row.target_date,
     archivedAt: row.archived_at,
+    pinnedAt: row.pinned_at,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
