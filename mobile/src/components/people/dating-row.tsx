@@ -22,10 +22,12 @@ export function DatingRow({
   person,
   today,
   onPress,
+  onLongPress,
 }: {
   person: Person;
   today: Date;
   onPress: () => void;
+  onLongPress?: () => void;
 }) {
   const resolved = resolveRelationshipStatus(person.relationshipStatus, person.weddingDate, today);
   const showWeddingDate = resolved !== null && WEDDING_DATE_STATUSES.has(resolved) && person.weddingDate !== null;
@@ -37,7 +39,10 @@ export function DatingRow({
   const showCountdown = countdown !== null && countdown > 0;
 
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
+    <Pressable
+      onPress={onPress}
+      onLongPress={onLongPress}
+      style={({ pressed }) => pressed && styles.pressed}>
       <ThemedView type="backgroundElement" style={styles.row}>
         <StatusBadge resolved={resolved} showLabel={false} />
         <View style={styles.textBlock}>
