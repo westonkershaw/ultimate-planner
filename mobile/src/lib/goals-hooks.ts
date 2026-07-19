@@ -12,7 +12,9 @@ import {
   deleteGoal,
   listEvents,
   listGoals,
+  listRecentEventsSince,
   logProgress,
+  setPinned,
   updateGoal,
   type CreateGoalInput,
   type UpdateGoalPatch,
@@ -20,6 +22,7 @@ import {
 
 export const goalsQueryKey = ['goals'] as const;
 export const goalEventsQueryKey = (goalId: string) => ['goal-events', goalId] as const;
+export const recentEventsQueryKey = (sinceDayKey: string) => ['recent-events', sinceDayKey] as const;
 
 export function useGoals() {
   return useQuery({
@@ -101,6 +104,33 @@ export function useDeleteGoal() {
   });
 }
 
+/** All the user's progress events with occurred_on >= sinceDayKey, across every goal. */
+export function useRecentEvents(sinceDayKey: string) {
+  return useQuery({
+    queryKey: recentEventsQueryKey(sinceDayKey),
+    queryFn: async () => {
+      const { data, error } = await listRecentEventsSince(sinceDayKey);
+      if (error) throw new Error(error);
+      return data ?? [];
+    },
+  });
+}
+
+/** Pins a goal as the Home-featured goal (or unpins when goalId is null). */
+export function useSetPinned() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (goalId: string | null) => {
+      const { data, error } = await setPinned(goalId);
+      if (error) throw new Error(error);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: goalsQueryKey });
+    },
+  });
+}
+
 export function useLogProgress() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -120,6 +150,9 @@ export function useLogProgress() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: goalEventsQueryKey(variables.goalId) });
       queryClient.invalidateQueries({ queryKey: goalsQueryKey });
+      // Partial key match: invalidates every ['recent-events', sinceDayKey] variant,
+      // since Home's sinceDayKey isn't known here.
+      queryClient.invalidateQueries({ queryKey: ['recent-events'] });
     },
   });
 }

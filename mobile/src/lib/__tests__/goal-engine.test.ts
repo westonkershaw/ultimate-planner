@@ -33,6 +33,7 @@ function makeGoal(overrides: Partial<Goal> = {}): Goal {
     cadence: 'daily' as Cadence,
     targetDate: null,
     archivedAt: null,
+    pinnedAt: null,
     createdAt: '2026-01-01T00:00:00.000Z',
     updatedAt: '2026-01-01T00:00:00.000Z',
     ...overrides,
