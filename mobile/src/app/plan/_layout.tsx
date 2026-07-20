@@ -16,6 +16,7 @@ export default function PlanLayout() {
       <Stack.Screen name="today" options={{ title: "Today's Plan" }} />
       <Stack.Screen name="new-block" options={{ title: 'New Block' }} />
       <Stack.Screen name="weekly-wizard" options={{ title: 'Weekly Planning' }} />
+      <Stack.Screen name="tonight" options={{ title: 'Tonight' }} />
     </Stack>
   );
 }
