@@ -16,6 +16,7 @@ export default function PeopleLayout() {
       <Stack.Screen name="index" options={{ title: 'People' }} />
       <Stack.Screen name="new" options={{ title: 'New person' }} />
       <Stack.Screen name="[id]" options={{ title: 'Person' }} />
+      <Stack.Screen name="map" options={{ title: 'Map' }} />
     </Stack>
   );
 }
