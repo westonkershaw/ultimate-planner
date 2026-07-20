@@ -6,25 +6,46 @@
  *   - Phase 3e: address/phone/email/social-link rows + editing.
  * This screen covers: identity (name, inline-editable), category flip,
  * resolved relationship status display, last-contact display, "Log
- * contact", and delete.
+ * contact", contact record rows (address/phone/email/social links), and
+ * delete.
  */
 
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
+import { ContactRow } from '@/components/people/contact-row';
 import { CategoryPicker } from '@/components/people/pickers';
+import { QuickContactActions } from '@/components/people/quick-contact-actions';
+import { SocialLinksSection } from '@/components/people/social-links-section';
 import { StatusBadge } from '@/components/people/status-badge';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { geocodeAddress } from '@/lib/geocode';
 import { useCategoryFlip } from '@/lib/use-category-flip';
 import { weddingCountdownDays } from '@/lib/people-grouping';
+import type { SocialLink } from '@/lib/people-types';
 import { useDeletePerson, useLogContact, usePeople, useUpdatePerson } from '@/lib/people-hooks';
 import { resolveRelationshipStatus } from '@/lib/relationship-status';
 import { localDayKey, localDaysBetween, startOfLocalDay } from '@/lib/time-policy';
 import { formatTargetDate } from '@/components/home/format-target-date';
+
+/**
+ * Soft format nudges for ContactRow — advisory only, never block saving.
+ * International formats vary too widely for a hard rule here.
+ */
+function validateEmail(value: string): string | null {
+  if (!value) return null;
+  return /@.+/.test(value) ? null : 'Doesn’t look like an email.';
+}
+
+function validatePhone(value: string): string | null {
+  if (!value) return null;
+  const digitCount = (value.match(/\d/g) ?? []).length;
+  return digitCount >= 3 ? null : 'Doesn’t look like a phone number.';
+}
 
 const ACCENT = '#3c87f7';
 
@@ -115,6 +136,43 @@ export default function PersonDetailScreen() {
     }
   }
 
+  /**
+   * Saves the address text through the normal update-person mutation and
+   * resolves as soon as THAT completes — the caller (ContactRow) exits edit
+   * mode right away, so the save feels instant. Geocoding runs as a detached
+   * follow-up: still properly awaited (not fire-and-forget-unawaited) inside
+   * its own async function, just not part of the promise this function
+   * returns, so it can never delay or block the perceived save. A null
+   * result (unresolvable address, network error, etc.) is silently
+   * ignored — no error shown, no existing lat/lng cleared.
+   */
+  async function handleSaveAddress(next: string) {
+    const personId = person!.id;
+    await updatePerson.mutateAsync({ id: personId, patch: { address: next || null } });
+
+    (async () => {
+      const geocoded = await geocodeAddress(next);
+      if (geocoded !== null) {
+        await updatePerson.mutateAsync({
+          id: personId,
+          patch: { latitude: geocoded.latitude, longitude: geocoded.longitude },
+        });
+      }
+    })();
+  }
+
+  async function handleSavePhone(next: string) {
+    await updatePerson.mutateAsync({ id: person!.id, patch: { phone: next || null } });
+  }
+
+  async function handleSaveEmail(next: string) {
+    await updatePerson.mutateAsync({ id: person!.id, patch: { email: next || null } });
+  }
+
+  async function handleSaveSocialLinks(next: SocialLink[]) {
+    await updatePerson.mutateAsync({ id: person!.id, patch: { socialLinks: next } });
+  }
+
   function handleDelete() {
     Alert.alert('Delete person?', `This permanently deletes "${person!.name}".`, [
       { text: 'Cancel', style: 'cancel' },
@@ -198,7 +256,47 @@ export default function PersonDetailScreen() {
           {logError && <ThemedText style={styles.errorText}>{logError}</ThemedText>}
         </ThemedView>
 
-        {/* TODO (Phase 3e): address/phone/email/social-link rows go here. */}
+        <ThemedView type="backgroundElement" style={styles.contactSection}>
+          <ThemedText type="smallBold" themeColor="textSecondary">
+            CONTACT
+          </ThemedText>
+
+          {person.phone && (
+            <QuickContactActions phone={person.phone} onLogContact={handleLogContact} />
+          )}
+
+          <ContactRow
+            label="ADDRESS"
+            value={person.address ?? ''}
+            placeholder="Address"
+            onSave={handleSaveAddress}
+            saving={updatePerson.isPending}
+          />
+          <ContactRow
+            label="PHONE"
+            value={person.phone ?? ''}
+            placeholder="Phone"
+            keyboardType="phone-pad"
+            validate={validatePhone}
+            onSave={handleSavePhone}
+            saving={updatePerson.isPending}
+          />
+          <ContactRow
+            label="EMAIL"
+            value={person.email ?? ''}
+            placeholder="Email"
+            keyboardType="email-address"
+            validate={validateEmail}
+            onSave={handleSaveEmail}
+            saving={updatePerson.isPending}
+          />
+
+          <SocialLinksSection
+            links={person.socialLinks}
+            onChange={handleSaveSocialLinks}
+            saving={updatePerson.isPending}
+          />
+        </ThemedView>
 
         <ThemedView type="backgroundElement" style={styles.editSection}>
           <View style={styles.editHeaderRow}>
@@ -317,6 +415,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.two,
+  },
+  contactSection: {
+    borderRadius: Spacing.three,
+    padding: Spacing.three,
+    gap: Spacing.three,
   },
   actionSection: {
     borderRadius: Spacing.three,
