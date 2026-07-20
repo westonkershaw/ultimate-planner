@@ -1,10 +1,11 @@
 /**
  * weekly-planning-button.tsx — full-width outlined button that opens the
- * guided weekly planning session. The session itself is Phase 4 work; for
- * now this is a placeholder Alert per the Phase 2 scope.
+ * guided weekly planning wizard (Roadmap Phase 4b), replacing the earlier
+ * Phase 2 placeholder Alert.
  */
 
-import { Alert, Pressable, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
@@ -12,8 +13,10 @@ import { Spacing } from '@/constants/theme';
 const ACCENT = '#3c87f7';
 
 export function WeeklyPlanningButton() {
+  const router = useRouter();
+
   function handlePress() {
-    Alert.alert('Weekly planning', 'The guided weekly planning session arrives in Phase 4.');
+    router.push('/plan/weekly-wizard');
   }
 
   return (
