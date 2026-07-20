@@ -91,14 +91,24 @@ export default function PeopleScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Pressable
-              onPress={() => router.push('/people/new')}
-              hitSlop={12}
-              style={({ pressed }) => pressed && styles.pressed}>
-              <ThemedText type="linkPrimary" style={styles.headerAdd}>
-                +
-              </ThemedText>
-            </Pressable>
+            <View style={styles.headerActions}>
+              <Pressable
+                onPress={() => router.push('/people/map')}
+                hitSlop={12}
+                style={({ pressed }) => pressed && styles.pressed}>
+                <ThemedText type="linkPrimary" style={styles.headerMap}>
+                  Map
+                </ThemedText>
+              </Pressable>
+              <Pressable
+                onPress={() => router.push('/people/new')}
+                hitSlop={12}
+                style={({ pressed }) => pressed && styles.pressed}>
+                <ThemedText type="linkPrimary" style={styles.headerAdd}>
+                  +
+                </ThemedText>
+              </Pressable>
+            </View>
           ),
         }}
       />
@@ -231,5 +241,13 @@ const styles = StyleSheet.create({
   headerAdd: {
     fontSize: 24,
     lineHeight: 28,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+  },
+  headerMap: {
+    fontSize: 16,
   },
 });
