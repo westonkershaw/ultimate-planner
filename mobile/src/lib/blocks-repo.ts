@@ -25,6 +25,7 @@ export interface CreateBlockInput {
   goalId?: string | null;
   personId?: string | null;
   notes?: string | null;
+  googleCalendarEventId?: string | null;
 }
 
 export interface UpdateBlockPatch {
@@ -35,6 +36,7 @@ export interface UpdateBlockPatch {
   goalId?: string | null;
   personId?: string | null;
   notes?: string | null;
+  googleCalendarEventId?: string | null;
 }
 
 /** Blocks with scheduled_on in [fromDayKey, toDayKey] inclusive, ascending. RLS-scoped. */
@@ -72,6 +74,7 @@ export async function createBlock(input: CreateBlockInput): Promise<Result<Block
       goal_id: input.goalId ?? null,
       person_id: input.personId ?? null,
       notes: input.notes ?? null,
+      google_calendar_event_id: input.googleCalendarEventId ?? null,
     })
     .select('*')
     .single();
@@ -91,6 +94,7 @@ export async function updateBlock(id: string, patch: UpdateBlockPatch): Promise<
   if (patch.goalId !== undefined) row.goal_id = patch.goalId;
   if (patch.personId !== undefined) row.person_id = patch.personId;
   if (patch.notes !== undefined) row.notes = patch.notes;
+  if (patch.googleCalendarEventId !== undefined) row.google_calendar_event_id = patch.googleCalendarEventId;
 
   const { data, error } = await supabase
     .from('blocks')

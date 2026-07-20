@@ -32,7 +32,15 @@ export interface GCalEvent {
  * shape identically. Declared only — not implemented in this file.
  */
 export interface GoogleCalendarClient {
-  listEvents(params: { updatedMin?: string }): Promise<GCalEvent[]>;
+  /**
+   * timeMin/timeMax bound the fetch to events whose occurrence overlaps that
+   * window (Google's own `events.list` semantics) — pass the same
+   * fromDayKey/toDayKey window the caller already used for its local blocks
+   * query so remote and local fetches cover identical ranges. updatedMin
+   * additionally narrows to events modified since that instant; independent
+   * of timeMin/timeMax.
+   */
+  listEvents(params: { updatedMin?: string; timeMin?: string; timeMax?: string }): Promise<GCalEvent[]>;
   createEvent(input: {
     summary: string;
     description?: string;

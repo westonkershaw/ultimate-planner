@@ -20,6 +20,8 @@ import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import type { Block } from '@/lib/block-types';
 import { useCreateBlock, useDeleteBlock } from '@/lib/blocks-hooks';
+import { getGoogleAccessToken } from '@/lib/gcal-auth';
+import { createGoogleCalendarClient } from '@/lib/gcal-client';
 import type { Goal } from '@/lib/goals-types';
 import type { Person } from '@/lib/people-types';
 
@@ -124,6 +126,21 @@ export function ScheduleBlocksStep({
   async function handleRemove(id: string) {
     setRemovingId(id);
     try {
+      const googleCalendarEventId = scheduled.find((b) => b.id === id)?.googleCalendarEventId ?? null;
+      if (googleCalendarEventId) {
+        // Best-effort remote cleanup: never let a Google Calendar failure
+        // block or fail the local delete the user asked for.
+        try {
+          const accessToken = await getGoogleAccessToken();
+          if (accessToken) {
+            await createGoogleCalendarClient(accessToken).deleteEvent(googleCalendarEventId);
+          }
+        } catch {
+          // Remote event left behind; a future sync pass can't clean it up
+          // by itself once the local block is gone, but that's an accepted
+          // gap for a best-effort cleanup, not something to surface here.
+        }
+      }
       await deleteBlock.mutateAsync(id);
       onRemoved(id);
     } catch {

@@ -4,6 +4,7 @@ import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ExternalLink } from '@/components/external-link';
+import { GoogleCalendarSettings } from '@/components/settings/google-calendar-settings';
 import { NightlyRitualSettings } from '@/components/settings/nightly-ritual-settings';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -63,6 +64,8 @@ export default function TabTwoScreen() {
 
         <ThemedView style={styles.sectionsWrapper}>
           <NightlyRitualSettings />
+
+          <GoogleCalendarSettings />
 
           <Collapsible title="File-based routing">
             <ThemedText type="small">
