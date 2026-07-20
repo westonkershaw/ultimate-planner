@@ -97,30 +97,31 @@ Branches: `feature/people-categories`, `feature/dating-section`, `feature/catego
 
 3a. Data model — `category: 'friend' | 'family' | 'dating'` (migrate existing people to `friend`); `relationshipStatus?: 'past'|'interested'|'dating'|'engaged'|'newlywed'|'married'`; `weddingDate?`; contact fields `address?`, `phone?`, `email?`, `socialLinks?: {platform, url}[]`.
 
-* [ ] Status transitions are DERIVED at render time by a pure function `resolveRelationshipStatus(stored, weddingDate, today)`: engaged -> newlywed when today >= weddingDate; newlywed -> married when today >= weddingDate + 1 year. No background jobs.
-* [ ] Flipping out of `dating` retains status + weddingDate hidden; flipping back restores. Clearing is a separate explicit action.
-* [ ] Tests: wedding-day boundary, 1-year boundary, Feb 29 weddings, cleared weddingDate, flip round-trip
+* [x] Status transitions are DERIVED at render time by a pure function `resolveRelationshipStatus(stored, weddingDate, today)`: engaged -> newlywed when today >= weddingDate; newlywed -> married when today >= weddingDate + 1 year. No background jobs. — DONE 2026-07-19 (`mobile/src/lib/relationship-status.ts`; also `firstAnniversaryKey` handles Feb-29 weddings by rolling to Mar-1 the following non-leap year)
+* [x] Flipping out of `dating` retains status + weddingDate hidden; flipping back restores. Clearing is a separate explicit action. — DONE (`setCategory` touches only `category`; `use-category-flip.ts`'s Keep-hidden vs Clear confirm, Keep is the safe default)
+* [x] Tests: wedding-day boundary, 1-year boundary, Feb 29 weddings, cleared weddingDate, flip round-trip — DONE (relationship-status + category-flip test suites)
 
 3b. Dating section UI — restructure the People tab to match the reference: collapsible groups In Touch / Warming Up / Out of Touch (derived from last-contact recency; thresholds configurable, e.g. <2wk / 2-6wk / 6wk+) plus the new Dating group:
 
-* [ ] grey dot = past relationship; yellow = interested; green = actively dating; hollow light-blue star = engaged, wedding date shown next to name + countdown chip; filled light-blue dot = "Married" with celebratory accent for exactly 1 year; dark-blue dot = married 1yr+
-* [ ] Sort: married -> newlywed -> engaged -> dating -> interested -> past. Engaged requires a weddingDate picker.
+* [x] grey dot = past relationship; yellow = interested; green = actively dating; hollow light-blue star = engaged, wedding date shown next to name + countdown chip; filled light-blue dot = "Married" with celebratory accent for exactly 1 year; dark-blue dot = married 1yr+ — DONE (`status-visual.ts`; recency thresholds 14d/42d in `people-grouping.ts`)
+* [x] Sort: married -> newlywed -> engaged -> dating -> interested -> past. Engaged requires a weddingDate picker. — DONE (`sortDatingGroup`; new-person form requires weddingDate for engaged)
 
 3c. Category flip — from detail screen (segmented control), list row long-press, and map pin callout:
 
-* [ ] Instant, except leaving `dating` with a status set -> one-line confirm "Keep dating history hidden, or clear it?" (Keep default)
+* [x] Instant, except leaving `dating` with a status set -> one-line confirm "Keep dating history hidden, or clear it?" (Keep default) — DONE on the detail screen and list long-press via a single shared `use-category-flip.ts` handler. **Not wired into the map pin callout** (3d) — see the note below; the callout has no flip action yet.
 
 3d. Map status colors —
 
-* [ ] Dating pins use the same dot/star palette as 3b; friends/family pins keep In Touch / Warming Up / Out of Touch colors
-* [ ] Pin callout: photo, name, status, last contact, call / text / log contact / Move to...
-* [ ] Layers button filters Dating / Friends / Family pin sets
+* [x] Dating pins use the same dot/star palette as 3b; friends/family pins keep In Touch / Warming Up / Out of Touch colors — DONE (`map-pins.ts` delegates to `statusVisual`/`StatusColors` directly, so the map and list can never drift)
+* [~] Pin callout: photo, name, status, last contact, call / text / log contact / Move to... — PARTIAL: photo, name, status, call, text, log contact, and tap-through to detail are DONE; **last-contact line and the "Move to..." flip action are not in the callout** (only call/text/log-contact made it in; a quick follow-up could add both by reusing `use-category-flip.ts`'s `requestMove` and a days-since-`last_contact_at` line, but it was not done this phase)
+* [x] Layers button filters Dating / Friends / Family pin sets — DONE (`MapLayerPicker`, `pinsForLayer`)
 
 3e. Contact records — on every person's detail screen (all optional, empty rows hidden):
 
-* [ ] Address geocodes on save -> drops/updates map pin
-* [ ] Phone -> call + text quick actions (tel:/sms:), each offering to log a contact (updates last-contact tracking)
-* [ ] Email; social links as tappable platform icons
+* [x] Address geocodes on save -> drops/updates map pin — DONE (`geocode.ts` wraps `expo-location`, never throws, silently no-ops on a failed lookup; closes the loop with the 3d map)
+* [x] Phone -> call + text quick actions (tel:/sms:), each offering to log a contact (updates last-contact tracking) — DONE (`quick-contact-actions.tsx`)
+* [x] Email; social links as tappable platform icons — DONE (`contact-row.tsx`, `social-links-section.tsx` + `social-icon.ts` SF Symbol lookup with a text fallback)
+* [ ] RUNTIME GATE (needs Weston): apply the `people.sql` migration (already listed under Phase 1's runtime gate, same batch) — until then the People tab and map hit missing tables
 
 Phase 4 — Planning rituals
 

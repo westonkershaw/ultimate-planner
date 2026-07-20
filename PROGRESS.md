@@ -181,3 +181,47 @@ Workflow-orchestrated: parallel(engine, icons) → reviewer **APPROVED** → par
 
 ### 5. Next up
 Phase 3 — Dating section, category flip, map colors, contact records (five sub-branches in order: people-categories → dating-section → category-flip → map-status-colors → contact-records). Requires the People data model — the first genuinely new domain since the rebuild began.
+
+---
+
+## 2026-07-19 — Phase 3: Dating section, category flip, map colors, contact records
+
+### 1. Built
+Five sub-branches, each its own implementer → test-writer → code-reviewer loop, merged to `main` in order:
+
+- **3a — People data model.** Greenfield `people` table (category, relationship status, wedding date, contact fields, last-contact, lat/lng, birthday), owner-only RLS. Pure `resolveRelationshipStatus`: engaged → newlywed at the wedding date, newlywed → married at the first anniversary, entirely in local time, with a Feb-29 → Mar-1 rule for leap-day weddings. `setCategory` touches only `category` so status/wedding survive a category change.
+- **3b — People tab + dating section.** Collapsible In Touch / Warming Up / Out of Touch groups (14d / 42d thresholds) for friends and family; a Dating section sorted married → newlywed → engaged → dating → interested → past, with the dot/hollow-star/celebratory visual language from the spec. New-person form, basic detail screen.
+- **3c — Category flip.** One shared handler (`use-category-flip.ts`) powers both the detail screen's segmented control and a list-row long-press. Leaving `dating` with a status set prompts Keep-hidden (default, preserves status + wedding) vs Clear vs Cancel; every other flip is instant.
+- **3d — Map with status-colored pins.** `react-native-maps` (Apple Maps, `PROVIDER_DEFAULT` — no Google, no location permission requested, this map shows people not the user). Pin colors are never a second source of truth — `map-pins.ts` delegates straight to the same `statusVisual`/recency-bucket logic the People list uses. Layer filter (All/Dating/Friends/Family), callout with call/text/log-contact actions and tap-through to detail.
+- **3e — Contact records.** Address/phone/email as inline-editable rows on the detail screen, hidden when empty. Saving an address kicks off `expo-location` geocoding through a thin wrapper that never throws and silently no-ops on failure — closing the loop with 3d's map. Social links render as tappable icons (SF Symbols, with a text fallback) and can be added/removed.
+
+Two new native dependencies (architect-installed): `react-native-maps` and `expo-location`. Both triggered full native rebuilds, verified succeeding and booting clean on the simulator before their code was merged.
+
+### 2. Try it (once the migration is applied — see Needs Weston)
+1. Paste `supabase/migrations/20260719090000_people.sql` in the SQL editor (same batch as Phase 1/2's outstanding migrations).
+2. Sign in on the simulator → open the **People** tab.
+3. Add a person, set category to Dating, status to Engaged, and a wedding date → watch it land in the Dating section with a hollow star + countdown.
+4. Long-press a person → Move to Family → watch it jump to a recency group.
+5. Open a person's detail, add an address → save → tap the map-pin header button → the pin should appear where you geocoded it.
+6. Add a phone number → try Call/Text from the detail screen and from the map pin's callout.
+
+### 3. Decisions I made
+- People is greenfield in this rebuild (no legacy rows), so `category` simply defaults to `friend` — no migration-time backfill needed.
+- All five sub-branches' schema needs were anticipated and shipped in the single 3a migration, so 3b–3e needed zero further migrations.
+- Recency thresholds (14d in-touch, 42d warming-up) and the `StatusColors` palette are architect calls, not explicitly numeric in the roadmap text.
+- Geocoding never blocks or errors the address save — a failed lookup just leaves any existing pin alone, silently. Verified (via the installed package's own type definitions, not assumed) that iOS forward geocoding needs no location permission grant.
+- **Known gap, not silently claimed done:** the map pin callout (3d spec) has call/text/log-contact but not the spec's "last contact" line or a "Move to..." flip action — only the detail screen and list long-press got the flip. Small follow-up if it matters; noted in ROADMAP.md rather than left unmentioned.
+
+### 4. Process notes worth keeping
+- A workflow script parse error twice this phase, both from literal backticks/mismatched quotes accidentally embedded inside JS template-literal prompt strings — fixed by switching to `array.join('\n')` with disciplined single-quote delimiters and zero apostrophes in the prose. Worth remembering for future workflow scripts with long free-text prompts.
+- The disk filled to ~180MB free mid-phase (a real, recurring risk with native rebuilds — DerivedData for one full rebuild runs 2-4GB). Cleared Xcode DerivedData + CocoaPods cache once explicitly authorized; Weston separately freed a large amount of space outside dev caches. Worth watching before any future native-dependency phase.
+- Caught a real bug before merging 3e: `social-icon.ts` was left uncommitted by the automated gate+commit step (tests passed locally only because the untracked file still existed on disk) — proven by simulating a fresh checkout, fixed with a small follow-up commit before merge. A reminder that "tests pass locally" isn't sufficient proof a commit is complete; verify the actual staged/committed file set.
+
+### 5. Needs Weston
+1. **Apply the migration** — `supabase/migrations/20260719090000_people.sql` (SQL editor), alongside the still-outstanding Phase 1/2 migrations.
+2. Sign in on the simulator once that's done for the first fully-live walkthrough of Goals + People + Map together.
+3. Optional: the map pin callout gap above, if it's worth a quick follow-up before Phase 4.
+4. Still open from earlier phases: Google/Apple auth credentials, old app's bundle id, PAT rotation, `design-reference/` screenshots for a fidelity pass.
+
+### 6. Next up
+Phase 4 — Planning rituals: guided weekly planning wizard, daily planning view, the nightly planning ritual (first phase needing local notification permission, requested in-context not at launch), optional reflection moment, and blocks linking to goals/people.
