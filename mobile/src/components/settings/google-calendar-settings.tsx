@@ -31,11 +31,12 @@ import { runGoogleCalendarSync } from '@/lib/gcal-sync-runner';
 
 const ACCENT = '#3c87f7';
 
-function formatSyncSummary(created: number, updated: number, deleted: number): string {
+function formatSyncSummary(created: number, updated: number, deleted: number, pulled: number): string {
   const parts: string[] = [];
   if (created > 0) parts.push(`${created} created`);
   if (updated > 0) parts.push(`${updated} updated`);
   if (deleted > 0) parts.push(`${deleted} removed`);
+  if (pulled > 0) parts.push(`${pulled} pulled from Calendar`);
   if (parts.length === 0) return 'Everything is already up to date.';
   return `Synced: ${parts.join(', ')}.`;
 }
@@ -89,7 +90,7 @@ export function GoogleCalendarSettings() {
         setSyncMessage(result.error ?? 'Sync failed. Please try again.');
         return;
       }
-      setSyncMessage(formatSyncSummary(result.created, result.updated, result.deleted));
+      setSyncMessage(formatSyncSummary(result.created, result.updated, result.deleted, result.pulled));
     } finally {
       setSyncing(false);
     }
