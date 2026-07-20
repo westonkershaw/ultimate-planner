@@ -17,6 +17,13 @@
  * new write path. Both the create-path id and planSync's toLinkLocal
  * pairings are persisted below, so a re-run finds a block already linked
  * (via googleCalendarEventId) instead of re-creating or re-discovering it.
+ *
+ * BIDIRECTIONAL (Roadmap Phase 5, part three): planSync's toUpdateLocal is
+ * executed the same best-effort way as every push-side array below — each
+ * entry's `patch` (a BlockPatchFromEvent, gcal-sync-engine.ts) is applied
+ * via the same existing updateBlock, no new write path. A block that fails
+ * to patch just isn't counted in `pulled`; the remote event stays newer, so
+ * planSync reproduces the same toUpdateLocal entry next run.
  */
 
 import { getGoogleAccessToken } from '@/lib/gcal-auth';
@@ -37,6 +44,8 @@ export interface RunGoogleCalendarSyncResult {
   created: number;
   updated: number;
   deleted: number;
+  /** Local blocks pulled/patched from a newer remote event (Roadmap Phase 5, part three). */
+  pulled: number;
   error?: string;
 }
 
@@ -75,6 +84,7 @@ export async function runGoogleCalendarSync(): Promise<RunGoogleCalendarSyncResu
         created: 0,
         updated: 0,
         deleted: 0,
+        pulled: 0,
         error: 'Google Calendar is not connected, or the connection has expired. Reconnect to sync.',
       };
     }
@@ -92,6 +102,7 @@ export async function runGoogleCalendarSync(): Promise<RunGoogleCalendarSyncResu
         created: 0,
         updated: 0,
         deleted: 0,
+        pulled: 0,
         error: blocksError ?? 'Could not load local blocks to sync.',
       };
     }
@@ -114,6 +125,7 @@ export async function runGoogleCalendarSync(): Promise<RunGoogleCalendarSyncResu
         created: 0,
         updated: 0,
         deleted: 0,
+        pulled: 0,
         error: err instanceof Error ? err.message : 'Could not fetch Google Calendar events.',
       };
     }
@@ -124,6 +136,7 @@ export async function runGoogleCalendarSync(): Promise<RunGoogleCalendarSyncResu
     let created = 0;
     let updated = 0;
     let deleted = 0;
+    let pulled = 0;
 
     for (const block of plan.toCreateRemote) {
       try {
@@ -183,13 +196,25 @@ export async function runGoogleCalendarSync(): Promise<RunGoogleCalendarSyncResu
       }
     }
 
-    return { success: true, created, updated, deleted };
+    for (const { blockId, patch } of plan.toUpdateLocal) {
+      try {
+        await updateBlock(blockId, patch);
+        pulled += 1;
+      } catch {
+        // Same reasoning as the push-side loops above: skip and let the
+        // next pass retry — the remote event is still newer, so planSync
+        // will produce the same toUpdateLocal entry again next run.
+      }
+    }
+
+    return { success: true, created, updated, deleted, pulled };
   } catch (err) {
     return {
       success: false,
       created: 0,
       updated: 0,
       deleted: 0,
+      pulled: 0,
       error: err instanceof Error ? err.message : 'Google Calendar sync failed unexpectedly.',
     };
   }
