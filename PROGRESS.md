@@ -263,3 +263,38 @@ One native dependency this phase: `expo-notifications`. Verified linking cleanly
 
 ### 6. Next up
 Phase 5 — Google Calendar sync: two-way sync between weekly blocks and Google Calendar using the Google OAuth token already obtained at sign-in, storing a `googleCalendarEventId` per block and handling edits/deletes in both directions.
+
+---
+
+## 2026-07-21 — Phase 5: Google Calendar sync
+
+### 1. Built
+This phase started blocked: it's written as if Google sign-in already existed, but only email/password (Phase 0.5) actually did — Google/Apple credentials had been an open item every phase since. Split into three sub-branches once Weston chose to set up real Google Cloud credentials:
+
+- **Part 1 — sync engine groundwork.** `blocks.google_calendar_event_id` (additive). A pure `planSync` reconciliation function against a `GoogleCalendarClient` interface (not a concrete implementation) — fully unit-testable with zero network/credential dependency. Its most important property: a retried sync can never create a duplicate Google Calendar event, enforced structurally (an `if`/`else-if continue` shape a reviewer independently confirmed by reading the actual branching, not just trusting the tests).
+- **Part 2 — connect flow + real client.** Two research questions had to be answered with real evidence, not assumption, before writing a line of UI: (a) is `supabase.auth.linkIdentity` the right way to add Google *alongside* an existing email/password account rather than replacing it — confirmed yes, from the installed SDK's actual types; (b) does Supabase auto-refresh Google's access token — confirmed no. That second answer directly shaped the scope: this phase deliberately ships **foreground manual sync only** ("Sync now" in Settings), not silent background sync, since building secure long-lived token refresh is real, separate work this phase didn't attempt. The real `gcal-client.ts` talks to the Calendar API v3 directly via `fetch`; Settings gained a Connect/Sync now/Disconnect section matching the existing nightly-ritual section's style.
+- **Part 3 — the actual "both directions."** Found and closed a real gap myself before calling the phase done: the engine only ever pushed local block changes onto Calendar — an edit made directly in Google Calendar was silently ignored. It now pulls remote-side edits back into the local block when the remote side is newer, mutually exclusive by construction with the local→remote and delete paths.
+
+Also found and worked around along the way: `blocks-repo.deleteBlock` (Phase 4a) hard-deletes rows, so the reconciliation planner's `isDeleted` branch can never actually fire in practice — the real remote-cleanup-on-delete path is handled inline at the point of local deletion instead, not through the batch planner.
+
+### 2. Try it (once the three-part runtime gate is cleared — see Needs Weston)
+1. Apply `supabase/migrations/20260721090000_gcal_sync.sql` (same batch as the others).
+2. Complete the Google Cloud + Supabase OAuth setup (steps given directly, not repeated here).
+3. Enable "Manual Linking" in Supabase's auth settings.
+4. Sign in → Settings → **Connect Google Calendar** → accept the consent screen (note the Calendar scope shown is expected) → **Sync now** → create/edit a block in the app and in Google Calendar directly, sync again, watch both sides converge.
+
+### 3. Decisions I made
+- Chose `linkIdentity` over a native platform-specific Google Sign-In SDK — needs only one OAuth client (not separate iOS/Android ones) and directly matches "Connect Google Calendar" as an additive action on an already-authenticated user, not a competing sign-in method.
+- Explicitly did not build background sync this phase — the honest answer to "can tokens be silently refreshed" was "not without more work," so I scoped to what's actually safe and true today rather than promising something the research didn't support.
+- Split into three sub-branches specifically to isolate the OAuth-research risk (part 2) from the pure, fully-testable engine (parts 1 and 3) — if the research had come back with a different answer, only part 2 would have needed rework.
+
+### 4. Needs Weston — this phase's gate is bigger than usual
+Three external things, none of which I can do myself:
+1. **Google Cloud**: enable the Calendar API, configure the OAuth consent screen with the `calendar.events` scope (add yourself as a test user — no need to wait for Google's full verification review), create a Web-type OAuth client with redirect URI `https://xvjzouuqcgcfepayauny.supabase.co/auth/v1/callback`.
+2. **Supabase**: paste that client's ID + secret into Authentication → Providers → Google; add `mobile://` to Authentication → URL Configuration → Redirect URLs.
+3. **Supabase**: enable "Manual Linking" in auth settings (`linkIdentity` depends on it).
+4. Then apply the migration and sign in for the first genuinely live test of this phase — nothing here has been exercised against a real Google account yet, only gate-verified and boot-checked.
+5. Still open from earlier phases: old app's bundle id, PAT rotation, `design-reference/` screenshots, the small Phase 3 map-callout gap.
+
+### 5. Next up
+Phase 6 — People depth: progress records per person (last contact, next planned contact, notes), birthday surfacing on Home and in weekly planning, a Journal/Area Book for quick notes attached to a day/goal/person, and Seasons for archiving a semester's goals and starting fresh.

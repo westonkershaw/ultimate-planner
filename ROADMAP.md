@@ -136,9 +136,16 @@ Branches (built as three sub-branches instead of one, mirroring Phase 3's struct
 
 Phase 5 — Google Calendar sync
 
-Branch: `feature/gcal-sync`
+Branches (built as three sub-branches to isolate the OAuth/research risk from the pure engine): `feature/gcal-sync-engine`, `feature/gcal-connect`, `feature/gcal-pull-edits` (in that order)
 
-* [ ] Two-way sync between weekly blocks and Google Calendar via the Google OAuth token from sign-in; store `googleCalendarEventId` per block; handle edits/deletes both directions
+* [x] Two-way sync between weekly blocks and Google Calendar via the Google OAuth token from sign-in; store `googleCalendarEventId` per block; handle edits/deletes both directions — DONE 2026-07-21 (code-complete, gate-verified, boots clean — see the RUNTIME GATE below; this is NOT yet live-verified end to end, since it depends on Google Cloud OAuth credentials that did not exist in this project before this phase)
+  - Schema: `blocks.google_calendar_event_id` (additive).
+  - Pure reconciliation engine (`gcal-sync-engine.ts`, `planSync`) with a structural, by-construction idempotency guarantee against duplicate remote-event creation on a retried sync, and mutually-exclusive local→remote / remote→local / delete branches.
+  - Connect flow uses `supabase.auth.linkIdentity` (adds Google *alongside* the existing email/password sign-in, does not replace it) requesting the `calendar.events` scope, via `expo-web-browser`.
+  - Deliberately scoped to **foreground manual sync**, not silent background sync — researched and confirmed Supabase does not auto-refresh third-party (Google) provider tokens, so unattended background refresh would need real secure-storage work this phase didn't attempt.
+  - A genuine gap was found and closed mid-phase: the engine initially only pushed local block changes onto Calendar. It now also pulls a remote-side edit (renamed/moved event, edited directly in Google Calendar) back into the local block when the remote side is newer — this is what "both directions" actually requires.
+  - A schema mismatch was found and worked around: `blocks-repo.deleteBlock` hard-deletes (no soft-delete flag), so the reconciliation planner's delete path can't fire for it in practice; remote-event cleanup on delete is instead handled inline at the point of local deletion.
+* [ ] RUNTIME GATE (needs Weston): (1) apply the outstanding migrations batch (now including `20260721090000_gcal_sync.sql`); (2) complete Google Cloud OAuth setup (Calendar API enabled, OAuth consent screen with the `calendar.events` scope, a Web-type OAuth client with the Supabase callback as its redirect URI, pasted into Supabase's Google provider); (3) enable "Manual Linking" in Supabase's auth settings — `linkIdentity` depends on it. Until all three are done, "Connect Google Calendar" in Settings will fail with a clear error, not crash.
 
 Phase 6 — People depth
 
