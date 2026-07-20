@@ -10,13 +10,18 @@
  * (weekly-review.ts), set targets (useUpdateGoal, same mutation the rest of
  * the app uses), schedule blocks for the upcoming week (inline form over
  * useCreateBlock/useDeleteBlock), and a completion step that saves the
- * weekly-planning reminder preference (planning-prefs.ts) — no notification
- * scheduling here, that's a later sub-branch.
+ * weekly-planning reminder preference (planning-prefs.ts) and, on Done,
+ * requests notification permission (via the same in-app priming explanation
+ * used by the Settings nightly-ritual toggle, notification-priming.ts) and
+ * schedules a repeating weekly reminder (Roadmap Phase 4c). A denied/skipped
+ * permission never blocks the wizard from finishing — the preference is
+ * still saved either way.
  */
 
 import { Stack, useRouter } from 'expo-router';
+import * as Notifications from 'expo-notifications';
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { CompletionStep, isValidTime } from '@/components/plan/weekly-wizard/completion-step';
 import { ReviewWeekStep } from '@/components/plan/weekly-wizard/review-week-step';
@@ -31,12 +36,15 @@ import { useTheme } from '@/hooks/use-theme';
 import type { Block } from '@/lib/block-types';
 import { useBlocksForRange } from '@/lib/blocks-hooks';
 import { useGoals, useRecentEvents } from '@/lib/goals-hooks';
+import { primeAndRequestNotificationPermission } from '@/lib/notification-priming';
+import { cancelScheduledReminder, scheduleWeeklyReminder } from '@/lib/notifications';
 import { usePeople } from '@/lib/people-hooks';
 import { getWeeklyPlanningPreference, setWeeklyPlanningPreference, type Weekday } from '@/lib/planning-prefs';
 import { addLocalDays, localDayKey, startOfLocalWeek } from '@/lib/time-policy';
 import { previousWeekRange, weeklyBlockSummary, weeklyGoalRecap } from '@/lib/weekly-review';
 
 const TOTAL_STEPS = 4;
+const WEEKLY_PLANNING_NOTIFICATION_ID = 'weekly-planning';
 /** WEEKDAYS in planning-prefs.ts is Sunday-first (index 0 = sunday); Date#getDay() matches that directly. */
 const DATE_DAY_TO_WEEKDAY: readonly Weekday[] = [
   'sunday',
@@ -47,6 +55,16 @@ const DATE_DAY_TO_WEEKDAY: readonly Weekday[] = [
   'friday',
   'saturday',
 ];
+/** planning-prefs.ts's Weekday is Sunday-first (index 0); expo-notifications' WEEKLY trigger is 1-7 with 1 = Sunday — same offset, so index + 1. */
+const WEEKDAY_TO_TRIGGER_WEEKDAY: Record<Weekday, number> = {
+  sunday: 1,
+  monday: 2,
+  tuesday: 3,
+  wednesday: 4,
+  thursday: 5,
+  friday: 6,
+  saturday: 7,
+};
 
 export default function WeeklyWizardScreen() {
   const theme = useTheme();
@@ -145,6 +163,40 @@ export default function WeeklyWizardScreen() {
     setSaving(true);
     try {
       await setWeeklyPlanningPreference(weekday, trimmedTime);
+
+      // Only show the priming explanation (and the OS prompt behind it) when
+      // permission isn't already granted — a returning user who granted it
+      // previously (e.g. via the Settings nightly-ritual toggle) shouldn't
+      // see the explanation again. This read never itself prompts the OS.
+      const current = await Notifications.getPermissionsAsync().catch(() => null);
+      const granted = current?.granted === true || (await primeAndRequestNotificationPermission());
+
+      if (granted) {
+        const [hour, minute] = trimmedTime.split(':').map(Number);
+        const scheduled = await scheduleWeeklyReminder(
+          WEEKLY_PLANNING_NOTIFICATION_ID,
+          WEEKDAY_TO_TRIGGER_WEEKDAY[weekday],
+          hour!,
+          minute!,
+          'Time to plan your week',
+          'Take a few minutes to set up the week ahead.',
+          { screen: 'weekly-wizard' }
+        );
+        if (!scheduled) {
+          await cancelScheduledReminder(WEEKLY_PLANNING_NOTIFICATION_ID);
+          Alert.alert(
+            "Couldn't enable reminders",
+            'Something went wrong scheduling the reminder. Please try again from Settings.'
+          );
+        }
+      } else {
+        await cancelScheduledReminder(WEEKLY_PLANNING_NOTIFICATION_ID);
+        Alert.alert(
+          'Preference saved',
+          'You can enable notifications later from Settings to get the actual reminder.'
+        );
+      }
+
       router.back();
     } finally {
       setSaving(false);
