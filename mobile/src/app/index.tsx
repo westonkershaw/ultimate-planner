@@ -19,6 +19,7 @@ import { HomeFab } from '@/components/home/home-fab';
 import { PeriodCard } from '@/components/home/period-card';
 import { ProgressingList } from '@/components/home/progressing-list';
 import { SectionHeader } from '@/components/home/section-header';
+import { TodayPlanButton } from '@/components/home/today-plan-button';
 import { WeeklyPlanningButton } from '@/components/home/weekly-planning-button';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -187,6 +188,7 @@ export default function HomeScreen() {
                 <PeriodCard goals={monthlyGoals} events={events} today={today} />
               )}
 
+              <TodayPlanButton />
               <WeeklyPlanningButton />
 
               {progressingGoals.length > 0 && (
