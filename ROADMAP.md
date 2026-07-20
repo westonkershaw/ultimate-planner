@@ -125,13 +125,14 @@ Branches: `feature/people-categories`, `feature/dating-section`, `feature/catego
 
 Phase 4 — Planning rituals
 
-Branch: `feature/planning-rituals`
+Branches (built as three sub-branches instead of one, mirroring Phase 3's structure): `feature/blocks-daily-view`, `feature/weekly-wizard`, `feature/nightly-ritual` (in that order)
 
-* [ ] Guided weekly planning session: step-by-step wizard (review last week -> set targets per Life Area -> schedule blocks), launched by the Home button + a recurring reminder at the user's chosen day/time — this is how PMG's weekly planning actually runs
-* [ ] Daily planning view: today's blocks + today's targets in one screen, quick "plan tomorrow" evening flow
-* [ ] Nightly planning ritual: short evening notification (check off today, glance at tomorrow) — the missionary 9pm habit engine. NOTE: this needs local notification permission NOW (Phase 4), not in Phase 10 — request it in-context the first time the user enables the ritual, with a one-line explanation, never at app launch
-* [ ] Optional reflection moment opening/closing the session (prayer for members, reflection for anyone) — off by default, Settings toggle
-* [ ] Blocks link to a Goal (and optionally a person); completing a block writes a progress event
+* [x] Guided weekly planning session: step-by-step wizard (review last week -> set targets per Life Area -> schedule blocks), launched by the Home button + a recurring reminder at the user's chosen day/time — this is how PMG's weekly planning actually runs — DONE 2026-07-20 (`mobile/src/app/plan/weekly-wizard.tsx`; the Home `WEEKLY PLANNING` button — a placeholder since Phase 2 — now opens it for real; the reminder is genuinely scheduled via `expo-notifications`, requested in-context on the wizard's Done step)
+* [x] Daily planning view: today's blocks + today's targets in one screen, quick "plan tomorrow" evening flow — DONE (`mobile/src/app/plan/today.tsx`; today's targets reuse the Phase 2 `todayChipFor` dashboard logic rather than reimplementing it)
+* [x] Nightly planning ritual: short evening notification (check off today, glance at tomorrow) — the missionary 9pm habit engine. NOTE: this needs local notification permission NOW (Phase 4), not in Phase 10 — request it in-context the first time the user enables the ritual, with a one-line explanation, never at app launch — DONE (`mobile/src/app/plan/tonight.tsx` + a Settings toggle in `explore.tsx`, default off; permission requested from exactly two in-context moments — the toggle and the weekly wizard's Done step — never at launch, verified by grep + a live boot-check showing no permission prompt on cold start)
+* [x] Optional reflection moment opening/closing the session (prayer for members, reflection for anyone) — off by default, Settings toggle — DONE (`reflection-card.tsx`; no existing member/audience preference was found in the codebase, so the copy is warm and non-denominational rather than presuming an audience, the same choice already made for the Spiritual goal templates in Phase 1)
+* [x] Blocks link to a Goal (and optionally a person); completing a block writes a progress event — DONE (`blocks` table, `ON DELETE SET NULL` on both links so deleting a goal/person never destroys planning history; completing a goal-linked block reuses the exact same `logProgress` function a manual progress log uses, rather than a separate write path)
+* [ ] RUNTIME GATE (needs Weston): apply `supabase/migrations/20260720120000_blocks.sql` (same batch as the still-outstanding Phase 1/2/3 migrations) — until then the Daily/Weekly/Tonight screens hit missing tables
 
 Phase 5 — Google Calendar sync
 

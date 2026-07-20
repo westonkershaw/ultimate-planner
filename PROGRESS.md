@@ -225,3 +225,41 @@ Two new native dependencies (architect-installed): `react-native-maps` and `expo
 
 ### 6. Next up
 Phase 4 — Planning rituals: guided weekly planning wizard, daily planning view, the nightly planning ritual (first phase needing local notification permission, requested in-context not at launch), optional reflection moment, and blocks linking to goals/people.
+
+---
+
+## 2026-07-20 — Phase 4: Planning rituals
+
+### 1. Built
+Built as three sub-branches instead of the roadmap's single one, mirroring how well Phase 3's split worked — each got its own implementer → test-writer → reviewer loop:
+
+- **4a — Blocks foundation + Daily Planning.** A new `blocks` table (optionally linking a goal and/or a person, both `ON DELETE SET NULL` so deleting a goal or person never destroys planning history). Completing a goal-linked block reuses the *existing* `logProgress` function from Phase 1 rather than a second write path — a completed block and a manually-logged progress event are the same underlying action. The Daily Planning screen (`/plan/today`) shows today's blocks as a checklist plus "today's targets," which reuses Phase 2's `todayChipFor` dashboard logic instead of reimplementing it. A "Plan tomorrow" shortcut reuses the same block-creation form, pre-dated.
+- **4b — Guided weekly wizard.** Four steps: review last week (block completion rate + per-area goal progress, reusing 4a's and Phase 1's engines), set per-life-area targets (inline-editing existing goals via the existing update mutation), schedule the upcoming week's blocks inline without leaving the wizard, and a closing step that captures a preferred reminder day/time. The Home screen's `WEEKLY PLANNING` button — a placeholder since Phase 2 — now opens this for real.
+- **4c — Nightly ritual + notifications + reflection.** A thin, fail-safe `expo-notifications` wrapper backs two reminders: the nightly ritual (a new Settings toggle, default off) and the weekly wizard's closing step. Both request notification permission from exactly one in-context moment each — never at launch — preceded by a shared one-line in-app explanation before the OS prompt. The `/plan/tonight` screen checks off today's remaining blocks and gives a read-only glance at tomorrow's. Reflection moments (also default off) wrap the ritual in a warm, non-denominational opening/closing card.
+
+One native dependency this phase: `expo-notifications`. Verified linking cleanly and, critically, verified live on the simulator that the app does **not** prompt for notification permission on cold launch — the "never at launch" rule actually held.
+
+### 2. Try it (once the migration is applied — see Needs Weston)
+1. Paste `supabase/migrations/20260720120000_blocks.sql` (same batch as the other outstanding migrations).
+2. Sign in → Home → **TODAY'S PLAN** → add a block, check it off, watch it move if it's goal-linked.
+3. Home → **WEEKLY PLANNING** → walk the four-step wizard → schedule a couple of blocks for the week → set a reminder time on the last step (accept the notification prompt to see real scheduling happen).
+4. Settings (the account/Explore tab) → toggle on the **nightly ritual** → accept the permission prompt → set a time.
+5. Turn the nightly ritual back off — confirm no second permission prompt ever appears, on either path.
+
+### 3. Decisions I made
+- Split into three sub-branches rather than one big `feature/planning-rituals` — same rationale as Phase 3: smaller reviewable diffs, and it let the two JS-only pieces (4a, 4b) merge fast while the native-dependency piece (4c) took its own rebuild cycle without blocking them.
+- Actual notification *scheduling* for both the nightly ritual and the weekly reminder was deliberately deferred out of 4a/4b into 4c — 4b only captures the preferred day/time as a plain stored value, so the two sub-branches touching `expo-notifications` behavior live in exactly one place.
+- Un-completing a block does not attempt to retract its goal-progress event (reliably matching the right event to delete is ambiguous) — documented as a deliberate scope boundary, not an oversight, same posture as similar judgment calls in Phase 3.
+- No existing "member vs. general" audience preference exists anywhere in the app, so reflection-moment copy is warm and non-denominational rather than presuming an audience — consistent with how the Spiritual goal templates were handled in Phase 1.
+- The Settings section landed in `explore.tsx`, since this app has no dedicated `settings.tsx` yet — that screen already carries the one other account-level control (sign out).
+
+### 4. Process note
+4c's reviewer caught something worth remembering: the implementer's task instructions from me assumed `expo-notifications` used a `CALENDAR` trigger with `repeats: true` for recurring reminders. The actual installed package (~57.0.6) has dedicated `DAILY`/`WEEKLY` trigger types with no `repeats` field at all — the implementer verified this against the real installed type declarations rather than following my (wrong) assumption, and the reviewer independently re-verified it too. A good example of why "read the actual installed types, don't trust the prompt" is baked into these task instructions now.
+
+### 5. Needs Weston
+1. **Apply the migration** — `supabase/migrations/20260720120000_blocks.sql` (SQL editor), alongside the still-outstanding Phase 1/2/3 migrations.
+2. Sign in on the simulator once that's done to actually exercise blocks, the weekly wizard, and real scheduled notifications end to end.
+3. Still open from earlier phases: Google/Apple auth credentials, old app's bundle id, PAT rotation, `design-reference/` screenshots, and the small known map-callout gap noted at the end of Phase 3.
+
+### 6. Next up
+Phase 5 — Google Calendar sync: two-way sync between weekly blocks and Google Calendar using the Google OAuth token already obtained at sign-in, storing a `googleCalendarEventId` per block and handling edits/deletes in both directions.
