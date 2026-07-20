@@ -15,6 +15,7 @@ export interface Block {
   personId: string | null;
   notes: string | null;
   completedAt: string | null; // ISO timestamp; null = not completed
+  googleCalendarEventId: string | null; // linked GCal event id (Phase 5, part two); null = not yet synced
   createdAt: string;
   updatedAt: string;
 }
@@ -31,6 +32,7 @@ export interface BlockRow {
   person_id: string | null;
   notes: string | null;
   completed_at: string | null;
+  google_calendar_event_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -47,6 +49,7 @@ export function blockFromRow(row: BlockRow): Block {
     personId: row.person_id,
     notes: row.notes,
     completedAt: row.completed_at,
+    googleCalendarEventId: row.google_calendar_event_id,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
